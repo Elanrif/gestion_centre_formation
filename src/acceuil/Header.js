@@ -1,6 +1,8 @@
 import React,{useState} from 'react'
 import AccountMenu from './AccountMenu'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 function Header() {
 
@@ -17,6 +19,9 @@ function Header() {
                 <h1 className='text-lg font-xl my-3 '> Formation</h1>
             <ExpandMoreIcon className={`${chevron ? 'rotate-180': 'rotate-0'}`}/>
             </div>
+            <Link to= '/register/formateur'>
+           <Button sx={{mt:0,fontSize:'12px'}} variant="contained"> Dévenir formateur</Button>
+            </Link>
         </div>
        
         <AccountMenu/>

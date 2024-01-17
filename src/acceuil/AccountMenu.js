@@ -12,6 +12,7 @@ import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import Search from './Search';
+import {Link} from "react-router-dom"
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -78,10 +79,14 @@ export default function AccountMenu() {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={handleClose}>
-          <Avatar /> Créer un compte
+           <Link to="/register/utilisateur" className='flex items-center'>
+           <Avatar /> Créer un compte
+          </Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
+          <Link to="/login/utilisateur" className='flex items-center'>
           <Avatar /> Se connecter
+          </Link>
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
