@@ -23,6 +23,10 @@ export default function Utilisateur() {
     event.preventDefault();
   };
 
+  const handleSubmit = (e)=>{
+    e.preventDefault() 
+    console.log('clic')
+  }
 
   return (
     <div className='h-[100vh] bg-slate-50 grid grid-cols-2 gap-2'>
@@ -31,6 +35,7 @@ export default function Utilisateur() {
               <TitleForm name="Utilisateur"/>
                <Box
                 component="form"
+                onSubmit={handleSubmit}
                 sx={{
                   '& > :not(style)': { m: 1, width: '45ch' },
                 }}
@@ -38,29 +43,29 @@ export default function Utilisateur() {
                 autoComplete="off"
               >
                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-password"
+                    <InputLabel htmlFor="outlined-adornment-email"
                     >
                         E-mail</InputLabel>
                           <OutlinedInput
-                            id="outlined-adornment-password"
+                            id="outlined-adornment-email"
                             type="text"
                             endAdornment={
                               <InputAdornment position="end">
                                 <MailIcon
-                            aria-label="toggle password visibility"
+                            aria-label="toggle email visibility"
                             edge="start"
                           >
                           <Visibility />
                           </MailIcon>
                               </InputAdornment>
                             }
-                            label="Password"
+                            label="email"
                           />
                     </FormControl> <br/>
 
                   <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-password"
-                    startAdornment={
+                    startadornment={
                   <InputAdornment position="start">
                     <MailIcon />
                   </InputAdornment>
@@ -85,7 +90,7 @@ export default function Utilisateur() {
                       label="Password"
                     />
                      <div className='flex justify-center'>
-                     <Button variant="contained" sx={{mt:3 , width:150}}>Se connecter</Button>
+                     <Button type='submit' variant="contained" sx={{mt:3 , width:150}}>Se connecter</Button>
                     </div>
 
                   </FormControl>

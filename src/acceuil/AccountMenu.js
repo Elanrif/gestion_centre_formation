@@ -12,17 +12,37 @@ import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import Search from './Search';
-import {Link} from "react-router-dom"
+import {Link,useNavigate} from "react-router-dom"
+import { AuthContext } from '../Context';
 
 export default function AccountMenu() {
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
+  const {auth,setAuth} = React.useContext(AuthContext)
+  const navigate = useNavigate()
+  
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
-  };
+  }
+
+  const handleLogout = ()=>{   
+          setAuth({
+            id : 0,
+            name:'',
+            password:''
+          })
+          
+          sessionStorage.removeItem("auth")
+          navigate("/login/utilisateur")
+          handleClose() 
+  }
+
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -101,7 +121,7 @@ export default function AccountMenu() {
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

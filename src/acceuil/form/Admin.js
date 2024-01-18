@@ -22,6 +22,10 @@ export default function Admin() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  const handleSubmit = (e)=>{
+    e.preventDefault() 
+    console.log('clic')
+  }
 
 
   return (
@@ -31,6 +35,7 @@ export default function Admin() {
               <TitleForm name="Administrateur"/>
                <Box
                 component="form"
+                onSubmit={handleSubmit}
                 sx={{
                   '& > :not(style)': { m: 1, width: '45ch' },
                 }}
@@ -38,29 +43,29 @@ export default function Admin() {
                 autoComplete="off"
               >
                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-password"
+                    <InputLabel htmlFor="outlined-adornment-email"
                     >
                         E-mail</InputLabel>
                           <OutlinedInput
-                            id="outlined-adornment-password"
-                            type="text"
+                            id="outlined-adornment-email"
+                            type="email"
                             endAdornment={
                               <InputAdornment position="end">
                                 <MailIcon
-                            aria-label="toggle password visibility"
+                            aria-label="toggle email visibility"
                             edge="start"
                           >
                           <Visibility />
                           </MailIcon>
                               </InputAdornment>
                             }
-                            label="Password"
+                            label="email"
                           />
                     </FormControl> <br/>
 
                   <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-password"
-                    startAdornment={
+                    startadornment={
                   <InputAdornment position="start">
                     <MailIcon />
                   </InputAdornment>
@@ -85,7 +90,7 @@ export default function Admin() {
                       label="Password"
                     />
                      <div className='flex justify-center'>
-                     <Button variant="contained" sx={{mt:3 , width:150}}>Se connecter</Button>
+                     <Button type='submit' variant="contained" sx={{mt:3 , width:150}}>Se connecter</Button>
                     </div>
 
                   </FormControl>

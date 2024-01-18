@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import React,{useState,useEffect} from 'react';
 import './App.css';
 import { Routes, Route, useParams } from "react-router-dom";
 import Acceuil from './acceuil/Acceuil';
@@ -8,10 +8,24 @@ import Formateur from './acceuil/form/Formateur';
 import Utilisateur from './acceuil/form/Utilisateur';
 import FormateurR from './acceuil/form-register/FormateurR';
 import UtilisateurR from './acceuil/form-register/UtilisateurR';
+import { AuthContext } from './Context';
 
 function App() {
+
+   const authenticate = sessionStorage.getItem("auth") ? JSON.parse( sessionStorage.getItem("auth")) : null ; 
+
+  const [auth,setAuth] = useState({
+    id : -1
+  }) 
+
+  useEffect(() => {
+  authenticate && setAuth(authenticate)
+  console.log(auth)
+  }, [auth.id])
+
   return (
-    <div>
+   <>
+    <AuthContext.Provider value={{auth,setAuth}}>
           <Routes>
             <Route path="/" element={<Acceuil />}/>
             <Route path="/login/admin" element={<Admin />}/>
@@ -21,7 +35,7 @@ function App() {
             <Route path="/register/formateur" element={<FormateurR />}/>
             <Route path="/register/utilisateur" element={<UtilisateurR />}/>
           </Routes>
-    </div>
+    </AuthContext.Provider></>
   );
 }
 

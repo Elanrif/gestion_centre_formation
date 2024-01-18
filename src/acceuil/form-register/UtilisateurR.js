@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState,useContext,useEffect} from 'react'
 import Welcome from '../form/Welcome';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
@@ -12,21 +12,32 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import MailIcon from '@mui/icons-material/Mail';
 import { Link } from 'react-router-dom';
 import TitleFormR from './TitleFormR';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import PersonIcon from '@mui/icons-material/Person';
-import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak';
+import PublicIcon from '@mui/icons-material/Public';
 import Welcom from './Welcom';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../Context';
 
 export default function UtilisateurR() {
 
-     const [age, setAge] = React.useState('');
+  const {auth,setAuth} = useContext(AuthContext)
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
+  const [user, setUser] = useState(
+    {
+      nom : "",
+      prenom : "",
+      email : "",
+      password : "",
+      checkPwd:"",
+      tel : "",
+      ville : "",
+      naissance:"",
+    }
+  )
 
+  const navigate = useNavigate()
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -36,16 +47,83 @@ export default function UtilisateurR() {
     event.preventDefault();
   };
 
+   const handleChange = (e) => {
+  
+    const target = e.target;
+    const value = target.value;
+    const name = target.name ;
+
+
+    setUser((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+
+  }
+
+
  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(" formateur : ", e)
-  };
+
+    console.log(user)
+     if(user.password != user.checkPwd)
+    {
+     
+    alert("password error !")
+     setUser((prevState)=>({
+      ...prevState,
+      password : "",
+      checkPwd : "", 
+     }))
+    }
+    else {
+
+      user.nom === "" ||
+      user.prenom === "" ||
+      user.email === "" ||
+      user.password ==="" ||
+      user.tel === "" ? alert("veuillez remplir tout les champs *") : saveUser()
+    }
+  
+  }
+
+  const saveUser = ()=>{
+       
+     // Supprimer la clé 'checkPwd' et sa valeur du state
+   const { checkPwd, ...utilisateur } = user;
+
+    axios
+      .post("/utilisateurs", utilisateur)
+      .then((res) => {
+
+        //  navigate("/");
+         setAuth(res.data)
+         alert("créer avec succès !")
+         sessionStorage.setItem("auth", JSON.stringify(res.data));
+         setUser(
+          {
+            nom : "",
+            prenom : "",
+            email : "",
+            password : "",
+            checkPwd:"",
+            tel : "",
+            ville : "",
+            naissance:"",
+          }
+        )
+      })
+      .catch((error) => {
+        console.log(error.message);
+    
+      });
+  }
 
 
   return (
-    <div className='h-[100vh] bg-slate-50 grid grid-cols-2 gap-2'>
+    <div className='h-[100vh] bg-slate-50 grid xl:grid-cols-2 grid-cols-1 gap-2'>
         <div className='flex items-center justify-center'>
-            <div className=''>
+            <div className='text-center'>
             <Box 
                 component="form"
                 onSubmit={handleSubmit}>
@@ -64,6 +142,9 @@ export default function UtilisateurR() {
                           <OutlinedInput
                             id="outlined-adornment-nom"
                             type="text"
+                            name="nom"
+                            value={user.nom}
+                            onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
                                 <PersonIcon
@@ -84,6 +165,9 @@ export default function UtilisateurR() {
                           <OutlinedInput
                             id="outlined-adornment-prenom"
                             type="text"
+                            name="prenom"
+                            value={user.prenom}
+                            onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
                                 <PersonIcon
@@ -105,6 +189,9 @@ export default function UtilisateurR() {
                           <OutlinedInput
                             id="outlined-adornment-email"
                             type="text"
+                            name="email"
+                            value={user.email}
+                            onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
                                 <MailIcon
@@ -126,6 +213,9 @@ export default function UtilisateurR() {
                           <OutlinedInput
                             id="outlined-adornment-tel"
                             type="text"
+                            name="tel"
+                            value={user.tel}
+                            onChange={handleChange} 
                             endAdornment={
                               <InputAdornment position="end">
                                 <ContactPhoneIcon
@@ -140,15 +230,29 @@ export default function UtilisateurR() {
                           />
                     </FormControl> <br/>
 
-                 <FormControl sx={{ m: 1, width: '13ch' }}>
-                    <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={top100Films}
-                    sx={{ width: 300 }}
-                    renderInput={(params) => <TextField {...params} label="Ville" />}
-                    />
-                </FormControl> 
+                 <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-ville"
+                    >
+                        Ville </InputLabel>
+                          <OutlinedInput
+                            id="outlined-adornment-ville"
+                            type="text"
+                            name="ville"
+                            value={user.ville}
+                            onChange={handleChange} 
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <PublicIcon
+                            aria-label="toggle ville visibility"
+                            edge="start"
+                          >
+                          <Visibility />
+                          </PublicIcon>
+                              </InputAdornment>
+                            }
+                            label="Ville"
+                          />
+                    </FormControl>
 
                 <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-naissance"
@@ -157,14 +261,16 @@ export default function UtilisateurR() {
                           <OutlinedInput
                             id="outlined-adornment-naissance"
                             type="date"
-                            
+                            name="naissance"
+                            value={user.naissance}
+                            onChange={handleChange} 
                             label="naissance"
                           />
                     </FormControl> <br/>
 
                   <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-password"
-                    startAdornment={
+                    startadornment={
                   <InputAdornment position="start">
                     <MailIcon />
                   </InputAdornment>
@@ -173,6 +279,9 @@ export default function UtilisateurR() {
                   Mot de passe</InputLabel>
                     <OutlinedInput
                       id="outlined-adornment-password"
+                      name= "password"
+                      value={user.password}
+                      onChange={handleChange}
                       type={showPassword ? 'text' : 'password'}
                       endAdornment={
                         <InputAdornment position="end">
@@ -187,6 +296,38 @@ export default function UtilisateurR() {
                         </InputAdornment>
                       }
                       label="Password"
+                    />
+                    
+                  </FormControl>
+
+                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-password"
+                    startadornment={
+                  <InputAdornment position="start">
+                    <MailIcon />
+                  </InputAdornment>
+                }
+              >
+                  Mot de passe</InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-password2"
+                      name="checkPwd"
+                      value={user.checkPwd}
+                      onChange={handleChange}
+                      type={showPassword ? 'text' : 'password'}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password2 visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Password2"
                     />
                     
                   </FormControl>
@@ -216,13 +357,4 @@ export default function UtilisateurR() {
   )
 }
 
-const top100Films = [
-  { label: 'The Shawshank Redemption', year: 1994 },
-  { label: 'The Godfather', year: 1972 },
-  { label: 'The Godfather: Part II', year: 1974 },
-  { label: 'The Dark Knight', year: 2008 },
-  { label: '12 Angry Men', year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: 'Pulp Fiction', year: 1994 },
 
-]

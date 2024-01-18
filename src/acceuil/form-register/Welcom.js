@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Welcom() {
   return (
-    <div  className='bg-blue-500 text-white h-full w-full'>
+    <div  className='bg-blue-500 xl:block hidden text-white h-full w-full'>
       <div className='h-[100vh] flex items-center justify-center'>
         <div className='max-w-[35rem] text-center mx-auto'>
           <h1 className='font-black text-3xl my-3'> Inscription </h1>

@@ -1,5 +1,4 @@
-import React from 'react'
-import Welcome from '../form/Welcome';
+import React,{useState,useContext,useEffect} from 'react'
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
@@ -12,21 +11,34 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import MailIcon from '@mui/icons-material/Mail';
 import { Link } from 'react-router-dom';
 import TitleFormR from './TitleFormR';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import PersonIcon from '@mui/icons-material/Person';
-import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak';
+import PublicIcon from '@mui/icons-material/Public';
 import Welcom from './Welcom';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../Context';
+import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 
 export default function FormateurR() {
 
-     const [age, setAge] = React.useState('');
+ 
+  const {auth,setAuth} = useContext(AuthContext)
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
+  const [formateur, setFormateur] = useState(
+    {
+      nom : "",
+      prenom : "",
+      email : "",
+      password : "",
+      checkPwd:"",
+      tel : "",
+      ville : "",
+      competence:"",
+    }
+  )
 
+  const navigate = useNavigate()
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -36,16 +48,85 @@ export default function FormateurR() {
     event.preventDefault();
   };
 
+   const handleChange = (e) => {
+  
+    const target = e.target;
+    const value = target.value;
+    const name = target.name ;
+
+
+    setFormateur((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+
+  }
+
+
  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(" formateur : ", e)
-  };
+
+    console.log(formateur)
+     if(formateur.password != formateur.checkPwd)
+    {
+     
+    alert("password error !")
+     setFormateur((prevState)=>({
+      ...prevState,
+      password : "",
+      checkPwd : "", 
+     }))
+    }
+    else {
+
+      formateur.nom === "" ||
+       formateur.prenom === "" ||
+      formateur.competence === "" ||
+      formateur.prenom === "" ||
+      formateur.email === "" ||
+      formateur.password ==="" ||
+      formateur.tel === "" ? alert("veuillez remplir tout les champs *") : saveFormateur()
+    }
+  
+  }
+
+  const saveFormateur = ()=>{
+       
+     // Supprimer la clé 'checkPwd' et sa valeur du state
+   const { checkPwd, ...formater } = formateur;
+
+    axios
+      .post("/formateurs", formater)
+      .then((res) => {
+
+       //  navigate("/");
+         setAuth(res.data)
+         alert("créer avec succès !")
+         sessionStorage.setItem("auth", JSON.stringify(res.data));
+         setFormateur(
+          {
+            nom : "",
+            prenom : "",
+            email : "",
+            password : "",
+            checkPwd:"",
+            tel : "",
+            ville : "",
+            competence:"",
+          }
+        )
+      })
+      .catch((error) => {
+        console.log(error.message);
+    
+      });
+  }
 
 
   return (
-    <div className='h-[100vh] bg-slate-50 grid grid-cols-2 gap-2'>
+    <div className='h-[100vh] bg-slate-50 grid xl:grid-cols-2 grid-cols-1 gap-2'>
         <div className='flex items-center justify-center'>
-            <div className=''>
+            <div className='text-center'>
             <Box 
                 component="form"
                 onSubmit={handleSubmit}>
@@ -64,6 +145,9 @@ export default function FormateurR() {
                           <OutlinedInput
                             id="outlined-adornment-nom"
                             type="text"
+                            name="nom"
+                            value={formateur.nom}
+                            onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
                                 <PersonIcon
@@ -84,6 +168,9 @@ export default function FormateurR() {
                           <OutlinedInput
                             id="outlined-adornment-prenom"
                             type="text"
+                            name="prenom"
+                            value={formateur.prenom}
+                            onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
                                 <PersonIcon
@@ -105,6 +192,9 @@ export default function FormateurR() {
                           <OutlinedInput
                             id="outlined-adornment-email"
                             type="text"
+                            name="email"
+                            value={formateur.email}
+                            onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
                                 <MailIcon
@@ -126,6 +216,9 @@ export default function FormateurR() {
                           <OutlinedInput
                             id="outlined-adornment-tel"
                             type="text"
+                            name="tel"
+                            value={formateur.tel}
+                            onChange={handleChange} 
                             endAdornment={
                               <InputAdornment position="end">
                                 <ContactPhoneIcon
@@ -140,31 +233,48 @@ export default function FormateurR() {
                           />
                     </FormControl> <br/>
 
-                 <FormControl sx={{ m: 1, width: '13ch' }}>
-                    <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={top100Films}
-                    sx={{ width: 300 }}
-                    renderInput={(params) => <TextField {...params} label="Ville" />}
-                    />
-                </FormControl> 
+                 <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-ville"
+                    >
+                        Ville </InputLabel>
+                          <OutlinedInput
+                            id="outlined-adornment-ville"
+                            type="text"
+                            name="ville"
+                            value={formateur.ville}
+                            onChange={handleChange} 
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <PublicIcon
+                            aria-label="toggle ville visibility"
+                            edge="start"
+                          >
+                          <Visibility />
+                          </PublicIcon>
+                              </InputAdornment>
+                            }
+                            label="Ville"
+                          />
+                    </FormControl>
 
                 <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-competence"
                     >
-                        Compétence </InputLabel>
+                        compétence </InputLabel>
                           <OutlinedInput
                             id="outlined-adornment-competence"
                             type="text"
-                            endAdornment={
+                            name="competence"
+                            value={formateur.competence}
+                            onChange={handleChange} 
+                             endAdornment={
                               <InputAdornment position="end">
-                                <CenterFocusWeakIcon
-                            aria-label="toggle competence visibility"
+                                <CenterFocusStrongIcon
+                            aria-label="toggle ville visibility"
                             edge="start"
                           >
                           <Visibility />
-                          </CenterFocusWeakIcon>
+                          </CenterFocusStrongIcon>
                               </InputAdornment>
                             }
                             label="competence"
@@ -173,7 +283,7 @@ export default function FormateurR() {
 
                   <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-password"
-                    startAdornment={
+                    startadornment={
                   <InputAdornment position="start">
                     <MailIcon />
                   </InputAdornment>
@@ -182,6 +292,9 @@ export default function FormateurR() {
                   Mot de passe</InputLabel>
                     <OutlinedInput
                       id="outlined-adornment-password"
+                      name= "password"
+                      value={formateur.password}
+                      onChange={handleChange}
                       type={showPassword ? 'text' : 'password'}
                       endAdornment={
                         <InputAdornment position="end">
@@ -200,6 +313,38 @@ export default function FormateurR() {
                     
                   </FormControl>
 
+                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-password"
+                    startadornment={
+                  <InputAdornment position="start">
+                    <MailIcon />
+                  </InputAdornment>
+                }
+              >
+                  Mot de passe</InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-password2"
+                      name="checkPwd"
+                      value={formateur.checkPwd}
+                      onChange={handleChange}
+                      type={showPassword ? 'text' : 'password'}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password2 visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Password2"
+                    />
+                    
+                  </FormControl>
+
                 </Box>
                 <div className='flex mb-3 justify-center'>
                      <Button type="submit" variant="contained" sx={{mt:3 , width:150}}>Valider</Button>
@@ -209,7 +354,7 @@ export default function FormateurR() {
                      <div className='text-center'>
                       <div className='flex justify-center items-center space-x-2'>
                         <p className='text-blue-700 cursor-pointer'> se connecter en tant que ? </p>
-                       <Link to="/" className='hover:text-blue-700 cursor-pointer'> retour</Link>
+                       <Link to="/" className='hover:text-blue-700 cursor-pointer'> acceuil</Link>
                       </div>
                           <div className='flex mt-3 items-start justify-center space-x-3'>  
                           <Link to="/login/admin" className='flex hover:text-blue-700 justify-center'>admin -</Link>
@@ -225,13 +370,3 @@ export default function FormateurR() {
   )
 }
 
-const top100Films = [
-  { label: 'The Shawshank Redemption', year: 1994 },
-  { label: 'The Godfather', year: 1972 },
-  { label: 'The Godfather: Part II', year: 1974 },
-  { label: 'The Dark Knight', year: 2008 },
-  { label: '12 Angry Men', year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: 'Pulp Fiction', year: 1994 },
-
-]

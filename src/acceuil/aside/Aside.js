@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 function Aside() {
   return (
     <div >
-        <div className='h-[37rem] px-7 mx-auto hover:cursor-pointer  duration-300 ease-in-out bg-orange-50'>
+        <div className=' px-7 mx-auto hover:cursor-pointer  duration-300 ease-in-out bg-orange-50'>
        <div className='flex justify-around'>
           <div className='flex max-w-3xl space-x-5 justify-center '>
             <div className='w-[40rem] h-full flex  items-center '>
@@ -25,13 +25,13 @@ function Aside() {
             </div>
         </div>
 
-         <div className='flex min-h-[10rem]  my-3  justify-start space-x-16 items-center'>
+         <div className='flex min-h-[10rem] justify-start space-x-16 items-center'>
             
-            <div className='text-center'>
+            <div className='h-full text-center'>
                 <img
-                className='h-[35rem] w-[45rem]'
-                alt="Remy Sharp"
-                src='/image/formation/formation-picture.jpg'
+                className='h-full w-[45rem]'
+                alt="Formation"
+                src='/image/admin/formation.jpg'
                 />
             </div>
 
