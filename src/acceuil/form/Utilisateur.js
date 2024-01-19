@@ -12,6 +12,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import MailIcon from '@mui/icons-material/Mail';
 import { Link } from 'react-router-dom';
+import LoginAs from './LoginAs';
 
 export default function Utilisateur() {
 
@@ -29,7 +30,7 @@ export default function Utilisateur() {
   }
 
   return (
-    <div className='h-[100vh] bg-slate-50 grid grid-cols-2 gap-2'>
+    <div className='h-[100vh] bg-slate-50 grid xl:grid-cols-2 grid-cols-1 gap-2'>
         <div className='flex items-center justify-center'>
             <div>
               <TitleForm name="Utilisateur"/>
@@ -100,15 +101,9 @@ export default function Utilisateur() {
                        <div className='flex justify-center items-center space-x-2'>
                        <Link to="/register/utilisateur" className='hover:text-blue-700 cursor-pointer'> créer un compte ?</Link>
                       </div>
-                     <div className='flex justify-center items-center space-x-2'>
-                        <p className='text-blue-700 cursor-pointer'> se connecter en tant que ? </p>
-                       <Link to="/" className='hover:text-blue-700 text-slate-500 cursor-pointer'> acceuil</Link>
-                      </div>
-                          <div className='flex mt-3 items-start justify-center space-x-3'>  
-                          <Link to="/login/admin" className='flex hover:text-blue-700 justify-center'>admin -</Link>
-                          <Link to="/login/formateur" className='flex hover:text-blue-700 justify-center'>formateur -</Link>
-                          <Link to="/login/assistant" className='flex hover:text-blue-700 justify-center'>assistant </Link>
-                          </div>
+                    <div className='flex justify-center items-center space-x-2'>
+                      <LoginAs type="utilisateur"/>
+                     </div>
                     </div>
             </div>
         </div>

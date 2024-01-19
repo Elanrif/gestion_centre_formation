@@ -19,6 +19,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context';
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
+import LoginAs from '../form/LoginAs';
 
 export default function FormateurR() {
 
@@ -66,7 +67,6 @@ export default function FormateurR() {
  const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(formateur)
      if(formateur.password != formateur.checkPwd)
     {
      
@@ -80,7 +80,7 @@ export default function FormateurR() {
     else {
 
       formateur.nom === "" ||
-       formateur.prenom === "" ||
+      formateur.prenom === "" ||
       formateur.competence === "" ||
       formateur.prenom === "" ||
       formateur.email === "" ||
@@ -353,14 +353,8 @@ export default function FormateurR() {
 
                      <div className='text-center'>
                       <div className='flex justify-center items-center space-x-2'>
-                        <p className='text-blue-700 cursor-pointer'> se connecter en tant que ? </p>
-                       <Link to="/" className='hover:text-blue-700 cursor-pointer'> acceuil</Link>
+                        <LoginAs/>
                       </div>
-                          <div className='flex mt-3 items-start justify-center space-x-3'>  
-                          <Link to="/login/admin" className='flex hover:text-blue-700 justify-center'>admin -</Link>
-                          <Link to="/login/formateur" className='flex hover:text-blue-700 justify-center'>formateur -</Link>
-                          <Link to="/login/assistant" className='flex hover:text-blue-700 justify-center'>assistant </Link>
-                          </div>
                     </div>
             </div>
         </div>

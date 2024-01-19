@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState,useEffect,useContext} from 'react'
 import Welcome from './Welcome'
 import TitleForm from './TitleForm'
 import Box from '@mui/material/Box';
@@ -12,8 +12,17 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import MailIcon from '@mui/icons-material/Mail';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../Context';
+import axios from 'axios';
+import LoginAs from './LoginAs';
 
 function Assistant() {
+
+  const {auth,setAuth} = useContext(AuthContext)
+  const [person, setPerson] = useState({
+    username : "",
+    password : ""
+  })
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -23,13 +32,55 @@ function Assistant() {
     event.preventDefault();
   };
 
+  const handleChange = (e) => {
+  
+    const target = e.target;
+    const value = target.value;
+    const name = target.name ;
+
+
+    setPerson((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+
+  }
+
   const handleSubmit = (e)=>{
     e.preventDefault() 
-    console.log('clic')
+    person.password ==="" ||
+    person.username === "" ? alert("veuillez remplir tout les champs *") : loginPerson()
+  }
+
+   const loginPerson = ()=>{
+  
+    axios
+      .post("/loginUser", person)
+      .then((res) => {
+
+       //  navigate("/");
+
+       /* stocker le pwd en claire ,ainsi ecrasé le pwd encrypté. */
+        res.data.password = person.password
+
+         setAuth(res.data)
+         sessionStorage.setItem("auth", JSON.stringify(res.data));
+         console.log("admin : " , res.data)
+         setPerson(
+          {
+            username : "",
+            prenom : ""
+          }
+        )
+      })
+      .catch((error) => {
+        console.log(error.message);
+    
+      });
   }
 
   return (
-    <div className='h-[100vh] bg-slate-50 grid grid-cols-2 gap-2'>
+    <div className='h-[100vh] bg-slate-50 grid xl:grid-cols-2 grid-cols-1 gap-2'>
         <div className='flex items-center justify-center'>
             <div>
               <TitleForm name="Assistant"/>
@@ -49,6 +100,9 @@ function Assistant() {
                           <OutlinedInput
                             id="outlined-adornment-email"
                             type="email"
+                            name="username"
+                            value={person.name}
+                            onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
                                 <MailIcon
@@ -75,6 +129,9 @@ function Assistant() {
                     <OutlinedInput
                       id="outlined-adornment-password"
                       type={showPassword ? 'text' : 'password'}
+                        value={person.password}
+                        name="password"
+                        onChange={handleChange}
                       endAdornment={
                         <InputAdornment position="end">
                           <IconButton
@@ -101,14 +158,8 @@ function Assistant() {
                        <Link to="/register/utilisateur" className='hover:text-blue-700 cursor-pointer'> créer un compte ?</Link>
                       </div>
                      <div className='flex justify-center items-center space-x-2'>
-                        <p className='text-blue-700 cursor-pointer'> se connecter en tant que ? </p>
-                       <Link to="/" className='hover:text-blue-700 text-slate-500 cursor-pointer'> acceuil</Link>
-                      </div>
-                          <div className='flex mt-3 items-start justify-center space-x-3'>  
-                          <Link to="/login/admin" className='flex hover:text-blue-700 justify-center'>admin -</Link>
-                          <Link to="/login/formateur" className='flex hover:text-blue-700 justify-center'>formateur -</Link>
-                          <Link to="/login/utilisateur" className='flex hover:text-blue-700 justify-center'>utilisateur </Link>
-                          </div>
+                      <LoginAs type="assistant"/>
+                     </div>
                     </div>
             </div>
         </div>
