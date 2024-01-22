@@ -13,37 +13,35 @@ import { Link, useParams } from 'react-router-dom';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import PersonIcon from '@mui/icons-material/Person';
 import PublicIcon from '@mui/icons-material/Public';
-import axios, { Axios } from 'axios';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../Context';
+import { AuthContext } from '../../Context'; 
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 
-export default function AddEntreprise() {
 
+export default function UpdateUser() {
+
+ 
   const {auth,setAuth} = useContext(AuthContext)
+  const {formationID} = useParams() 
 
-  const [entreprise, setEntreprise] = useState(
+  const [formation, setFormation] = useState(
     {
-        nom: "",
-        address: "",
-        tel: "",
-        url: "",
-        email: "",
+      nom : "",
+      objectif : "",
+      programme : "",
+      password : "",
+      checkPwd:"",
+      heure : "",
+      ville : {
+        id : "",
+        nom: ""
+      },
+      cout:"",
     }
   )
 
-
-  
   const navigate = useNavigate()
-
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
 
    const handleChange = (e) => {
   
@@ -52,53 +50,67 @@ export default function AddEntreprise() {
     const name = target.name ;
 
 
-    setEntreprise((prev) => ({
+   /*  setFormation((prev) => ({
       ...prev,
       [name]: value,
-    }))
+    })) */
+
+      setFormation((prev) => {
+        if (name === "ville") {
+      
+          return {
+            ...prev,
+            [name]: { nom: value }
+          };
+        } else {
+          // Sinon, metre à jour normalement
+          return {
+            ...prev,
+            [name]: value
+          };
+        }
+  });
 
   }
 
+ React.useEffect(() => {
+    handleLoad()
+  }, [])
+
+  const handleLoad = ()=>{
+
+    axios.get(`/formations/${formationID}`)
+    .then((res)=>{
+       
+      setFormation(res.data)
+      console.log("data :" , res.data)
+
+    })
+  }
 
  const handleSubmit = (e) => {
     e.preventDefault();
 
-     if(entreprise.password != entreprise.checkPwd)
-    {
-     
-    alert("password error !")
-     setEntreprise((prevState)=>({
-      ...prevState,
-      password : "",
-      checkPwd : "", 
-     }))
-    }
-    else {
-
-      entreprise.nom === "" ||
-      entreprise.url === "" ||
-      entreprise.address === "" ||
-      entreprise.email === "" ||
-      entreprise.tel === "" ? alert("veuillez remplir tout les champs *") : saveEntreprise()
-    }
+      formation.nom === "" ||
+      formation.objectif === "" ||
+      formation.cout === "" ||
+      formation.objectif === "" ||
+      formation.programme === "" ||
+      formation.heure === "" ? alert("veuillez remplir tout les champs *") : updateFormation()
+    
   
   }
 
-  const saveEntreprise = ()=>{
+  const updateFormation = ()=>{
        
-   
+  // const { checkPwd, ...formater } = formation;
+    console.log(formation)
     axios
-      .put("/entreprises", entreprise)
+      .put("/formations", formation)
       .then((res) => {
 
-         setEntreprise(
-          {
-            nom: "",
-            address: "",
-            tel: "",
-            url: "",
-            email: "",
-          })
+         navigate("/admin/formations");
+        
       })
       .catch((error) => {
         console.log(error.message);
@@ -108,13 +120,13 @@ export default function AddEntreprise() {
 
 
   return (
-    <div className='bg-slate-50 '>
-        <div className='flex h-[100vh] items-center justify-center'>
-            <div>
+    <div className='h-[100vh] bg-slate-50 grid xl:grid-cols-1 grid-cols-1 gap-2'>
+        <div className='flex items-center justify-center'>
+            <div className='text-center'>
             <Box 
                 component="form"
                 onSubmit={handleSubmit}>
-                  vvvv
+                    <p className='mb-7 text-lg  text-slate-600'> Modifier la formation </p>
                <Box
                 sx={{
                   '& > :not(style)': { m: 1, width: '45ch' },
@@ -130,7 +142,7 @@ export default function AddEntreprise() {
                             id="outlined-adornment-nom"
                             type="text"
                             name="nom"
-                            value={entreprise.nom}
+                            value={formation.nom}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
@@ -145,87 +157,93 @@ export default function AddEntreprise() {
                             label="nom"
                           />
                     </FormControl>
-                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-prenom"
-                    >
-                        Url</InputLabel>
-                          <OutlinedInput
-                            id="outlined-adornment-prenom"
-                            type="text"
-                            name="url"
-                            value={entreprise.url}
-                            onChange={handleChange}
-                            endAdornment={
-                              <InputAdornment position="end">
-                                <PersonIcon
-                            aria-label="toggle prenom visibility"
-                            edge="start"
-                          >
-                          <Visibility />
-                          </PersonIcon>
-                              </InputAdornment>
-                            }
-                            label="url"
-                          />
-                    </FormControl> <br/>
 
-                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-username"
+                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-heure"
                     >
-                        Email</InputLabel>
+                        heure </InputLabel>
                           <OutlinedInput
-                            id="outlined-adornment-username"
+                            id="outlined-adornment-heure"
                             type="text"
-                            name="email"
-                            value={entreprise.email}
-                            onChange={handleChange}
-                            endAdornment={
-                              <InputAdornment position="end">
-                                <MailIcon
-                            aria-label="toggle username visibility"
-                            edge="start"
-                          >
-                          <Visibility />
-                          </MailIcon>
-                              </InputAdornment>
-                            }
-                            label="email"
-                          />
-                    </FormControl>
-
-                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-tel"
-                    >
-                        Tel </InputLabel>
-                          <OutlinedInput
-                            id="outlined-adornment-tel"
-                            type="text"
-                            name="tel"
-                            value={entreprise.tel}
+                            name="heure"
+                            value={formation.heure}
                             onChange={handleChange} 
                             endAdornment={
                               <InputAdornment position="end">
                                 <ContactPhoneIcon
-                            aria-label="toggle tel visibility"
+                            aria-label="toggle heure visibility"
                             edge="start"
                           >
                           <Visibility />
                           </ContactPhoneIcon>
                               </InputAdornment>
                             }
-                            label="tel"
+                            label="heure"
                           />
                     </FormControl> <br/>
+
+                    
+                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-programme"
+                    >
+                        programme</InputLabel>
+                          <OutlinedInput
+                            id="outlined-adornment-programme"
+                            type="text"
+                            name="programme"
+                            value={formation.programme}
+                            onChange={handleChange}
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <MailIcon
+                            aria-label="toggle programme visibility"
+                            edge="start"
+                          >
+                          <Visibility />
+                          </MailIcon>
+                              </InputAdornment>
+                            }
+                            label="programme"
+                            multiline
+                          />
+                    </FormControl>
+
+                   <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-objectif"
+                    
+                    >
+                        objectif</InputLabel>
+                          <OutlinedInput
+                            id="outlined-adornment-objectif"
+                            type="text"
+                            name="objectif"
+                            value={formation.objectif}
+                            onChange={handleChange}
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <PersonIcon
+                            aria-label="toggle objectif visibility"
+                            edge="start"
+                          >
+                          <Visibility />
+                          </PersonIcon>
+                              </InputAdornment>
+                            }
+                            label="objectif"
+                            multiline
+                          />
+                    </FormControl> <br/>
+
 
                  <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-ville"
                     >
-                        Address </InputLabel>
+                        Ville </InputLabel>
                           <OutlinedInput
                             id="outlined-adornment-ville"
                             type="text"
-                            name="address"
-                            value={entreprise.address}
+                            name="ville"
+                            value={formation.ville.nom}
                             onChange={handleChange} 
                             endAdornment={
                               <InputAdornment position="end">
@@ -237,13 +255,37 @@ export default function AddEntreprise() {
                           </PublicIcon>
                               </InputAdornment>
                             }
-                            label="Address"
+                            label="Ville"
                           />
                     </FormControl>
 
+                <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-cout"
+                    >
+                        coût </InputLabel>
+                          <OutlinedInput
+                            id="outlined-adornment-cout"
+                            type="text"
+                            name="cout"
+                            value={formation.cout}
+                            onChange={handleChange} 
+                             endAdornment={
+                              <InputAdornment position="end">
+                                <CenterFocusStrongIcon
+                            aria-label="toggle ville visibility"
+                            edge="start"
+                          >
+                          <Visibility />
+                          </CenterFocusStrongIcon>
+                              </InputAdornment>
+                            }
+                            label="cout"
+                          />
+                    </FormControl> <br/>
+
                 </Box>
                 <div className='flex mb-3 justify-center'>
-                     <Button type="submit" variant="contained" sx={{mt:3 , width:150}}>Valider</Button>
+                     <Button type="submit" variant="contained" sx={{mt:3 , width:150}}>Modifier</Button>
                 </div>
             </Box>
             </div>

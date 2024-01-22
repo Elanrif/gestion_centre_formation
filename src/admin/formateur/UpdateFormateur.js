@@ -18,21 +18,42 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context';
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 
-export default function AddEntreprise() {
+export default function UpdateFormateur() {
 
+  const {formateurID} = useParams() 
   const {auth,setAuth} = useContext(AuthContext)
 
-  const [entreprise, setEntreprise] = useState(
+  const [formateur, setFormateur] = useState(
     {
-        nom: "",
-        address: "",
-        tel: "",
-        url: "",
-        email: "",
+      nom : "",
+      prenom : "",
+      username : "",
+      password : "",
+      checkPwd:"",
+      tel : "",
+      ville : {
+        id:"",
+        nom:""
+      },
+      competence:"",
     }
   )
 
+  useEffect(() => {
+    loadFormateur()
+  }, [])
 
+  const loadFormateur = ()=>{
+
+    axios.get(`/persons/${formateurID}`)
+    .then((res)=>{
+
+      setFormateur(res.data)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
   
   const navigate = useNavigate()
 
@@ -44,7 +65,6 @@ export default function AddEntreprise() {
     event.preventDefault();
   };
 
-
    const handleChange = (e) => {
   
     const target = e.target;
@@ -52,7 +72,7 @@ export default function AddEntreprise() {
     const name = target.name ;
 
 
-    setEntreprise((prev) => ({
+    setFormateur((prev) => ({
       ...prev,
       [name]: value,
     }))
@@ -63,11 +83,11 @@ export default function AddEntreprise() {
  const handleSubmit = (e) => {
     e.preventDefault();
 
-     if(entreprise.password != entreprise.checkPwd)
+     if(formateur.password != formateur.checkPwd)
     {
      
     alert("password error !")
-     setEntreprise((prevState)=>({
+     setFormateur((prevState)=>({
       ...prevState,
       password : "",
       checkPwd : "", 
@@ -75,30 +95,42 @@ export default function AddEntreprise() {
     }
     else {
 
-      entreprise.nom === "" ||
-      entreprise.url === "" ||
-      entreprise.address === "" ||
-      entreprise.email === "" ||
-      entreprise.tel === "" ? alert("veuillez remplir tout les champs *") : saveEntreprise()
+      formateur.nom === "" ||
+      formateur.prenom === "" ||
+      formateur.competence === "" ||
+      formateur.prenom === "" ||
+      formateur.username === "" ||
+      formateur.password ==="" ||
+      formateur.tel === "" ? alert("veuillez remplir tout les champs *") : saveFormateur()
     }
   
   }
 
-  const saveEntreprise = ()=>{
+  const saveFormateur = ()=>{
        
-   
+     // Supprimer la clé 'checkPwd' et sa valeur du state
+   const { checkPwd, ...formater } = formateur;
+
     axios
-      .put("/entreprises", entreprise)
+      .post("/formateurs", formater)
       .then((res) => {
 
-         setEntreprise(
+       //  navigate("/");
+         setAuth(res.data)
+         alert("créer avec succès !")
+         sessionStorage.setItem("auth", JSON.stringify(res.data));
+         setFormateur(
           {
-            nom: "",
-            address: "",
-            tel: "",
-            url: "",
-            email: "",
-          })
+            nom : "",
+            prenom : "",
+            username : "",
+            password : "",
+            checkPwd:"",
+            tel : "",
+            ville : "",
+            competence:"",
+          }
+        )
       })
       .catch((error) => {
         console.log(error.message);
@@ -110,7 +142,7 @@ export default function AddEntreprise() {
   return (
     <div className='bg-slate-50 '>
         <div className='flex h-[100vh] items-center justify-center'>
-            <div>
+            <div className='text-center'>
             <Box 
                 component="form"
                 onSubmit={handleSubmit}>
@@ -130,7 +162,7 @@ export default function AddEntreprise() {
                             id="outlined-adornment-nom"
                             type="text"
                             name="nom"
-                            value={entreprise.nom}
+                            value={formateur.nom}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
@@ -148,12 +180,12 @@ export default function AddEntreprise() {
                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-prenom"
                     >
-                        Url</InputLabel>
+                        Prenom</InputLabel>
                           <OutlinedInput
                             id="outlined-adornment-prenom"
                             type="text"
-                            name="url"
-                            value={entreprise.url}
+                            name="prenom"
+                            value={formateur.prenom}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
@@ -165,7 +197,7 @@ export default function AddEntreprise() {
                           </PersonIcon>
                               </InputAdornment>
                             }
-                            label="url"
+                            label="prenom"
                           />
                     </FormControl> <br/>
 
@@ -176,8 +208,8 @@ export default function AddEntreprise() {
                           <OutlinedInput
                             id="outlined-adornment-username"
                             type="text"
-                            name="email"
-                            value={entreprise.email}
+                            name="username"
+                            value={formateur.username}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
@@ -201,7 +233,7 @@ export default function AddEntreprise() {
                             id="outlined-adornment-tel"
                             type="text"
                             name="tel"
-                            value={entreprise.tel}
+                            value={formateur.tel}
                             onChange={handleChange} 
                             endAdornment={
                               <InputAdornment position="end">
@@ -220,12 +252,12 @@ export default function AddEntreprise() {
                  <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-ville"
                     >
-                        Address </InputLabel>
+                        Ville </InputLabel>
                           <OutlinedInput
                             id="outlined-adornment-ville"
                             type="text"
-                            name="address"
-                            value={entreprise.address}
+                            name="ville"
+                            value={formateur.ville.nom}
                             onChange={handleChange} 
                             endAdornment={
                               <InputAdornment position="end">
@@ -237,9 +269,99 @@ export default function AddEntreprise() {
                           </PublicIcon>
                               </InputAdornment>
                             }
-                            label="Address"
+                            label="Ville"
                           />
                     </FormControl>
+
+                <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-competence"
+                    >
+                        compétence </InputLabel>
+                          <OutlinedInput
+                            id="outlined-adornment-competence"
+                            type="text"
+                            name="competence"
+                            value={formateur.competence}
+                            onChange={handleChange} 
+                             endAdornment={
+                              <InputAdornment position="end">
+                                <CenterFocusStrongIcon
+                            aria-label="toggle ville visibility"
+                            edge="start"
+                           
+                          >
+                          <Visibility />
+                          </CenterFocusStrongIcon>
+                              </InputAdornment>
+                            }
+                            label="competence"
+                            multiline
+                          />
+                    </FormControl> <br/>
+
+                  <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-password"
+                    startadornment={
+                  <InputAdornment position="start">
+                    <MailIcon />
+                  </InputAdornment>
+                }
+              >
+                  Mot de passe</InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-password"
+                      name= "password"
+                      value={formateur.password}
+                      onChange={handleChange}
+                      type={showPassword ? 'text' : 'password'}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Password"
+                    />
+                    
+                  </FormControl>
+
+                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-password"
+                    startadornment={
+                  <InputAdornment position="start">
+                    <MailIcon />
+                  </InputAdornment>
+                }
+              >
+                  Mot de passe</InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-password2"
+                      name="checkPwd"
+                      value={formateur.checkPwd}
+                      onChange={handleChange}
+                      type={showPassword ? 'text' : 'password'}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password2 visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Password2"
+                    />
+                    
+                  </FormControl>
 
                 </Box>
                 <div className='flex mb-3 justify-center'>

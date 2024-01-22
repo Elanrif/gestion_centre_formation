@@ -19,21 +19,24 @@ import { AuthContext } from '../../Context';
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 
 
-export default function AddFormater() {
+export default function AddUser() {
 
  
   const {auth,setAuth} = useContext(AuthContext)
 
-  const [formateur, setFormateur] = useState(
+  const [formation, setFormation] = useState(
     {
       nom : "",
-      prenom : "",
-      email : "",
+      objectif : "",
+      programme : "",
       password : "",
       checkPwd:"",
-      tel : "",
-      ville : "",
-      competence:"",
+      heure : "",
+      ville : {
+        id:"",
+        nom:""
+      },
+      cout:"",
     }
   )
 
@@ -54,10 +57,21 @@ export default function AddFormater() {
     const name = target.name ;
 
 
-    setFormateur((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+   setFormation((prev) => {
+        if (name === "ville") {
+      
+          return {
+            ...prev,
+            [name]: { nom: value }
+          };
+        } else {
+          // Sinon, metre à jour normalement
+          return {
+            ...prev,
+            [name]: value
+          }
+        }
+  })
 
   }
 
@@ -65,52 +79,39 @@ export default function AddFormater() {
  const handleSubmit = (e) => {
     e.preventDefault();
 
-     if(formateur.password != formateur.checkPwd)
-    {
-     
-    alert("password error !")
-     setFormateur((prevState)=>({
-      ...prevState,
-      password : "",
-      checkPwd : "", 
-     }))
-    }
-    else {
-
-      formateur.nom === "" ||
-      formateur.prenom === "" ||
-      formateur.competence === "" ||
-      formateur.prenom === "" ||
-      formateur.email === "" ||
-      formateur.password ==="" ||
-      formateur.tel === "" ? alert("veuillez remplir tout les champs *") : saveFormateur()
-    }
+      formation.nom === "" ||
+      formation.objectif === "" ||
+      formation.cout === "" ||
+      formation.objectif === "" ||
+      formation.programme === "" ||
+      formation.heure === "" ? alert("veuillez remplir tout les champs *") : saveFormation()
+  
   
   }
 
-  const saveFormateur = ()=>{
+  const saveFormation = ()=>{
        
-     // Supprimer la clé 'checkPwd' et sa valeur du state
-   const { checkPwd, ...formater } = formateur;
+  // const { checkPwd, ...formater } = formation;
 
     axios
-      .post("/formateurs", formater)
+      .post("/formations", formation)
       .then((res) => {
 
        //  navigate("/");
          setAuth(res.data)
          alert("créer avec succès !")
          sessionStorage.setItem("auth", JSON.stringify(res.data));
-         setFormateur(
+         setFormation(
           {
             nom : "",
-            prenom : "",
-            email : "",
-            password : "",
-            checkPwd:"",
-            tel : "",
-            ville : "",
-            competence:"",
+            objectif : "",
+            programme : "",
+            heure : "",
+            ville : {
+              id:"",
+              nom: ""
+            },
+            cout:"",
           }
         )
       })
@@ -128,10 +129,10 @@ export default function AddFormater() {
             <Box 
                 component="form"
                 onSubmit={handleSubmit}>
-                    <p className='mb-7'> Ajouter une nouvelle formation </p>
+                    <p className='mb-7 text-lg  text-slate-600'> Ajouter une nouvelle formation </p>
                <Box
                 sx={{
-                  '& > :not(style)': { m: 1, width: '35ch' },
+                  '& > :not(style)': { m: 1, width: '45ch' },
                 }}
                 noValidate
                 autoComplete="off"
@@ -144,7 +145,7 @@ export default function AddFormater() {
                             id="outlined-adornment-nom"
                             type="text"
                             name="nom"
-                            value={formateur.nom}
+                            value={formation.nom}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
@@ -159,77 +160,82 @@ export default function AddFormater() {
                             label="nom"
                           />
                     </FormControl>
-                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-prenom"
+                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-heure"
                     >
-                        Prenom</InputLabel>
+                        heure </InputLabel>
                           <OutlinedInput
-                            id="outlined-adornment-prenom"
+                            id="outlined-adornment-heure"
                             type="text"
-                            name="prenom"
-                            value={formateur.prenom}
-                            onChange={handleChange}
-                            endAdornment={
-                              <InputAdornment position="end">
-                                <PersonIcon
-                            aria-label="toggle prenom visibility"
-                            edge="start"
-                          >
-                          <Visibility />
-                          </PersonIcon>
-                              </InputAdornment>
-                            }
-                            label="prenom"
-                          />
-                    </FormControl> <br/>
-
-                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-email"
-                    >
-                        Email</InputLabel>
-                          <OutlinedInput
-                            id="outlined-adornment-email"
-                            type="text"
-                            name="email"
-                            value={formateur.email}
-                            onChange={handleChange}
-                            endAdornment={
-                              <InputAdornment position="end">
-                                <MailIcon
-                            aria-label="toggle email visibility"
-                            edge="start"
-                          >
-                          <Visibility />
-                          </MailIcon>
-                              </InputAdornment>
-                            }
-                            label="email"
-                          />
-                    </FormControl>
-
-                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-tel"
-                    >
-                        Tel </InputLabel>
-                          <OutlinedInput
-                            id="outlined-adornment-tel"
-                            type="text"
-                            name="tel"
-                            value={formateur.tel}
+                            name="heure"
+                            value={formation.heure}
                             onChange={handleChange} 
                             endAdornment={
                               <InputAdornment position="end">
                                 <ContactPhoneIcon
-                            aria-label="toggle tel visibility"
+                            aria-label="toggle heure visibility"
                             edge="start"
                           >
                           <Visibility />
                           </ContactPhoneIcon>
                               </InputAdornment>
                             }
-                            label="tel"
+                            label="heure"
                           />
-                    </FormControl> <br/>
+                    </FormControl>
+                    <br/>
+
+                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-programme"
+                    >
+                        programme</InputLabel>
+                          <OutlinedInput
+                            id="outlined-adornment-programme"
+                            type="text"
+                            name="programme"
+                            value={formation.programme}
+                            onChange={handleChange}
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <MailIcon
+                            aria-label="toggle programme visibility"
+                            edge="start"
+                          >
+                          <Visibility />
+                          </MailIcon>
+                              </InputAdornment>
+                            }
+                            label="programme"
+                            multiline
+                          />
+                    </FormControl>
+
+                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-objectif"
+                    
+                    >
+                        objectif</InputLabel>
+                          <OutlinedInput
+                            id="outlined-adornment-objectif"
+                            type="text"
+                            name="objectif"
+                            value={formation.objectif}
+                            onChange={handleChange}
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <PersonIcon
+                            aria-label="toggle objectif visibility"
+                            edge="start"
+                          >
+                          <Visibility />
+                          </PersonIcon>
+                              </InputAdornment>
+                            }
+                            label="objectif"
+                            multiline
+                          />
+                    </FormControl>
+                     <br/>
 
                  <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-ville"
@@ -239,7 +245,7 @@ export default function AddFormater() {
                             id="outlined-adornment-ville"
                             type="text"
                             name="ville"
-                            value={formateur.ville}
+                            value={formation.ville.nom}
                             onChange={handleChange} 
                             endAdornment={
                               <InputAdornment position="end">
@@ -256,14 +262,14 @@ export default function AddFormater() {
                     </FormControl>
 
                 <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-competence"
+                    <InputLabel htmlFor="outlined-adornment-cout"
                     >
-                        compétence </InputLabel>
+                        coût </InputLabel>
                           <OutlinedInput
-                            id="outlined-adornment-competence"
+                            id="outlined-adornment-cout"
                             type="text"
-                            name="competence"
-                            value={formateur.competence}
+                            name="cout"
+                            value={formation.cout}
                             onChange={handleChange} 
                              endAdornment={
                               <InputAdornment position="end">
@@ -275,73 +281,9 @@ export default function AddFormater() {
                           </CenterFocusStrongIcon>
                               </InputAdornment>
                             }
-                            label="competence"
+                            label="cout"
                           />
                     </FormControl> <br/>
-
-                  <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-password"
-                    startadornment={
-                  <InputAdornment position="start">
-                    <MailIcon />
-                  </InputAdornment>
-                }
-              >
-                  Mot de passe</InputLabel>
-                    <OutlinedInput
-                      id="outlined-adornment-password"
-                      name= "password"
-                      value={formateur.password}
-                      onChange={handleChange}
-                      type={showPassword ? 'text' : 'password'}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                      label="Password"
-                    />
-                    
-                  </FormControl>
-
-                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-password"
-                    startadornment={
-                  <InputAdornment position="start">
-                    <MailIcon />
-                  </InputAdornment>
-                }
-              >
-                  Mot de passe</InputLabel>
-                    <OutlinedInput
-                      id="outlined-adornment-password2"
-                      name="checkPwd"
-                      value={formateur.checkPwd}
-                      onChange={handleChange}
-                      type={showPassword ? 'text' : 'password'}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password2 visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                      label="Password2"
-                    />
-                    
-                  </FormControl>
 
                 </Box>
                 <div className='flex mb-3 justify-center'>

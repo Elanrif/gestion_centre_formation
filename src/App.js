@@ -15,11 +15,16 @@ import AdminDashboard from './admin/dashboard/AdminDash';
 import View from './admin/View';
 import Formation from './admin/formaton/Formation';
 import Entreprise from './admin/entrepris/Entreprise';
-import Formater from './admin/formater/Formater';
+import FormateurA from './admin/formateur/Formateur';
 import AddFormation from './admin/formaton/AddFormation';
-import AddFormater from './admin/formater/AddFormater';
 import AddEntreprise from './admin/entrepris/AddEntreprise';
 import UpdateFormation from './admin/formaton/UpdateFormation';
+import User from './admin/user/User';
+import AddUser from './admin/user/AddUser';
+import UpdateUser from './admin/user/UpdateUser';
+import AddFormateurA from './admin/formateur/AddFormateur';
+import UpdateFormateurA from './admin/formateur/UpdateFormateur';
+import UpdateEntreprise from './admin/entrepris/UpdateEntreprise';
 
 function App() {
 
@@ -70,13 +75,18 @@ function App() {
 
             <Route path="/admin" element={<AdminDashboard />}>
             <Route index path="dashboard" element={<View />}/>
-            <Route index path="formations" element={<Formation />}/>
-            <Route index path="formations/add" element={<AddFormation />}/>
-            <Route index path="formations/edit/:formationID" element={<UpdateFormation />}/>
-            <Route index path="entreprise" element={<Entreprise />}/>
-            <Route index path="entreprise/add" element={<AddEntreprise />}/>
-            <Route index path="formateur" element={<Formater />}/>
-            <Route index path="formateur/add" element={<AddFormater />}/>
+            <Route  path="formations" element={<Formation />}/>
+            <Route  path="formations/add" element={<AddFormation />}/>
+            <Route  path="formations/edit/:formationID" element={<UpdateFormation />}/>
+            <Route  path="entreprise" element={<Entreprise />}/>
+            <Route  path="entreprise/add" element={<AddEntreprise />}/>
+            <Route  path="entreprise/edit/:entrepriseID" element={<UpdateEntreprise />}/>
+            <Route  path="formateur" element={<FormateurA />}/>
+            <Route  path="formateur/add" element={<AddFormateurA />}/>
+            <Route  path="formateur/edit/:formateurID" element={<UpdateFormateurA />}/>
+            <Route  path="user" element={<User />}/>
+            <Route  path="user/add" element={<AddUser />}/>
+            <Route  path="user/edit/:userID" element={<UpdateUser />}/>
             </Route>
 
             

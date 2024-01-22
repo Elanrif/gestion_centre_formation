@@ -20,7 +20,7 @@ const SidebarAdmin = () => {
     { name: "Tableau de bord", link: "/admin/dashboard", icon: MdOutlineDashboard },
     {
       name: "Utilisateurs",
-      link: "/dashboard/admin/users",
+      link: "user",
       icon: AiOutlineUser,
       margin: true,
     },
@@ -35,7 +35,7 @@ const SidebarAdmin = () => {
       icon: FiFolder,
     },
     { name: "Formateurs", link: "formateur", icon: FiFolder },
-    { name: "Bénevoles", link: "/dashboard/admin/benevoles", icon: FiFolder },
+    { name: "Assistants", link: "assistant", icon: FiFolder },
    /*  { name: <MenuPopupState />, link: null, icon: FiShoppingCart }, */
     {
       name: "Commentaire",

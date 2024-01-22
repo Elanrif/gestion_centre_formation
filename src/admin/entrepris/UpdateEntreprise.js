@@ -18,8 +18,9 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context';
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 
-export default function AddEntreprise() {
+export default function UpdateEntreprise() {
 
+  const {entrepriseID} = useParams() 
   const {auth,setAuth} = useContext(AuthContext)
 
   const [entreprise, setEntreprise] = useState(
@@ -44,6 +45,23 @@ export default function AddEntreprise() {
     event.preventDefault();
   };
 
+
+    useEffect(() => {
+    loadEntreprises()
+  }, [])
+
+  const loadEntreprises = ()=>{
+
+    axios.get(`/entreprises/${entrepriseID}`)
+    .then((res)=>{
+
+      setEntreprise(res.data)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+  
 
    const handleChange = (e) => {
   
