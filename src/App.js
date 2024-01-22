@@ -11,13 +11,22 @@ import UtilisateurR from './acceuil/form-register/UtilisateurR';
 import { AuthContext } from './Context';
 import axios from 'axios';
 import Basic from './Basic';
+import AdminDashboard from './admin/dashboard/AdminDash';
+import View from './admin/View';
+import Formation from './admin/formaton/Formation';
+import Entreprise from './admin/entrepris/Entreprise';
+import Formater from './admin/formater/Formater';
+import AddFormation from './admin/formaton/AddFormation';
+import AddFormater from './admin/formater/AddFormater';
+import AddEntreprise from './admin/entrepris/AddEntreprise';
+import UpdateFormation from './admin/formaton/UpdateFormation';
 
 function App() {
 
    const authenticate = sessionStorage.getItem("auth") ? JSON.parse( sessionStorage.getItem("auth")) : null ; 
 
   const [auth,setAuth] = useState({
-    id : -1
+    id : 0
   }) 
 
   useEffect(() => {
@@ -33,7 +42,7 @@ function App() {
   const intecepteurs = ()=>{
         axios.interceptors.request.use(function (request) {
       const principal = auth
-          const username =  "elanrif@yahoo.fr"
+          const username =  "elanrif@gmail.com"
           const password = 1234
 
       if (principal.username) {
@@ -58,6 +67,19 @@ function App() {
             <Route path="/login/formateur" element={<Formateur />}/>
             <Route path="/register/formateur" element={<FormateurR />}/>
             <Route path="/register/utilisateur" element={<UtilisateurR />}/>
+
+            <Route path="/admin" element={<AdminDashboard />}>
+            <Route index path="dashboard" element={<View />}/>
+            <Route index path="formations" element={<Formation />}/>
+            <Route index path="formations/add" element={<AddFormation />}/>
+            <Route index path="formations/edit/:formationID" element={<UpdateFormation />}/>
+            <Route index path="entreprise" element={<Entreprise />}/>
+            <Route index path="entreprise/add" element={<AddEntreprise />}/>
+            <Route index path="formateur" element={<Formater />}/>
+            <Route index path="formateur/add" element={<AddFormater />}/>
+            </Route>
+
+            
           </Routes>
     </AuthContext.Provider></>
   );

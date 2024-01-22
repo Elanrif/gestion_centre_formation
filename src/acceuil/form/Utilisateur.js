@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState,useEffect,useContext} from 'react'
 import Welcome from './Welcome'
 import TitleForm from './TitleForm'
 import Box from '@mui/material/Box';
@@ -13,8 +13,16 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import MailIcon from '@mui/icons-material/Mail';
 import { Link } from 'react-router-dom';
 import LoginAs from './LoginAs';
+import axios from 'axios';
+import { AuthContext } from '../../Context';
 
 export default function Utilisateur() {
+
+    const {auth,setAuth} = useContext(AuthContext)
+  const [person, setPerson] = useState({
+    username : "",
+    password : ""
+  })
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -24,9 +32,52 @@ export default function Utilisateur() {
     event.preventDefault();
   };
 
+  const handleChange = (e) => {
+  
+    const target = e.target;
+    const value = target.value;
+    const name = target.name ;
+
+
+    setPerson((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+
+  }
+
   const handleSubmit = (e)=>{
     e.preventDefault() 
-    console.log('clic')
+    person.password ==="" ||
+    person.username === "" ? console.log("veuillez remplir tout les champs *") : loginPerson()
+  }
+
+   const loginPerson = ()=>{
+  
+    axios
+      .post("/utilisateurs/login", person)
+      .then((res) => {
+        
+       //  navigate("/");
+
+       /* stocker le pwd en claire ,ainsi ecrasé le pwd encrypté. */
+         res.data.password = person.password
+         console.log(person)
+         setAuth(res.data)
+         sessionStorage.setItem("auth", JSON.stringify(res.data));
+         console.log(res.data)
+         setPerson(
+          {
+            username : "",
+            password : ""
+          }
+        )
+
+      })
+      .catch((error) => {
+         console.error("Erreur lors de la connexion :", error);
+    
+      });
   }
 
   return (
@@ -44,23 +95,26 @@ export default function Utilisateur() {
                 autoComplete="off"
               >
                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-email"
+                    <InputLabel htmlFor="outlined-adornment-username"
                     >
                         E-mail</InputLabel>
                           <OutlinedInput
-                            id="outlined-adornment-email"
-                            type="text"
+                            id="outlined-adornment-username"
+                            type="email"
+                            name="username"
+                            value={person.username}
+                            onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
                                 <MailIcon
-                            aria-label="toggle email visibility"
+                            aria-label="toggle username visibility"
                             edge="start"
                           >
                           <Visibility />
                           </MailIcon>
                               </InputAdornment>
                             }
-                            label="email"
+                            label="username"
                           />
                     </FormControl> <br/>
 
@@ -76,6 +130,9 @@ export default function Utilisateur() {
                     <OutlinedInput
                       id="outlined-adornment-password"
                       type={showPassword ? 'text' : 'password'}
+                       value={person.password}
+                        name="password"
+                        onChange={handleChange}
                       endAdornment={
                         <InputAdornment position="end">
                           <IconButton
@@ -112,3 +169,5 @@ export default function Utilisateur() {
     </div>
   )
 }
+
+

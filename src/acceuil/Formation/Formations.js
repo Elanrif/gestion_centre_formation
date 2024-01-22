@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import Avatar from '@mui/material/Avatar';
 import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
 import Button from '@mui/material/Button';
@@ -7,6 +7,7 @@ import PaginationRule from './PaginationRule';
 import FilterMenu from '../FilterMenu';
 import FiltreFormation from '../Filtre/FiltreFormation';
 import {FilterContext} from '../FilterContext';
+import axios from 'axios';
 
 const listinitFormations = [
     {
@@ -98,15 +99,27 @@ const reducer = (state, action) => {
 
 function Formations() {
 
+  const  [AllFormations, setAllFormations] = useState([])
+
     const [open, setOpen] = React.useState(false);
     const [filtre, setFiltre] = React.useState('');
     const [formations, dispatch] = React.useReducer(reducer,listinitFormations);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  
+  useEffect(() => {
+    handleLoad()
+  }, [])
+  
+  const handleLoad = ()=>{
 
+    axios.get("/formations")
+    .then((res)=>{
+       
+      setAllFormations(res.data)
+      console.log("formations:" , res.data)
 
+    })
+  }
 
   return (
     <div>

@@ -65,11 +65,11 @@ function Assistant() {
 
          setAuth(res.data)
          sessionStorage.setItem("auth", JSON.stringify(res.data));
-         console.log("admin : " , res.data)
+         console.log(res.data)
          setPerson(
           {
             username : "",
-            prenom : ""
+            password : ""
           }
         )
       })
@@ -101,7 +101,7 @@ function Assistant() {
                             id="outlined-adornment-email"
                             type="email"
                             name="username"
-                            value={person.name}
+                            value={person.username}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">

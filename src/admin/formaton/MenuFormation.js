@@ -11,19 +11,17 @@ import Tooltip from '@mui/material/Tooltip';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-import Search from './Search';
-import {Link,useNavigate} from "react-router-dom"
-import { AuthContext } from '../Context';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import GroupsIcon from '@mui/icons-material/Groups';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import { Link } from 'react-router-dom';
+import AddImage from './AddImage';
 
-export default function AccountMenu() {
 
+export default function MenuFormation({data,handleSetUpdate}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
-  const {auth,setAuth} = React.useContext(AuthContext)
-  const navigate = useNavigate()
-  
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -31,37 +29,38 @@ export default function AccountMenu() {
     setAnchorEl(null);
   }
 
-  const handleLogout = ()=>{   
-          setAuth({
-            id : 0
-          })
-          
-          sessionStorage.removeItem("auth")
-          navigate("/login/utilisateur")
-          handleClose() 
+  const [opened, setOpenImg] = React.useState(false);
+
+  const handleOpenImg = () => {
+    setOpenImg(true)
+    handleClose()
   }
+
+   const handleCloseImg = () => {
+    setOpenImg(false);
+  }
+
 
   return (
     <React.Fragment>
+      <AddImage value = {{handleCloseImg,opened,data}} />
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        <Typography sx={{ minWidth: 20 }}> <Search/> </Typography>
-        
-        {/* <Typography sx={{ minWidth: 100 }}>Profile</Typography> */}
-
-        <Tooltip title="Account settings">
+      
+        <Tooltip title="Plus d'options">
           <IconButton
             onClick={handleClick}
             size="small"
-            sx={{ ml: 2 }}
+            sx={{ ml: 0 }}
             aria-controls={open ? 'account-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 30, height: 30 }}></Avatar>
+           <PlaylistAddIcon/>
           </IconButton>
         </Tooltip>
       </Box>
       <Menu
+        
         anchorEl={anchorEl}
         id="account-menu"
         open={open}
@@ -96,35 +95,30 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {auth.id === 0 &&
-        <MenuItem onClick={handleClose}>
-           <Link to="/register/utilisateur" className='flex items-center'>
-           <Avatar /> Créer un compte
-          </Link>
-        </MenuItem>
-        }
-
-         {auth.id !== 0 &&
-         <MenuItem onClick={handleClose}>
-           <Link to="/admin/dashboard" className='flex items-center'>
-           <Avatar /> Dashboard
-          </Link>
-        </MenuItem>}
-
-        {auth.id === 0 &&
           <MenuItem onClick={handleClose}>
-          <Link to="/login/utilisateur" className='flex items-center'>
-          <Avatar /> Se connecter
-          </Link>
+          <ListItemIcon>
+            <ModeEditIcon fontSize="small" />
+          </ListItemIcon>
+          <Link to={`/admin/formations/edit/${data.id}`}> Editer<span className='ms-12 text-start text-transparent'>space</span> </Link> 
         </MenuItem>
-        }
-        
-        <Divider />
-        <MenuItem onClick={handleClose}>
+          <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
-          Add another account
+          Formateur
+        </MenuItem>
+          <MenuItem onClick={handleClose}>
+          <ListItemIcon>
+            <GroupsIcon fontSize="small" />
+          </ListItemIcon>
+          Entreprise
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={handleOpenImg}>
+          <ListItemIcon>
+            <AddPhotoAlternateIcon fontSize="small" />
+          </ListItemIcon>
+          Image
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
@@ -132,13 +126,6 @@ export default function AccountMenu() {
           </ListItemIcon>
           Settings
         </MenuItem>
-        {auth.id !=0 &&
-        <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Déconnexion
-        </MenuItem>}
       </Menu>
     </React.Fragment>
   );
