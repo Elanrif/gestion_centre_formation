@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import MenuFormateur from './MenuFormateur';
 import { FormateurContext } from './FormateurContext'; 
+import DeleteFormateur from './DeleteFormateur';
 
 // image,nom,prenom,username,ville,tel,competence,formateurExterne
 const columns = [
@@ -36,28 +37,28 @@ const columns = [
   {
     id: 'username',
     label: 'email',
-    minWidth: 120,
+    maxWidth: 100,
     align: 'center',
     format: (value) => value.toFixed(2),
   },
   {
     id: 'ville',
     label: 'ville',
-    minWidth: 150,
+    maxWidth: 120,
     align: 'center',
     format: (value) => value.toFixed(2),
   },
   {
     id: 'tel',
     label: 'tel',
-    minWidth: 120,
+    maxWidth: 120,
     align: 'center',
     format: (value) => value.toFixed(2),
   },
   {
     id: 'competence',
     label: 'competence',
-    minWidth: 150,
+    maxWidth: 130,
     align: 'center',
     format: (value) => value.toFixed(2),
   },
@@ -72,7 +73,7 @@ const columns = [
     id: 'options',
     label: 'Option',
     minWidth: 170,
-    align: 'right',
+    align: 'center',
     format: (value) => value.toFixed(2),
   },
 ];
@@ -86,7 +87,7 @@ function createData(image,nom,prenom,username,ville,tel,competence,formateurExte
 
 export default function Formateur() {
   const [page, setPage] = React.useState(0);
-  const [formations, setFormations] = React.useState([]);
+  const [formateurs, setFormateurs] = React.useState([]);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const [update,setUpdate] = React.useState(false);
@@ -104,21 +105,11 @@ export default function Formateur() {
 
   React.useEffect(() => {
     handleLoad()
+    console.log('execute')
   }, [update])
 
   const handleLoad = ()=>{
 
-     /* const formData = new FormData();
-     const role  = "ROLE_FORMATEUR"
-     formData.append("role", "ROLE_FORMATEUR");
-     
-      axios.get("/persons/role",formData)
-        .then((res)=>{
-          
-          setFormations(res.data)
-
-        }) */
-  
         axios.get("/persons/role",{
           params: {
         role: "ROLE_FORMATEUR"
@@ -126,14 +117,14 @@ export default function Formateur() {
         })
         .then((res)=>{
           
-          setFormations(res.data)
+          setFormateurs(res.data)
 
         })
   }
   
    const handleSetUpdate = ()=>{
     setUpdate(!update)
-    console.log(" updated !", update)
+    console.log('execute')
   }
 
  const btnOptions = (data)=> (
@@ -149,15 +140,13 @@ export default function Formateur() {
                     <PageviewIcon />
                     </IconButton>
 
-                     <IconButton aria-label="supprimer">
-                    <DeleteIcon />
-                    </IconButton>
+                    <DeleteFormateur value ={{data,handleSetUpdate}}/>
                   </div>
 ) 
 
 // image,nom,prenom,username,ville,tel,competence,formateurExterne
   const rows =
-    formations.map((item, index) =>
+    formateurs.map((item, index) =>
       createData(
         <img
           src={item.image}
@@ -167,7 +156,7 @@ export default function Formateur() {
         item.nom,
         item.prenom,
         item.username,
-        item.ville.nom,
+        item.ville?.nom,
         item.tel,
         item.competence,
         item.formateurExterne,
@@ -179,7 +168,7 @@ export default function Formateur() {
   return (
    <div >
      <Box sx={{display:'flex' ,marginLeft:5,marginTop:4,marginBottom:4}}>
-      <Link to="/admin/formateur/add" className='me-3'> <Button variant="contained" size="small">Ajouter</Button> </Link>
+      <Link to="/admin/formateurs/add" className='me-3'> <Button variant="contained" size="small">Ajouter</Button> </Link>
      </Box>
      <div className='flex justify-center'>
         <Paper sx={{ width: '95%' }}>
@@ -193,7 +182,7 @@ export default function Formateur() {
               <TableCell align="center" colSpan={3}>
                 Details
               </TableCell>
-               <TableCell align="center" colSpan={3}>
+               <TableCell align="center" colSpan={6}>
                 Details
               </TableCell>
             </TableRow>

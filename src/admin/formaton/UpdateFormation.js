@@ -17,11 +17,12 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context';
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
-
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 export default function UpdateFormation() {
 
- 
+  const [formations, setFormations] = useState([])
   const {auth,setAuth} = useContext(AuthContext)
   const {formationID} = useParams() 
 
@@ -58,9 +59,10 @@ export default function UpdateFormation() {
       setFormation((prev) => {
         if (name === "ville") {
       
+          /* value du champ SELECT, MENUITEM,setSTATE doit être du même type */
           return {
             ...prev,
-            [name]: { nom: value }
+            [name]: { id: value}
           };
         } else {
           // Sinon, metre à jour normalement
@@ -87,6 +89,18 @@ export default function UpdateFormation() {
 
     })
   }
+
+    useEffect(() => {
+      
+    axios.get("/villes")
+    .then((res)=>{
+      setFormations(res.data)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+      
+    }, [])
 
  const handleSubmit = (e) => {
     e.preventDefault();
@@ -118,6 +132,7 @@ export default function UpdateFormation() {
       });
   }
 
+ 
 
   return (
     <div className='h-[100vh] bg-slate-50 grid xl:grid-cols-1 grid-cols-1 gap-2'>
@@ -234,30 +249,25 @@ export default function UpdateFormation() {
                           />
                     </FormControl> <br/>
 
-
-                 <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-ville"
-                    >
-                        Ville </InputLabel>
-                          <OutlinedInput
-                            id="outlined-adornment-ville"
-                            type="text"
-                            name="ville"
-                            value={formation.ville.nom}
-                            onChange={handleChange} 
-                            endAdornment={
-                              <InputAdornment position="end">
-                                <PublicIcon
-                            aria-label="toggle ville visibility"
-                            edge="start"
-                          >
-                          <Visibility />
-                          </PublicIcon>
-                              </InputAdornment>
-                            }
-                            label="Ville"
-                          />
+                  {/* value du champ SELECT, MenuItem,setState doit être du même type ici `.id` */}
+                    <FormControl sx={{ m: 1, width: '35ch' }}>
+                      <InputLabel id="demo-simple-select-label">Ville</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        type="text"
+                        name="ville"
+                        value={formation.ville?.id}
+                        label="ville"
+                        onChange={handleChange}
+                      >
+                        {formations.map((item,value)=>( 
+                             <MenuItem key={value} value={item.id}>{item.nom}</MenuItem>                    
+                        ))}
+                        
+                      </Select>
                     </FormControl>
+
 
                 <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-cout"
@@ -284,8 +294,11 @@ export default function UpdateFormation() {
                     </FormControl> <br/>
 
                 </Box>
-                <div className='flex mb-3 justify-center'>
-                     <Button type="submit" variant="contained" sx={{mt:3 , width:150}}>Modifier</Button>
+                 <div className='flex mb-3 justify-center space-x-7'>                
+                        <Link to= "/admin/formations"> 
+                        <Button  variant="contained" color="secondary" sx={{mt:3 , width:150}}> retour  </Button> 
+                        </Link>        
+                     <Button type="submit" variant="contained"  color="success" sx={{mt:3 , width:150}}>Valider</Button>
                 </div>
             </Box>
             </div>

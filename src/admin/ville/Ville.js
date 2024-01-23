@@ -13,49 +13,17 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import PageviewIcon from '@mui/icons-material/Pageview';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import MenuFormation from './MenuFormation';
-import { FormationContext } from './FormationContext';
-import AddCategorie from './AddCategorie';
-import DeleteFormation from './DeleteFormation';
-
-
+import ModeIcon from '@mui/icons-material/Mode';
+import DeleteVille from './DeleteVille';
+// image,nom,prenom,username,ville,tel,competence,formateurExterne
 const columns = [
-  { id: 'image', label: 'Image', minWidth: 150 },
-  { id: 'cout', label: 'Coût', minWidth: 50 },
+ 
   {
     id: 'nom',
     label: 'Nom',
-    minWidth: 170,
+    minWidth: 70,
     align: 'center', /* left,center,right */
     format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'objectif',
-    label: 'objectif',
-    minWidth: 170,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'programme',
-    label: 'programme',
-    minWidth: 170,
-    align: 'center',
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id: 'ville',
-    label: 'ville',
-    minWidth: 150,
-    align: 'center',
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id: 'createdAt',
-    label: 'Date',
-    minWidth: 150,
-    align: 'center',
-    format: (value) => value.toFixed(2),
   },
    {
     id: 'options',
@@ -66,13 +34,14 @@ const columns = [
   },
 ];
 
-function createData(image,nom,objectif,cout,programme,ville,createdAt,options) {
+
+function createData(nom,options) {
   //const density = population / size;
-  return {image, nom,objectif,cout,programme,ville,createdAt,options};
+  return {nom,options};
 }
 
 
-export default function Formation() {
+export default function Ville() {
   const [page, setPage] = React.useState(0);
   const [formations, setFormations] = React.useState([]);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -96,12 +65,13 @@ export default function Formation() {
 
   const handleLoad = ()=>{
 
-    axios.get("/formations")
-    .then((res)=>{
-       
-      setFormations(res.data)
+    
+        axios.get("/villes")
+        .then((res)=>{
+          
+          setFormations(res.data)
 
-    })
+        })
   }
   
    const handleSetUpdate = ()=>{
@@ -112,34 +82,25 @@ export default function Formation() {
  const btnOptions = (data)=> (
     <div className='flex justify-center items-center space-x-[-5px]'>
                  
-                    <FormationContext.Provider value={handleSetUpdate}>
-                      <IconButton aria-label="aperçu">
-                    <MenuFormation data={data} handleSetUpdate={handleSetUpdate}/>
+                    <React.Fragment>
+                      <IconButton aria-label="editer">
+                     <Link to={`/admin/villes/edit/${data.id}`}><ModeIcon /></Link>
                     </IconButton>
-                    </FormationContext.Provider>
+                    </React.Fragment>
 
                      <IconButton aria-label="aperçu">
                     <PageviewIcon />
                     </IconButton>
 
-                     <DeleteFormation value ={{data,handleSetUpdate}}/>
+                     <DeleteVille value ={{data,handleSetUpdate}}/>
                   </div>
 ) 
 
+// image,nom,prenom,username,ville,tel,competence,formateurExterne
   const rows =
     formations.map((item, index) =>
       createData(
-        <img
-          src={item.image}
-          alt="Image"
-          className="w-20  h-16"
-        />,
         item.nom,
-        <span>{item.objectif?.slice(0,10)}...</span>,
-        <div className='flex items-center space-x-2'> <span>{item.cout}</span> <span>DHS</span> </div>,
-        <span>{item.programme?.slice(0,15)}...</span>,
-        item.ville?.nom,/* item.ville si la ville est null , retourne null. donc -- null.nom génerera une erreur -- solution ajouter item.ville?.nom */
-        item.createdAt,
         btnOptions(item)
       )
     );
@@ -148,8 +109,7 @@ export default function Formation() {
   return (
    <div >
      <Box sx={{display:'flex' ,marginLeft:5,marginTop:4,marginBottom:4}}>
-      <Link to="/admin/formations/add" className='me-3'> <Button variant="contained" size="small">Ajouter</Button> </Link>
-      <AddCategorie/>
+      <Link to="/admin/villes/add" className='me-3'> <Button variant="contained" size="small">Ajouter</Button> </Link>
      </Box>
      <div className='flex justify-center'>
         <Paper sx={{ width: '95%' }}>
@@ -157,13 +117,7 @@ export default function Formation() {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              <TableCell align="center" colSpan={2}>
-                Country
-              </TableCell>
               <TableCell align="center" colSpan={3}>
-                Details
-              </TableCell>
-               <TableCell align="center" colSpan={3}>
                 Details
               </TableCell>
             </TableRow>

@@ -13,15 +13,19 @@ import { Link, useParams } from 'react-router-dom';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import PersonIcon from '@mui/icons-material/Person';
 import PublicIcon from '@mui/icons-material/Public';
-import axios, { Axios } from 'axios';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context';
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 export default function UpdateFormateur() {
 
-  const {formateurID} = useParams() 
+ 
   const {auth,setAuth} = useContext(AuthContext)
+  const {formateurID} = useParams() 
+  const [villes, setVilles] = useState([])
 
   const [formateur, setFormateur] = useState(
     {
@@ -32,29 +36,14 @@ export default function UpdateFormateur() {
       checkPwd:"",
       tel : "",
       ville : {
-        id:"",
+        id:null,
         nom:""
       },
       competence:"",
+      role:"ROLE_FORMATEUR"
     }
   )
 
-  useEffect(() => {
-    loadFormateur()
-  }, [])
-
-  const loadFormateur = ()=>{
-
-    axios.get(`/persons/${formateurID}`)
-    .then((res)=>{
-
-      setFormateur(res.data)
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
-  }
-  
   const navigate = useNavigate()
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -65,17 +54,42 @@ export default function UpdateFormateur() {
     event.preventDefault();
   };
 
+
+   React.useEffect(() => {
+    handleLoad()
+  }, [])
+
+  const handleLoad = ()=>{
+
+    axios.get(`/persons/${formateurID}`)
+    .then((res)=>{
+       
+      setFormateur(res.data)
+
+    })
+  }
+
    const handleChange = (e) => {
   
     const target = e.target;
     const value = target.value;
     const name = target.name ;
 
-
-    setFormateur((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+     setFormateur((prev) => {
+        if (name === "ville") {
+      
+          return {
+            ...prev,
+            [name]: { id: value }
+          };
+        } else {
+          // Sinon, metre à jour normalement
+          return {
+            ...prev,
+            [name]: value
+          }
+        }
+     })
 
   }
 
@@ -109,16 +123,14 @@ export default function UpdateFormateur() {
   const saveFormateur = ()=>{
        
      // Supprimer la clé 'checkPwd' et sa valeur du state
-   const { checkPwd, ...formater } = formateur;
+     /* spring n'arrive pas a déserialisé authorities donc le supprimer depuis ici. */
+   const {authorities, checkPwd, ...formater } = formateur;
 
     axios
-      .post("/formateurs", formater)
+      .put("/persons", formater)
       .then((res) => {
 
-       //  navigate("/");
-         setAuth(res.data)
-         alert("créer avec succès !")
-         sessionStorage.setItem("auth", JSON.stringify(res.data));
+         navigate("/admin/formateurs");
          setFormateur(
           {
             nom : "",
@@ -127,7 +139,10 @@ export default function UpdateFormateur() {
             password : "",
             checkPwd:"",
             tel : "",
-            ville : "",
+            ville : {
+                id:null,
+                nom:""
+              },
             competence:"",
           }
         )
@@ -138,23 +153,34 @@ export default function UpdateFormateur() {
       });
   }
 
+    useEffect(() => {
+        
+      axios.get("/villes")
+      .then((res)=>{
+        setVilles(res.data)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+        
+      }, [])
 
   return (
     <div className='bg-slate-50 '>
-        <div className='flex h-[100vh] items-center justify-center'>
+        <div className='h-[100vh] flex items-center justify-center'>
             <div className='text-center'>
             <Box 
                 component="form"
                 onSubmit={handleSubmit}>
-                  vvvv
+                 fffff
                <Box
                 sx={{
-                  '& > :not(style)': { m: 1, width: '45ch' },
+                  '& > :not(style)': { m: 1, width: '55ch' },
                 }}
                 noValidate
                 autoComplete="off"
               >
-                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <FormControl sx={{ m: 1, width: '45ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-nom"
                     >
                         Nom</InputLabel>
@@ -221,7 +247,7 @@ export default function UpdateFormateur() {
                           </MailIcon>
                               </InputAdornment>
                             }
-                            label="email"
+                            label="username"
                           />
                     </FormControl>
 
@@ -249,28 +275,23 @@ export default function UpdateFormateur() {
                           />
                     </FormControl> <br/>
 
-                 <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-ville"
-                    >
-                        Ville </InputLabel>
-                          <OutlinedInput
-                            id="outlined-adornment-ville"
-                            type="text"
-                            name="ville"
-                            value={formateur.ville.nom}
-                            onChange={handleChange} 
-                            endAdornment={
-                              <InputAdornment position="end">
-                                <PublicIcon
-                            aria-label="toggle ville visibility"
-                            edge="start"
-                          >
-                          <Visibility />
-                          </PublicIcon>
-                              </InputAdornment>
-                            }
-                            label="Ville"
-                          />
+                 {/* value du champ SELECT, MenuItem,setState doit être du même type ici `.id` */}
+                    <FormControl sx={{ m: 1, width: '35ch' }}>
+                      <InputLabel id="demo-simple-select-label">Ville</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        type="text"
+                        name="ville"
+                        value={formateur.ville?.id}
+                        label="ville"
+                        onChange={handleChange}
+                      >
+                        {villes.map((item,value)=>( 
+                             <MenuItem key={value} value={item.id}>{item.nom}</MenuItem>                    
+                        ))}
+                        
+                      </Select>
                     </FormControl>
 
                 <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
@@ -288,14 +309,12 @@ export default function UpdateFormateur() {
                                 <CenterFocusStrongIcon
                             aria-label="toggle ville visibility"
                             edge="start"
-                           
                           >
                           <Visibility />
                           </CenterFocusStrongIcon>
                               </InputAdornment>
                             }
                             label="competence"
-                            multiline
                           />
                     </FormControl> <br/>
 
@@ -364,8 +383,11 @@ export default function UpdateFormateur() {
                   </FormControl>
 
                 </Box>
-                <div className='flex mb-3 justify-center'>
-                     <Button type="submit" variant="contained" sx={{mt:3 , width:150}}>Valider</Button>
+                 <div className='flex mb-3 justify-center space-x-7'>                
+                        <Link to= "/admin/formateurs"> 
+                        <Button  variant="contained" color="secondary" sx={{mt:3 , width:150}}> retour  </Button> 
+                        </Link>        
+                     <Button type="submit" variant="contained"  color="success" sx={{mt:3 , width:150}}>Valider</Button>
                 </div>
             </Box>
             </div>

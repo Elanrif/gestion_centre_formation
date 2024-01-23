@@ -163,7 +163,7 @@ export default function User() {
         item.nom,
         item.prenom,
         item.username,
-        item.ville.nom,
+        item.ville?.nom,
         item.tel,
         item.naissance,
         item.individu,

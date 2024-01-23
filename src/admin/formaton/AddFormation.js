@@ -17,6 +17,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context';
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 
 export default function AddFormation() {
@@ -24,16 +26,16 @@ export default function AddFormation() {
  
   const {auth,setAuth} = useContext(AuthContext)
 
+  const [villes, setVilles] = useState([])
+
   const [formation, setFormation] = useState(
     {
       nom : "",
       objectif : "",
       programme : "",
-      password : "",
-      checkPwd:"",
       heure : "",
       ville : {
-        id:"",
+        id:null,
         nom:""
       },
       cout:"",
@@ -42,13 +44,6 @@ export default function AddFormation() {
 
   const navigate = useNavigate()
 
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
 
    const handleChange = (e) => {
   
@@ -62,7 +57,7 @@ export default function AddFormation() {
       
           return {
             ...prev,
-            [name]: { nom: value }
+            [name]: { id: value }
           };
         } else {
           // Sinon, metre à jour normalement
@@ -71,7 +66,7 @@ export default function AddFormation() {
             [name]: value
           }
         }
-  })
+     })
 
   }
 
@@ -91,16 +86,11 @@ export default function AddFormation() {
 
   const saveFormation = ()=>{
        
-  // const { checkPwd, ...formater } = formation;
-
     axios
       .post("/formations", formation)
       .then((res) => {
 
-       //  navigate("/");
-         setAuth(res.data)
-         alert("créer avec succès !")
-         sessionStorage.setItem("auth", JSON.stringify(res.data));
+        navigate("/admin/formations");
          setFormation(
           {
             nom : "",
@@ -108,7 +98,7 @@ export default function AddFormation() {
             programme : "",
             heure : "",
             ville : {
-              id:"",
+              id:null,
               nom: ""
             },
             cout:"",
@@ -121,6 +111,18 @@ export default function AddFormation() {
       });
   }
 
+  useEffect(() => {
+    
+  axios.get("/villes")
+  .then((res)=>{
+    setVilles(res.data)
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+    
+  }, [])
+  
 
   return (
     <div className='h-[100vh] bg-slate-50 grid xl:grid-cols-1 grid-cols-1 gap-2'>
@@ -237,28 +239,23 @@ export default function AddFormation() {
                     </FormControl>
                      <br/>
 
-                 <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-ville"
-                    >
-                        Ville </InputLabel>
-                          <OutlinedInput
-                            id="outlined-adornment-ville"
-                            type="text"
-                            name="ville"
-                            value={formation.ville.nom}
-                            onChange={handleChange} 
-                            endAdornment={
-                              <InputAdornment position="end">
-                                <PublicIcon
-                            aria-label="toggle ville visibility"
-                            edge="start"
-                          >
-                          <Visibility />
-                          </PublicIcon>
-                              </InputAdornment>
-                            }
-                            label="Ville"
-                          />
+                {/* value du champ SELECT, MenuItem,setState doit être du même type ici `.id` */}
+                    <FormControl sx={{ m: 1, width: '35ch' }}>
+                      <InputLabel id="demo-simple-select-label">Ville</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        type="text"
+                        name="ville"
+                        value={formation.ville?.id}
+                        label="ville"
+                        onChange={handleChange}
+                      >
+                        {villes.map((item,value)=>( 
+                             <MenuItem key={value} value={item.id}>{item.nom}</MenuItem>                    
+                        ))}
+                        
+                      </Select>
                     </FormControl>
 
                 <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
@@ -286,8 +283,11 @@ export default function AddFormation() {
                     </FormControl> <br/>
 
                 </Box>
-                <div className='flex mb-3 justify-center'>
-                     <Button type="submit" variant="contained" sx={{mt:3 , width:150}}>Valider</Button>
+                  <div className='flex mb-3 justify-center space-x-7'>                
+                        <Link to= "/admin/formations"> 
+                        <Button  variant="contained" color="secondary" sx={{mt:3 , width:150}}> retour  </Button> 
+                        </Link>        
+                     <Button type="submit" variant="contained"  color="success" sx={{mt:3 , width:150}}>Valider</Button>
                 </div>
             </Box>
             </div>

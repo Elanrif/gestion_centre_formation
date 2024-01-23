@@ -9,7 +9,13 @@ import { SiLoopback } from "react-icons/si";
 import { Link, NavLink } from "react-router-dom";
 import { HiOutlineLogout } from "react-icons/hi";
 import { AuthContext } from "../../Context";
-
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import SchoolIcon from '@mui/icons-material/School';
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import BusinessIcon from '@mui/icons-material/Business';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
+import Groups3Icon from '@mui/icons-material/Groups3';
+import PublicIcon from '@mui/icons-material/Public';
 
 const SidebarAdmin = () => {
 
@@ -17,32 +23,46 @@ const SidebarAdmin = () => {
 
   const menus = [
     { name: "Acceuil", link: "/", icon: AiOutlineHome },
-    { name: "Tableau de bord", link: "/admin/dashboard", icon: MdOutlineDashboard },
-    {
-      name: "Utilisateurs",
-      link: "user",
-      icon: AiOutlineUser,
-      margin: true,
-    },
+    { name: "Tableau de bord", 
+      link: "/admin/dashboard",
+     icon: MdOutlineDashboard },
     {
       name: "Formations",
       link: "formations",
-      icon: FiFolder,
+      icon: SchoolIcon,
     },
-    {
+    { name: "Formateurs", 
+    link: "formateurs", 
+    icon: Groups3Icon 
+    },
+     {
       name: "Entreprise",
-      link: "entreprise",
-      icon: FiFolder,
+      link: "entreprises",
+      icon: BusinessIcon,
     },
-    { name: "Formateurs", link: "formateur", icon: FiFolder },
-    { name: "Assistants", link: "assistant", icon: FiFolder },
-   /*  { name: <MenuPopupState />, link: null, icon: FiShoppingCart }, */
+
+    { name: "Assistants", 
+      link: "assistants", 
+      icon: Diversity3Icon,
+      margin: true, },
     {
-      name: "Commentaire",
-      link: "/dashboard/admin/comments",
-      icon: AiOutlineHeart,
-      margin: true,
+      name: "Utilisateurs",
+      link: "users",
+      icon: PeopleAltIcon,
+     
     },
+   
+    {
+      name: "Catégorie",
+      link: "categories",
+      icon: FormatListNumberedIcon,
+    },
+     {
+      name: "Villes",
+      link: "villes",
+      icon: PublicIcon
+    },
+          
     { name: "Déconnexion", link: "/logout", icon: HiOutlineLogout },
   ];
   const [open, setOpen] = useState(true);
@@ -50,7 +70,7 @@ const SidebarAdmin = () => {
   return (
     <section className="flex gap-6">
       <div
-        className={`bg-[#d4d3d3] min-h-screen ${
+        className={`bg-[#f5f3fe] min-h-screen ${
           open ? "w-[13rem]" : "w-16"
         } duration-500 fixed px-4`}
       >
@@ -85,7 +105,7 @@ const SidebarAdmin = () => {
           />
         </div>
         <hr className={`duration-300 ${open === false && "hidden"}`} />
-        <div className="mt-4 flex flex-col gap-4 relative">
+        <div className="mt-4  flex flex-col gap-4 relative">
           {menus?.map((menu, i) => (
             <React.Fragment key={i}>
               {menu?.link !== null ? (
@@ -96,7 +116,7 @@ const SidebarAdmin = () => {
                       : isActive
                       ? ` ${
                           menu?.margin && "mt-5"
-                        } group flex items-center text-sm  gap-3.5 font-medium p-2  shadow-md border shadow-blue-500 rounded-md`
+                        } group flex items-center text-sm  gap-3.5 font-medium p-2  shadow-md border shadow-orange-500 rounded-md`
                       : `${
                           menu?.margin && "mt-5"
                         } group flex items-center text-sm  gap-3.5 font-medium p-2 shadow-slate-400 shadow hover:shadow-md border hover:shadow-blue-500  rounded-md`

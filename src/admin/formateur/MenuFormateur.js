@@ -99,7 +99,7 @@ export default function MenuFormateur({data,handleSetUpdate}) {
           <ListItemIcon>
             <ModeEditIcon fontSize="small" />
           </ListItemIcon>
-          <Link to={`/admin/formateur/edit/${data.id}`}> Editer<span className='ms-12 text-start text-transparent'>space</span> </Link> 
+          <Link to={`/admin/formateurs/edit/${data.id}`}> Editer<span className='ms-12 text-start text-transparent'>space</span> </Link> 
         </MenuItem>
           <MenuItem onClick={handleClose}>
           <ListItemIcon>
