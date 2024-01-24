@@ -16,32 +16,55 @@ import PublicIcon from '@mui/icons-material/Public';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context'; 
-import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
-
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 export default function UpdateUser() {
 
- 
   const {auth,setAuth} = useContext(AuthContext)
-  const {formationID} = useParams() 
+  const {userID} = useParams()
 
-  const [formation, setFormation] = useState(
+  const [user, setUser] = useState(
     {
       nom : "",
-      objectif : "",
-      programme : "",
+      prenom : "",
+      username : "",
       password : "",
       checkPwd:"",
-      heure : "",
-      ville : {
-        id : "",
-        nom: ""
+      tel : "",
+       ville : {
+        id:null,
+        nom:""
       },
-      cout:"",
+      naissance:"",
     }
   )
 
   const navigate = useNavigate()
+
+  const [villes, setVilles] = useState([])
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+    React.useEffect(() => {
+    handleLoad()
+  }, [])
+
+  const handleLoad = ()=>{
+
+    axios.get(`/utilisateurs/${userID}`)
+    .then((res)=>{
+      res.data.password = ""
+      setUser(res.data)
+
+    })
+  }
 
    const handleChange = (e) => {
   
@@ -50,67 +73,76 @@ export default function UpdateUser() {
     const name = target.name ;
 
 
-   /*  setFormation((prev) => ({
-      ...prev,
-      [name]: value,
-    })) */
-
-      setFormation((prev) => {
-        if (name === "ville") {
+    setUser((prev) => {
+     
+      if (name === "ville") {
       
           return {
             ...prev,
-            [name]: { nom: value }
+            [name]: { id: value }
           };
         } else {
           // Sinon, metre à jour normalement
           return {
             ...prev,
             [name]: value
-          };
+          }
         }
-  });
-
-  }
-
- React.useEffect(() => {
-    handleLoad()
-  }, [])
-
-  const handleLoad = ()=>{
-
-    axios.get(`/formations/${formationID}`)
-    .then((res)=>{
-       
-      setFormation(res.data)
-      console.log("data :" , res.data)
-
     })
+
   }
+
 
  const handleSubmit = (e) => {
     e.preventDefault();
 
-      formation.nom === "" ||
-      formation.objectif === "" ||
-      formation.cout === "" ||
-      formation.objectif === "" ||
-      formation.programme === "" ||
-      formation.heure === "" ? alert("veuillez remplir tout les champs *") : updateFormation()
-    
+    console.log(user)
+     if(user.password != user.checkPwd)
+    {
+     
+    alert("password error !")
+     setUser((prevState)=>({
+      ...prevState,
+      password : "",
+      checkPwd : "", 
+     }))
+    }
+    else {
+
+      user.nom === "" ||
+      user.prenom === "" ||
+      user.username === "" ||
+      user.password ==="" ||
+      user.tel === "" ? alert("veuillez remplir tout les champs *") : saveUser()
+    }
   
   }
 
-  const updateFormation = ()=>{
+  const saveUser = ()=>{
        
-  // const { checkPwd, ...formater } = formation;
-    console.log(formation)
+     // Supprimer la clé 'checkPwd' et sa valeur du state
+   const { checkPwd, ...utilisateur } = user;
+
     axios
-      .put("/formations", formation)
+      .post("/utilisateurs/admin", utilisateur)
       .then((res) => {
 
-         navigate("/admin/formations");
-        
+          navigate("/admin/users");
+         setUser(
+          {
+            nom : "",
+            prenom : "",
+            username : "",
+            password : "",
+            checkPwd:"",
+            tel : "",
+            ville : {
+              id:null,
+              nom:""
+            },
+            naissance:"",
+          }
+        )
       })
       .catch((error) => {
         console.log(error.message);
@@ -118,15 +150,27 @@ export default function UpdateUser() {
       });
   }
 
+    useEffect(() => {
+        
+      axios.get("/villes")
+      .then((res)=>{
+        setVilles(res.data)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+        
+      }, [])
 
   return (
-    <div className='h-[100vh] bg-slate-50 grid xl:grid-cols-1 grid-cols-1 gap-2'>
-        <div className='flex items-center justify-center'>
-            <div className='text-center'>
+    <div className='bg-slate-50'>
+        <div className='flex h-[100vh] items-center justify-center'>
+            <div >
             <Box 
                 component="form"
                 onSubmit={handleSubmit}>
-                    <p className='mb-7 text-lg  text-slate-600'> Modifier la formation </p>
+                  <p> Ajoute un utilisateur </p>
+
                <Box
                 sx={{
                   '& > :not(style)': { m: 1, width: '45ch' },
@@ -142,7 +186,7 @@ export default function UpdateUser() {
                             id="outlined-adornment-nom"
                             type="text"
                             name="nom"
-                            value={formation.nom}
+                            value={user.nom}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
@@ -157,141 +201,188 @@ export default function UpdateUser() {
                             label="nom"
                           />
                     </FormControl>
-
-                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-heure"
-                    >
-                        heure </InputLabel>
-                          <OutlinedInput
-                            id="outlined-adornment-heure"
-                            type="text"
-                            name="heure"
-                            value={formation.heure}
-                            onChange={handleChange} 
-                            endAdornment={
-                              <InputAdornment position="end">
-                                <ContactPhoneIcon
-                            aria-label="toggle heure visibility"
-                            edge="start"
-                          >
-                          <Visibility />
-                          </ContactPhoneIcon>
-                              </InputAdornment>
-                            }
-                            label="heure"
-                          />
-                    </FormControl> <br/>
-
-                    
                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-programme"
+                    <InputLabel htmlFor="outlined-adornment-prenom"
                     >
-                        programme</InputLabel>
+                        Prenom</InputLabel>
                           <OutlinedInput
-                            id="outlined-adornment-programme"
+                            id="outlined-adornment-prenom"
                             type="text"
-                            name="programme"
-                            value={formation.programme}
-                            onChange={handleChange}
-                            endAdornment={
-                              <InputAdornment position="end">
-                                <MailIcon
-                            aria-label="toggle programme visibility"
-                            edge="start"
-                          >
-                          <Visibility />
-                          </MailIcon>
-                              </InputAdornment>
-                            }
-                            label="programme"
-                            multiline
-                          />
-                    </FormControl>
-
-                   <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-objectif"
-                    
-                    >
-                        objectif</InputLabel>
-                          <OutlinedInput
-                            id="outlined-adornment-objectif"
-                            type="text"
-                            name="objectif"
-                            value={formation.objectif}
+                            name="prenom"
+                            value={user.prenom}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
                                 <PersonIcon
-                            aria-label="toggle objectif visibility"
+                            aria-label="toggle prenom visibility"
                             edge="start"
                           >
                           <Visibility />
                           </PersonIcon>
                               </InputAdornment>
                             }
-                            label="objectif"
-                            multiline
+                            label="prenom"
                           />
                     </FormControl> <br/>
 
-
-                 <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-ville"
+                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-username"
                     >
-                        Ville </InputLabel>
+                        Email</InputLabel>
                           <OutlinedInput
-                            id="outlined-adornment-ville"
+                            id="outlined-adornment-username"
                             type="text"
-                            name="ville"
-                            value={formation.ville.nom}
-                            onChange={handleChange} 
+                            name="username"
+                            value={user.username}
+                            onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
-                                <PublicIcon
-                            aria-label="toggle ville visibility"
+                                <MailIcon
+                            aria-label="toggle username visibility"
                             edge="start"
                           >
                           <Visibility />
-                          </PublicIcon>
+                          </MailIcon>
                               </InputAdornment>
                             }
-                            label="Ville"
+                            label="username"
                           />
                     </FormControl>
 
-                <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-cout"
+                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-tel"
                     >
-                        coût </InputLabel>
+                        Tel </InputLabel>
                           <OutlinedInput
-                            id="outlined-adornment-cout"
+                            id="outlined-adornment-tel"
                             type="text"
-                            name="cout"
-                            value={formation.cout}
+                            name="tel"
+                            value={user.tel}
                             onChange={handleChange} 
-                             endAdornment={
+                            endAdornment={
                               <InputAdornment position="end">
-                                <CenterFocusStrongIcon
-                            aria-label="toggle ville visibility"
+                                <ContactPhoneIcon
+                            aria-label="toggle tel visibility"
                             edge="start"
                           >
                           <Visibility />
-                          </CenterFocusStrongIcon>
+                          </ContactPhoneIcon>
                               </InputAdornment>
                             }
-                            label="cout"
+                            label="tel"
                           />
                     </FormControl> <br/>
 
+                {/* value du champ SELECT, MenuItem,setState doit être du même type ici `.id` */}
+                    <FormControl sx={{ m: 1, width: '35ch' }}>
+                      <InputLabel id="demo-simple-select-label">Ville</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        type="text"
+                        name="ville"
+                        value={user.ville?.id}
+                        label="ville"
+                        onChange={handleChange}
+                      >
+                        {villes.map((item,value)=>( 
+                             <MenuItem key={value} value={item.id}>{item.nom}</MenuItem>                    
+                        ))}
+                        
+                      </Select>
+                    </FormControl> 
+
+                <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-naissance"
+                    >
+                        Date naissance </InputLabel>
+                          <OutlinedInput
+                            id="outlined-adornment-naissance"
+                            type="date"
+                            name="naissance"
+                            value={user.naissance}
+                            onChange={handleChange} 
+                            label="naissance"
+                          />
+                    </FormControl> <br/>
+
+                  <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-password"
+                    startadornment={
+                  <InputAdornment position="start">
+                    <MailIcon />
+                  </InputAdornment>
+                }
+              >
+
+                  Mot de passe</InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-password"
+                      name= "password"
+                      value={user.password}
+                      onChange={handleChange}
+                      type={showPassword ? 'text' : 'password'}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Password"
+                    />
+                    
+                  </FormControl>
+
+                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-password"
+                    startadornment={
+                  <InputAdornment position="start">
+                    <MailIcon />
+                  </InputAdornment>
+                }
+              >
+                  Mot de passe</InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-password2"
+                      name="checkPwd"
+                      value={user.checkPwd}
+                      onChange={handleChange}
+                      type={showPassword ? 'text' : 'password'}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password2 visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Password2"
+                    />
+                    
+                  </FormControl>
+
                 </Box>
-                <div className='flex mb-3 justify-center'>
-                     <Button type="submit" variant="contained" sx={{mt:3 , width:150}}>Modifier</Button>
+                <div className='flex mb-3 justify-center space-x-7'>                
+                        <Link to= "/admin/users"> 
+                        <Button  variant="contained" color="secondary" sx={{mt:3 , width:150}}> retour  </Button> 
+                        </Link>        
+                     <Button type="submit" variant="contained"  color="success" sx={{mt:3 , width:150}}>Valider</Button>
                 </div>
             </Box>
             </div>
         </div>
-
     </div>
   )
 }
+
 

@@ -32,6 +32,11 @@ import Autocomplete from './admin/formaton/AutoComplete';
 import Categorie from './admin/categorie/Categorie';
 import AddCategorie from './admin/formaton/AddCategorie';
 import UpdateCategorie from './admin/categorie/UpdateCategorie';
+import AssistantA from './admin/assistant/AssistantA';
+import AddAssistant from './admin/assistant/AddAssistant';
+import UpdateAssistant from './admin/assistant/UpdateAssistant';
+import AddCategorieC from './admin/categorie/AddCategorieC';
+import MainDashboard from './admin/dashboard/Main/MainDashboard';
 
 function App() {
 
@@ -81,7 +86,7 @@ function App() {
             <Route path="/register/utilisateur" element={<UtilisateurR />}/>
 
             <Route path="/admin" element={<AdminDashboard />}>
-            <Route index path="dashboard" element={<View />}/>
+            <Route index path="dashboard" element={<MainDashboard />}/>
             
             <Route  path="formations" element={<Formation />}/>
             <Route  path="formations/add" element={<AddFormation />}/>
@@ -95,6 +100,11 @@ function App() {
             <Route  path="formateurs/add" element={<AddFormateurA />}/>
             <Route  path="formateurs/edit/:formateurID" element={<UpdateFormateurA />}/>
 
+            
+            <Route  path="assistants" element={<AssistantA />}/>
+            <Route  path="assistants/add" element={<AddAssistant />}/>
+            <Route  path="assistants/edit/:assistantID" element={<UpdateAssistant />}/>
+
             <Route  path="users" element={<User />}/>
             <Route  path="users/add" element={<AddUser />}/>
             <Route  path="users/edit/:userID" element={<UpdateUser />}/>
@@ -104,7 +114,7 @@ function App() {
             <Route  path="assistants/edit/:assistantID" element={<UpdateUser />}/>
 
             <Route  path="categories" element={<Categorie />}/>
-            <Route  path="categories/add" element={<AddCategorie />}/>
+            <Route  path="categories/add" element={<AddCategorieC />}/>
             <Route  path="categories/edit/:categorieID" element={<UpdateCategorie />}/>
 
             <Route  path="villes" element={<Ville />}/>

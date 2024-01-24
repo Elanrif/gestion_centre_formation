@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
-export default function AddCategorie() {
+export default function AddCategorieC() {
 
  
   const {auth,setAuth} = useContext(AuthContext)

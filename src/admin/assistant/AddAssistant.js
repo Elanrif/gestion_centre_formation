@@ -15,15 +15,19 @@ import PersonIcon from '@mui/icons-material/Person';
 import PublicIcon from '@mui/icons-material/Public';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../Context'; 
+import { AuthContext } from '../../Context';
+import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
-export default function AddUser() {
+export default function AddAssistant() {
 
+ 
   const {auth,setAuth} = useContext(AuthContext)
 
-  const [user, setUser] = useState(
+   const [villes, setVilles] = useState([])
+
+  const [assistant, setAssistant] = useState(
     {
       nom : "",
       prenom : "",
@@ -31,17 +35,16 @@ export default function AddUser() {
       password : "",
       checkPwd:"",
       tel : "",
-       ville : {
+      ville : {
         id:null,
         nom:""
       },
-      naissance:"",
+      
+      role:"ROLE_ASSISTANT"
     }
   )
 
   const navigate = useNavigate()
-
-  const [villes, setVilles] = useState([])
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -57,10 +60,8 @@ export default function AddUser() {
     const value = target.value;
     const name = target.name ;
 
-
-    setUser((prev) => {
-     
-      if (name === "ville") {
+     setAssistant((prev) => {
+        if (name === "ville") {
       
           return {
             ...prev,
@@ -73,7 +74,7 @@ export default function AddUser() {
             [name]: value
           }
         }
-    })
+     })
 
   }
 
@@ -81,12 +82,11 @@ export default function AddUser() {
  const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(user)
-     if(user.password != user.checkPwd)
+     if(assistant.password != assistant.checkPwd)
     {
      
     alert("password error !")
-     setUser((prevState)=>({
+     setAssistant((prevState)=>({
       ...prevState,
       password : "",
       checkPwd : "", 
@@ -94,26 +94,27 @@ export default function AddUser() {
     }
     else {
 
-      user.nom === "" ||
-      user.prenom === "" ||
-      user.username === "" ||
-      user.password ==="" ||
-      user.tel === "" ? alert("veuillez remplir tout les champs *") : saveUser()
+      assistant.nom === "" ||
+      assistant.prenom === "" ||
+      assistant.prenom === "" ||
+      assistant.username === "" ||
+      assistant.password ==="" ||
+      assistant.tel === "" ? alert("veuillez remplir tout les champs *") : saveAssistant()
     }
   
   }
 
-  const saveUser = ()=>{
+  const saveAssistant = ()=>{
        
      // Supprimer la clé 'checkPwd' et sa valeur du state
-   const { checkPwd, ...utilisateur } = user;
+   const { checkPwd, ...formater } = assistant;
 
     axios
-      .post("/utilisateurs/admin", utilisateur)
+      .post("/persons", formater)
       .then((res) => {
 
-          navigate("/admin/users");
-         setUser(
+         navigate("/admin/assistants");
+         setAssistant(
           {
             nom : "",
             prenom : "",
@@ -125,7 +126,7 @@ export default function AddUser() {
               id:null,
               nom:""
             },
-            naissance:"",
+            
           }
         )
       })
@@ -149,16 +150,17 @@ export default function AddUser() {
 
   return (
     <div className='bg-slate-50'>
-        <div className='flex h-[100vh] items-center justify-center'>
-            <div >
-            <Box 
+        <div className='h-[100vh] text-center flex items-center justify-center'>
+              <div className='text-center xl:text-start xl:w-[62rem]'>
+                    <Box 
                 component="form"
-                onSubmit={handleSubmit}>
-                  <p> Ajoute un utilisateur </p>
-
+                onSubmit={handleSubmit}
+                >
+                 <p className='mb-7'> Ajouter un assistant.</p>
+                 
                <Box
                 sx={{
-                  '& > :not(style)': { m: 1, width: '45ch' },
+                  '& > :not(style)': { m: 1, width: '55ch' },
                 }}
                 noValidate
                 autoComplete="off"
@@ -171,7 +173,7 @@ export default function AddUser() {
                             id="outlined-adornment-nom"
                             type="text"
                             name="nom"
-                            value={user.nom}
+                            value={assistant.nom}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
@@ -194,7 +196,7 @@ export default function AddUser() {
                             id="outlined-adornment-prenom"
                             type="text"
                             name="prenom"
-                            value={user.prenom}
+                            value={assistant.prenom}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
@@ -218,7 +220,7 @@ export default function AddUser() {
                             id="outlined-adornment-username"
                             type="text"
                             name="username"
-                            value={user.username}
+                            value={assistant.username}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
@@ -242,7 +244,7 @@ export default function AddUser() {
                             id="outlined-adornment-tel"
                             type="text"
                             name="tel"
-                            value={user.tel}
+                            value={assistant.tel}
                             onChange={handleChange} 
                             endAdornment={
                               <InputAdornment position="end">
@@ -256,9 +258,9 @@ export default function AddUser() {
                             }
                             label="tel"
                           />
-                    </FormControl> <br/>
+                    </FormControl>
 
-                {/* value du champ SELECT, MenuItem,setState doit être du même type ici `.id` */}
+                 {/* value du champ SELECT, MenuItem,setState doit être du même type ici `.id` */}
                     <FormControl sx={{ m: 1, width: '35ch' }}>
                       <InputLabel id="demo-simple-select-label">Ville</InputLabel>
                       <Select
@@ -266,7 +268,7 @@ export default function AddUser() {
                         id="demo-simple-select"
                         type="text"
                         name="ville"
-                        value={user.ville?.id}
+                        value={assistant.ville?.id}
                         label="ville"
                         onChange={handleChange}
                       >
@@ -275,68 +277,21 @@ export default function AddUser() {
                         ))}
                         
                       </Select>
-                    </FormControl> 
-
-                <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-naissance"
-                    >
-                        Date naissance </InputLabel>
-                          <OutlinedInput
-                            id="outlined-adornment-naissance"
-                            type="date"
-                            name="naissance"
-                            value={user.naissance}
-                            onChange={handleChange} 
-                            label="naissance"
-                          />
                     </FormControl> <br/>
 
-                  <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-password"
                     startadornment={
-                  <InputAdornment position="start">
-                    <MailIcon />
-                  </InputAdornment>
-                }
-              >
-
-                  Mot de passe</InputLabel>
-                    <OutlinedInput
-                      id="outlined-adornment-password"
-                      name= "password"
-                      value={user.password}
-                      onChange={handleChange}
-                      type={showPassword ? 'text' : 'password'}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
+                        <InputAdornment position="start">
+                            <MailIcon />
                         </InputAdornment>
-                      }
-                      label="Password"
-                    />
-                    
-                  </FormControl>
-
-                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-password"
-                    startadornment={
-                  <InputAdornment position="start">
-                    <MailIcon />
-                  </InputAdornment>
-                }
-              >
+                        }
+                    > 
                   Mot de passe</InputLabel>
                     <OutlinedInput
                       id="outlined-adornment-password2"
                       name="checkPwd"
-                      value={user.checkPwd}
+                      value={assistant.checkPwd}
                       onChange={handleChange}
                       type={showPassword ? 'text' : 'password'}
                       endAdornment={
@@ -356,18 +311,50 @@ export default function AddUser() {
                     
                   </FormControl>
 
+                  <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-password"
+                    startadornment={
+                  <InputAdornment position="start">
+                    <MailIcon />
+                  </InputAdornment>
+                }
+              >  
+                  Mot de passe</InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-password"
+                      name= "password"
+                      value={assistant.password}
+                      onChange={handleChange}
+                      type={showPassword ? 'text' : 'password'}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Password"
+                    />
+                    
+                  </FormControl>
+
                 </Box>
-                <div className='flex mb-3 justify-center space-x-7'>                
-                        <Link to= "/admin/users"> 
+                 <div className='flex mb-3 justify-center space-x-7'>                
+                        <Link to= "/admin/assistants"> 
                         <Button  variant="contained" color="secondary" sx={{mt:3 , width:150}}> retour  </Button> 
                         </Link>        
                      <Button type="submit" variant="contained"  color="success" sx={{mt:3 , width:150}}>Valider</Button>
                 </div>
             </Box>
-            </div>
+              </div>
         </div>
+
     </div>
   )
 }
-
 

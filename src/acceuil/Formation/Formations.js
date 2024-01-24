@@ -81,10 +81,10 @@ const reducer = (state, action) => {
       return state.filter((formation) => formation.category === category && formation.ville === ville);
 
     case 'category':
-      return state.filter((formation) => formation.category === action.payload);
+      return state.filter((formation) => formation.category?.nom === action.payload);
 
     case 'ville':
-      return state.filter((formation) => formation.ville === action.payload);
+      return state.filter((formation) => formation.ville?.nom === action.payload);
 
     case 'date':
       return state.filter((formation) => formation.date === action.payload);
@@ -99,12 +99,11 @@ const reducer = (state, action) => {
 
 function Formations() {
 
-  const  [AllFormations, setAllFormations] = useState([])
-
-    const [open, setOpen] = React.useState(false);
-    const [filtre, setFiltre] = React.useState('');
-    const [formations, dispatch] = React.useReducer(reducer,listinitFormations);
-
+  
+  const [open, setOpen] = React.useState(false);
+  const [filtre, setFiltre] = React.useState('');
+  const [formations, dispatch] = React.useReducer(reducer,[]);
+  
   
   useEffect(() => {
     handleLoad()
@@ -115,15 +114,14 @@ function Formations() {
     axios.get("/formations")
     .then((res)=>{
        
-      setAllFormations(res.data)
-      console.log("formations:" , res.data)
-
+      dispatch({type:"init",payload:res.data})
+      console.log("formations dispatch : " , res.data)
     })
   }
 
   return (
     <div>
-    <FilterContext.Provider value={{open,setOpen,filtre,setFiltre,listinitFormations,dispatch}}>
+    <FilterContext.Provider value={{open,setOpen,filtre,setFiltre,formations,dispatch}}>
         <div className='max-w-[80rem] my-4 mx-auto hover:cursor-pointer'>
             <h1 className='text-3xl font-black text-slate-400'> Nos formations</h1>
                 <FilterMenu /> 

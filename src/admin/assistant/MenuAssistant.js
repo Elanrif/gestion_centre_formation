@@ -19,7 +19,7 @@ import { Link } from 'react-router-dom';
 import AddImage from './AddImage';
 
 
-export default function MenuEntreprise({data,handleSetUpdate}) {
+export default function MenuAssistant({data,handleSetUpdate}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -99,7 +99,7 @@ export default function MenuEntreprise({data,handleSetUpdate}) {
           <ListItemIcon>
             <ModeEditIcon fontSize="small" />
           </ListItemIcon>
-          <Link to={`/admin/entreprises/edit/${data.id}`}> Editer<span className='ms-12 text-start text-transparent'>space</span> </Link> 
+          <Link to={`/admin/assistants/edit/${data.id}`}> Editer<span className='ms-12 text-start text-transparent'>space</span> </Link> 
         </MenuItem>
           <MenuItem onClick={handleClose}>
           <ListItemIcon>

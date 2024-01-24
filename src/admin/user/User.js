@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import MenuUser from './MenuUser';
 import { UserContext } from './UserContext'; 
+import DeleteUser from './DeleteUser';
 
 // image,nom,prenom,username,ville,tel,competence,formateurExterne
 const columns = [
@@ -145,13 +146,11 @@ export default function User() {
                     <PageviewIcon />
                     </IconButton>
 
-                     <IconButton aria-label="supprimer">
-                    <DeleteIcon />
-                    </IconButton>
+                    <DeleteUser value ={{data,handleSetUpdate}}/>
                   </div>
 ) 
 
-// image,nom,prenom,username,ville,tel,competence,formateurExterne
+
   const rows =
     formations.map((item, index) =>
       createData(
@@ -175,7 +174,7 @@ export default function User() {
   return (
    <div >
      <Box sx={{display:'flex' ,marginLeft:5,marginTop:4,marginBottom:4}}>
-      <Link to="/admin/formations/add" className='me-3'> <Button variant="contained" size="small">Ajouter</Button> </Link>
+      <Link to="/admin/users/add" className='me-3'> <Button variant="contained" size="small">Ajouter</Button> </Link>
      </Box>
      <div className='flex justify-center'>
         <Paper sx={{ width: '95%' }}>

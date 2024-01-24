@@ -88,9 +88,10 @@ export default function AddEntreprise() {
        
    
     axios
-      .put("/entreprises", entreprise)
+      .post("/entreprises", entreprise)
       .then((res) => {
 
+        navigate( "/admin/entreprises")
          setEntreprise(
           {
             nom: "",
@@ -122,7 +123,7 @@ export default function AddEntreprise() {
                 noValidate
                 autoComplete="off"
               >
-                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <FormControl sx={{ m: 1, width: '45ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-nom"
                     >
                         Nom</InputLabel>
@@ -242,8 +243,11 @@ export default function AddEntreprise() {
                     </FormControl>
 
                 </Box>
-                <div className='flex mb-3 justify-center'>
-                     <Button type="submit" variant="contained" sx={{mt:3 , width:150}}>Valider</Button>
+                 <div className='flex mb-3 justify-center space-x-7'>                
+                        <Link to= "/admin/entreprises"> 
+                        <Button  variant="contained" color="secondary" sx={{mt:3 , width:150}}> retour  </Button> 
+                        </Link>        
+                     <Button type="submit" variant="contained"  color="success" sx={{mt:3 , width:150}}>Valider</Button>
                 </div>
             </Box>
             </div>

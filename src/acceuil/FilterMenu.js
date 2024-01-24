@@ -97,11 +97,11 @@ export default function FilterMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={()=> handleClickOpenFilter('category')} >
+        <MenuItem onClick={()=> handleClickOpenFilter('category')} sx={{width:200}}>
         <ListItemIcon>
         <CategoryIcon fontSize="small" />
         </ListItemIcon>
-           Catégorie
+           Catégorie 
         </MenuItem>
         <MenuItem onClick={()=> handleClickOpenFilter('ville')}>
         <ListItemIcon>

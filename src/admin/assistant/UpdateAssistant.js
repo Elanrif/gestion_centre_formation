@@ -9,21 +9,25 @@ import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import MailIcon from '@mui/icons-material/Mail';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import PersonIcon from '@mui/icons-material/Person';
 import PublicIcon from '@mui/icons-material/Public';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../Context'; 
+import { AuthContext } from '../../Context';
+import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
-export default function AddUser() {
+export default function UpdateAssistant() {
 
+ 
   const {auth,setAuth} = useContext(AuthContext)
+  const {assistantID} = useParams() 
+  const [villes, setVilles] = useState([])
 
-  const [user, setUser] = useState(
+  const [assistant, setAssistant] = useState(
     {
       nom : "",
       prenom : "",
@@ -31,17 +35,15 @@ export default function AddUser() {
       password : "",
       checkPwd:"",
       tel : "",
-       ville : {
+      ville : {
         id:null,
         nom:""
       },
-      naissance:"",
+      role:"ROLE_ASSISTANT"
     }
   )
 
   const navigate = useNavigate()
-
-  const [villes, setVilles] = useState([])
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -51,16 +53,30 @@ export default function AddUser() {
     event.preventDefault();
   };
 
+
+   React.useEffect(() => {
+    handleLoad()
+  }, [])
+
+  const handleLoad = ()=>{
+
+    axios.get(`/persons/${assistantID}`)
+    .then((res)=>{
+    
+      res.data.password = ""
+      setAssistant(res.data)
+
+    })
+  }
+
    const handleChange = (e) => {
   
     const target = e.target;
     const value = target.value;
     const name = target.name ;
 
-
-    setUser((prev) => {
-     
-      if (name === "ville") {
+     setAssistant((prev) => {
+        if (name === "ville") {
       
           return {
             ...prev,
@@ -73,7 +89,7 @@ export default function AddUser() {
             [name]: value
           }
         }
-    })
+     })
 
   }
 
@@ -81,12 +97,11 @@ export default function AddUser() {
  const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(user)
-     if(user.password != user.checkPwd)
+     if(assistant.password != assistant.checkPwd)
     {
      
     alert("password error !")
-     setUser((prevState)=>({
+     setAssistant((prevState)=>({
       ...prevState,
       password : "",
       checkPwd : "", 
@@ -94,26 +109,28 @@ export default function AddUser() {
     }
     else {
 
-      user.nom === "" ||
-      user.prenom === "" ||
-      user.username === "" ||
-      user.password ==="" ||
-      user.tel === "" ? alert("veuillez remplir tout les champs *") : saveUser()
+      assistant.nom === "" ||
+      assistant.prenom === "" ||
+      assistant.prenom === "" ||
+      assistant.username === "" ||
+      assistant.password ==="" ||
+      assistant.tel === "" ? alert("veuillez remplir tout les champs *") : saveAssistant()
     }
   
   }
 
-  const saveUser = ()=>{
+  const saveAssistant = ()=>{
        
      // Supprimer la clé 'checkPwd' et sa valeur du state
-   const { checkPwd, ...utilisateur } = user;
+     /* spring n'arrive pas a déserialisé authorities donc le supprimer depuis ici. */
+   const {authorities, checkPwd, ...formater } = assistant;
 
     axios
-      .post("/utilisateurs/admin", utilisateur)
+      .put("/persons", formater)
       .then((res) => {
 
-          navigate("/admin/users");
-         setUser(
+         navigate("/admin/assistants");
+         setAssistant(
           {
             nom : "",
             prenom : "",
@@ -122,10 +139,9 @@ export default function AddUser() {
             checkPwd:"",
             tel : "",
             ville : {
-              id:null,
-              nom:""
-            },
-            naissance:"",
+                id:null,
+                nom:""
+              }
           }
         )
       })
@@ -148,22 +164,21 @@ export default function AddUser() {
       }, [])
 
   return (
-    <div className='bg-slate-50'>
-        <div className='flex h-[100vh] items-center justify-center'>
-            <div >
+    <div className='bg-slate-50 '>
+        <div className='h-[100vh] flex items-center justify-center'>
+            <div className='text-center xl:text-start xl:w-[62rem]'>
             <Box 
                 component="form"
                 onSubmit={handleSubmit}>
-                  <p> Ajoute un utilisateur </p>
-
+                 fffff
                <Box
                 sx={{
-                  '& > :not(style)': { m: 1, width: '45ch' },
+                  '& > :not(style)': { m: 1, width: '55ch' },
                 }}
                 noValidate
                 autoComplete="off"
               >
-                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <FormControl sx={{ m: 1, width: '45ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-nom"
                     >
                         Nom</InputLabel>
@@ -171,7 +186,7 @@ export default function AddUser() {
                             id="outlined-adornment-nom"
                             type="text"
                             name="nom"
-                            value={user.nom}
+                            value={assistant.nom}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
@@ -194,7 +209,7 @@ export default function AddUser() {
                             id="outlined-adornment-prenom"
                             type="text"
                             name="prenom"
-                            value={user.prenom}
+                            value={assistant.prenom}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
@@ -208,7 +223,7 @@ export default function AddUser() {
                             }
                             label="prenom"
                           />
-                    </FormControl> <br/>
+                    </FormControl>
 
                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-username"
@@ -218,7 +233,7 @@ export default function AddUser() {
                             id="outlined-adornment-username"
                             type="text"
                             name="username"
-                            value={user.username}
+                            value={assistant.username}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
@@ -242,7 +257,7 @@ export default function AddUser() {
                             id="outlined-adornment-tel"
                             type="text"
                             name="tel"
-                            value={user.tel}
+                            value={assistant.tel}
                             onChange={handleChange} 
                             endAdornment={
                               <InputAdornment position="end">
@@ -256,9 +271,9 @@ export default function AddUser() {
                             }
                             label="tel"
                           />
-                    </FormControl> <br/>
+                    </FormControl>
 
-                {/* value du champ SELECT, MenuItem,setState doit être du même type ici `.id` */}
+                 {/* value du champ SELECT, MenuItem,setState doit être du même type ici `.id` */}
                     <FormControl sx={{ m: 1, width: '35ch' }}>
                       <InputLabel id="demo-simple-select-label">Ville</InputLabel>
                       <Select
@@ -266,7 +281,7 @@ export default function AddUser() {
                         id="demo-simple-select"
                         type="text"
                         name="ville"
-                        value={user.ville?.id}
+                        value={assistant.ville?.id}
                         label="ville"
                         onChange={handleChange}
                       >
@@ -275,21 +290,8 @@ export default function AddUser() {
                         ))}
                         
                       </Select>
-                    </FormControl> 
-
-                <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-naissance"
-                    >
-                        Date naissance </InputLabel>
-                          <OutlinedInput
-                            id="outlined-adornment-naissance"
-                            type="date"
-                            name="naissance"
-                            value={user.naissance}
-                            onChange={handleChange} 
-                            label="naissance"
-                          />
-                    </FormControl> <br/>
+                    </FormControl>
+                         <br/>
 
                   <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-password"
@@ -299,12 +301,11 @@ export default function AddUser() {
                   </InputAdornment>
                 }
               >
-
                   Mot de passe</InputLabel>
                     <OutlinedInput
                       id="outlined-adornment-password"
                       name= "password"
-                      value={user.password}
+                      value={assistant.password}
                       onChange={handleChange}
                       type={showPassword ? 'text' : 'password'}
                       endAdornment={
@@ -336,7 +337,7 @@ export default function AddUser() {
                     <OutlinedInput
                       id="outlined-adornment-password2"
                       name="checkPwd"
-                      value={user.checkPwd}
+                      value={assistant.checkPwd}
                       onChange={handleChange}
                       type={showPassword ? 'text' : 'password'}
                       endAdornment={
@@ -357,8 +358,8 @@ export default function AddUser() {
                   </FormControl>
 
                 </Box>
-                <div className='flex mb-3 justify-center space-x-7'>                
-                        <Link to= "/admin/users"> 
+                 <div className='flex mb-3 justify-center space-x-7'>                
+                        <Link to= "/admin/assistants"> 
                         <Button  variant="contained" color="secondary" sx={{mt:3 , width:150}}> retour  </Button> 
                         </Link>        
                      <Button type="submit" variant="contained"  color="success" sx={{mt:3 , width:150}}>Valider</Button>
@@ -366,8 +367,8 @@ export default function AddUser() {
             </Box>
             </div>
         </div>
+
     </div>
   )
 }
-
 
