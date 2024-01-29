@@ -8,12 +8,16 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Autocomplete from '@mui/material/Autocomplete';
 import {FilterContext} from '../FilterContext';
+import axios from 'axios';
 export default function FiltreFormation(props) {
 //  const [open, setOpen] = React.useState(false);
 
-const {open,setOpen,filtre,dispatch,listinitFormations} = React.useContext(FilterContext)
+const {open,setOpen,filtre,dispatch,formations,handleLoadFormations} = React.useContext(FilterContext)
 
-const [data,setData] = React.useState({}) 
+const [data,setData] = React.useState({})
+/* autoComplete reçoivent des tableaux  */
+const [villes,setVilles] = React.useState([]) 
+const [categories,setCategories] = React.useState([]) 
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -25,6 +29,10 @@ const [data,setData] = React.useState({})
 
   const autoComplete = ()=>{
 
+   /* Autocomplete pernds des valeurs format tableau voir documentation :
+    https://mui.com/material-ui/react-autocomplete/. 
+    on est obligé dans les setState transformé les resultats formats tableau.  
+    */
     switch(filtre){
 
         case 'category':
@@ -130,10 +138,16 @@ const [data,setData] = React.useState({})
     
   }
 
+  /* DISPATCH filter  */
   const handleSubmit =(event)=>{
+
     event.preventDefault()
-    //avant d'envoyer on initialise la listeFormation par defaut:
-    dispatch({type:'init',payload: listinitFormations})
+    /* avant d'envoyer on initialise la listeFormation par defaut: */
+    //dispatch({type:'init',payload: formations})
+    setTimeout(() => {
+      
+      handleLoadFormations()
+    }, 7000);
 
     const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries(formData.entries());
@@ -141,9 +155,7 @@ const [data,setData] = React.useState({})
             const ville = formJson.ville;
             const date = formJson.date;
 
-
             if(category && ville){
-                console.log("formData category et ville : ", category, "-",ville)
                   setData((prev)=>({
                     ...prev,
                     date : date
@@ -153,29 +165,26 @@ const [data,setData] = React.useState({})
             }else{
 
                   if(category){
-                 console.log("formData category :",category)
-                 setData((prev)=>({
-                    ...prev,
-                    category : category
-                 }))
-                 dispatch({type:'category',payload: category}) 
-            }
-            if(ville){
-                 console.log("formData ville :",ville)
-                 setData((prev)=>({
-                    ...prev,
-                    ville : ville
-                 }))
-                 dispatch({type:'ville',payload: ville})
-            }
-            if(date){
-                 console.log("formData date :", date)
-                 setData((prev)=>({
-                    ...prev,
-                    date : date
-                 }))
-                 dispatch({type:'date',payload: date})
-            }
+                      setData((prev)=>({
+                          ...prev,
+                          category : category
+                      }))
+                      dispatch({type:'category',payload: category}) 
+                      }
+                    if(ville){
+                        setData((prev)=>({
+                            ...prev,
+                            ville : ville
+                        }))
+                        dispatch({type:'ville',payload: ville})
+                    }
+                    if(date){
+                        setData((prev)=>({
+                            ...prev,
+                            date : date
+                        }))
+                        dispatch({type:'date',payload: date})
+                    }
             }        
 
             handleClose()
@@ -187,6 +196,39 @@ const [data,setData] = React.useState({})
      console.log("useEffect FiltreFormation : " , data)
   }, [data])
   
+  React.useEffect(() => {
+    
+    handleLoadCategories()
+    handleLoadVilles()
+
+  }, [])
+
+
+
+  const handleLoadCategories = ()=>{
+
+    axios.get("/categories")
+    .then((res)=>{
+
+     const options = res.data.map((item, index) => item && item.nom);
+     setCategories(options)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
+  const handleLoadVilles = ()=>{
+
+    axios.get("/villes")
+    .then((res)=>{
+     const options = res.data.map((item, index) => item && item.nom);
+     setVilles(options)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
 
   return (
     <React.Fragment>
@@ -199,7 +241,7 @@ const [data,setData] = React.useState({})
           onSubmit:  handleSubmit,
         }}
       >
-        <DialogTitle>Filter par <span className='lowercase'> {filtre}</span> </DialogTitle>
+        <DialogTitle>Filtrer par <span className='lowercase'> {filtre}</span> </DialogTitle>
         <DialogContent>
           <DialogContentText>
             Veuillez sélectionner la <span className='lowercase'> {filtre}</span> .
@@ -215,24 +257,6 @@ const [data,setData] = React.useState({})
   );
 }
 
-const categories = [
-    { label: 'Développement' },
-    { label: 'Design' },
-    { label: 'IA (Intelligence Artificielle)' },
-    { label: 'Marketing' },
-    { label: 'Photographie' },
-    // Ajoutez d'autres catégories au besoin
-];
-
-
-const villes = [
-    { label: 'Beni Mlal', country: 'Maroc' },
-    { label: 'Kenitra', country: 'Maroc' },
-    { label: 'Oujda', country: 'Maroc' },
-    { label: 'Casablanca', country: 'Maroc' },
-    { label: 'Rabat', country: 'Maroc' },
-    { label: 'Marrakech', country: 'Maroc' },
-];
 
 const dates = [
     { label: '2022-03-01' },

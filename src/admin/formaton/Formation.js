@@ -30,13 +30,6 @@ const columns = [
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'objectif',
-    label: 'objectif',
-    minWidth: 170,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
     id: 'programme',
     label: 'programme',
     minWidth: 170,
@@ -50,12 +43,21 @@ const columns = [
     align: 'center',
     format: (value) => value.toFixed(2),
   },
+  
   {
-    id: 'createdAt',
+    id: 'date',
     label: 'Date',
     minWidth: 150,
     align: 'center',
     format: (value) => value.toFixed(2),
+  }
+  ,
+  {
+    id: 'formateur',
+    label: 'formateur',
+    minWidth: 170,
+    align: 'center',
+    format: (value) => value.toLocaleString('en-US'),
   },
    {
     id: 'options',
@@ -66,9 +68,9 @@ const columns = [
   },
 ];
 
-function createData(image,nom,objectif,cout,programme,ville,createdAt,options) {
+function createData(image,nom,cout,programme,ville,date,formateur,options) {
   //const density = population / size;
-  return {image, nom,objectif,cout,programme,ville,createdAt,options};
+  return {image, nom,cout,programme,ville,date,formateur,options};
 }
 
 
@@ -135,11 +137,11 @@ export default function Formation() {
           className="w-20  h-16"
         />,
         item.nom,
-        <span>{item.objectif?.slice(0,10)}...</span>,
         <div className='flex items-center space-x-2'> <span>{item.cout}</span> <span>DHS</span> </div>,
         <span>{item.programme?.slice(0,15)}...</span>,
         item.ville?.nom,/* item.ville si la ville est null , retourne null. donc -- null.nom génerera une erreur -- solution ajouter item.ville?.nom */
-        item.createdAt,
+        item.date,
+        <div className='text-slate-400'>{item.formateur?.nom ? (<span className='text-blue-400'>{item.formateur?.nom} {item.formateur?.prenom}</span>) : "Pas de formateur"}</div>,
         btnOptions(item)
       )
     );
@@ -158,7 +160,7 @@ export default function Formation() {
           <TableHead>
             <TableRow>
               <TableCell align="center" colSpan={2}>
-                Country
+                details
               </TableCell>
               <TableCell align="center" colSpan={3}>
                 Details

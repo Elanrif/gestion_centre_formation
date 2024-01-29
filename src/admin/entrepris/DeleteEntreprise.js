@@ -21,13 +21,23 @@ export default function DeleteEntreprise({value}) {
     setOpen(false);
   };
 
-  const {data,handleSetUpdate} = value 
+  const {data,handleSetUpdate,handleLoader,formation} = value 
 
   const handleDelete = ()=>{
 
+    !formation  ?
     axios.delete(`/entreprises/${data.id}`)
     .then((res)=>{
         handleSetUpdate()
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+    :
+     axios.delete(`/entreprises/desynch/${data.id}/${formation.id}`)
+    .then((res)=>{
+        handleSetUpdate()
+        handleLoader()
     })
     .catch((err)=>{
         console.log(err)
@@ -49,12 +59,12 @@ export default function DeleteEntreprise({value}) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Êtes-vous sûr de vouloir supprimer cette entreprise ?"}
+          {`Êtes-vous sûr de vouloir supprimer ${formation ? "l'":"cette"} entreprise ${formation ? "de la formation":""}? `}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             La suppression  est irréversible, elle entrenera automatiquement la suppression
-            definitive dans la base de donnée.
+            {!formation ? " definitive dans la base de donnée.":" avec la formation"}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

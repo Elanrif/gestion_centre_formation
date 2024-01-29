@@ -63,7 +63,7 @@ const columns = [
     format: (value) => value.toFixed(2),
   },
   {
-    id: 'formateurExterne',
+    id: 'exterieur',
     label: 'externe',
     minWidth: 20,
     align: 'right',
@@ -79,9 +79,9 @@ const columns = [
 ];
 
 
-function createData(image,nom,prenom,username,ville,tel,competence,formateurExterne,options) {
+function createData(image,nom,prenom,username,ville,tel,competence,exterieur,options) {
   //const density = population / size;
-  return {image,nom,prenom,username,ville,tel,competence,formateurExterne,options};
+  return {image,nom,prenom,username,ville,tel,competence,exterieur,options};
 }
 
 
@@ -159,7 +159,7 @@ export default function Formateur() {
         item.ville?.nom,
         item.tel,
         item.competence,
-        item.formateurExterne,
+        item.exterieur ? "oui" : "non",
         btnOptions(item)
       )
     );
@@ -177,7 +177,7 @@ export default function Formateur() {
           <TableHead>
             <TableRow>
               <TableCell align="center" colSpan={2}>
-                Country
+                details
               </TableCell>
               <TableCell align="center" colSpan={3}>
                 Details

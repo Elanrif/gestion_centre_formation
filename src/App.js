@@ -37,6 +37,14 @@ import AddAssistant from './admin/assistant/AddAssistant';
 import UpdateAssistant from './admin/assistant/UpdateAssistant';
 import AddCategorieC from './admin/categorie/AddCategorieC';
 import MainDashboard from './admin/dashboard/Main/MainDashboard';
+import DetailFormation from './acceuil/detailsFormation/DetailFormation';
+import Header from './acceuil/Header';
+import FormulaireIndividu from './acceuil/detailsFormation/formindividus/FormulaireIndividu';
+import Formevaluation from './acceuil/detailsFormation/evaluation/Formevaluation';
+import InputEmail from './acceuil/detailsFormation/InputEmail';
+import 'react-toastify/dist/ReactToastify.css';
+import ListEntreprise from './admin/formaton/liste/ListEntreprise';
+import ListParticipant from './admin/formaton/liste/ListParticipant';
 
 function App() {
 
@@ -76,8 +84,13 @@ function App() {
    <>
     <AuthContext.Provider value={{auth,setAuth}}>
           <Routes>
-            <Route path="/" element={<Acceuil />}/>
-            <Route path="/basic" element={<Basic />}/>
+            <Route path="/" element={<Header />}>
+              <Route index path="" element={<Acceuil />}/>
+              <Route path="formation/:detailformID" element={<DetailFormation />}/>
+            </Route >
+            <Route path="/formation/:IDform/formulaire" element={<FormulaireIndividu />}/>
+            <Route path="/evaluation/formateur/:formateurIdeval/utilisateur/:userID/formation/:formationID" element={<Formevaluation />}/>
+            <Route path="/formation/:formaID/email" element={<InputEmail />}/>
             <Route path="/login/admin" element={<Admin />}/>
             <Route path="/login/assistant" element={<Assistant />}/>
             <Route path="/login/utilisateur" element={<Utilisateur />}/>
@@ -85,43 +98,45 @@ function App() {
             <Route path="/register/formateur" element={<FormateurR />}/>
             <Route path="/register/utilisateur" element={<UtilisateurR />}/>
 
-            <Route path="/admin" element={<AdminDashboard />}>
-            <Route index path="dashboard" element={<MainDashboard />}/>
-            
-            <Route  path="formations" element={<Formation />}/>
-            <Route  path="formations/add" element={<AddFormation />}/>
-            <Route  path="formations/edit/:formationID" element={<UpdateFormation />}/>
+                <Route path="/admin" element={<AdminDashboard />}>
+                <Route index path="dashboard" element={<MainDashboard />}/>
+                
+                <Route  path="formations" element={<Formation />}/>
+                <Route  path="formations/add" element={<AddFormation />}/>
+                <Route  path="formations/edit/:formationID" element={<UpdateFormation />}/>
+                <Route  path="formations/:idFormation/entreprises" element={<ListEntreprise />}/>
+                <Route  path="formations/:idFormation/participants" element={<ListParticipant />}/>
 
-            <Route  path="entreprises" element={<Entreprise />}/>
-            <Route  path="entreprises/add" element={<AddEntreprise />}/>
-            <Route  path="entreprises/edit/:entrepriseID" element={<UpdateEntreprise />}/>
+                <Route  path="entreprises" element={<Entreprise />}/>
+                <Route  path="entreprises/add" element={<AddEntreprise />}/>
+                <Route  path="entreprises/edit/:entrepriseID" element={<UpdateEntreprise />}/>
 
-            <Route  path="formateurs" element={<FormateurA />}/>
-            <Route  path="formateurs/add" element={<AddFormateurA />}/>
-            <Route  path="formateurs/edit/:formateurID" element={<UpdateFormateurA />}/>
+                <Route  path="formateurs" element={<FormateurA />}/>
+                <Route  path="formateurs/add" element={<AddFormateurA />}/>
+                <Route  path="formateurs/edit/:formateurID" element={<UpdateFormateurA />}/>
 
-            
-            <Route  path="assistants" element={<AssistantA />}/>
-            <Route  path="assistants/add" element={<AddAssistant />}/>
-            <Route  path="assistants/edit/:assistantID" element={<UpdateAssistant />}/>
+                
+                <Route  path="assistants" element={<AssistantA />}/>
+                <Route  path="assistants/add" element={<AddAssistant />}/>
+                <Route  path="assistants/edit/:assistantID" element={<UpdateAssistant />}/>
 
-            <Route  path="users" element={<User />}/>
-            <Route  path="users/add" element={<AddUser />}/>
-            <Route  path="users/edit/:userID" element={<UpdateUser />}/>
+                <Route  path="users" element={<User />}/>
+                <Route  path="users/add" element={<AddUser />}/>
+                <Route  path="users/edit/:userID" element={<UpdateUser />}/>
 
-            <Route  path="assistants" element={<User />}/>
-            <Route  path="assistants/add" element={<AddUser />}/>
-            <Route  path="assistants/edit/:assistantID" element={<UpdateUser />}/>
+                <Route  path="assistants" element={<User />}/>
+                <Route  path="assistants/add" element={<AddUser />}/>
+                <Route  path="assistants/edit/:assistantID" element={<UpdateUser />}/>
 
-            <Route  path="categories" element={<Categorie />}/>
-            <Route  path="categories/add" element={<AddCategorieC />}/>
-            <Route  path="categories/edit/:categorieID" element={<UpdateCategorie />}/>
+                <Route  path="categories" element={<Categorie />}/>
+                <Route  path="categories/add" element={<AddCategorieC />}/>
+                <Route  path="categories/edit/:categorieID" element={<UpdateCategorie />}/>
 
-            <Route  path="villes" element={<Ville />}/>
-            <Route  path="villes/add" element={<AddVille />}/>
-            <Route  path="villes/edit/:villeID" element={<UpdateVille />}/>
+                <Route  path="villes" element={<Ville />}/>
+                <Route  path="villes/add" element={<AddVille />}/>
+                <Route  path="villes/edit/:villeID" element={<UpdateVille />}/>
 
-            </Route>
+                </Route>
 
             <Route  path="/auto" element={<Autocomplete />}/>
             

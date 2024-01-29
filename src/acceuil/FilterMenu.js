@@ -17,6 +17,8 @@ import LocationCityIcon from '@mui/icons-material/LocationCity';
 import BallotIcon from '@mui/icons-material/Ballot';
 import FiltreFormation from './Filtre/FiltreFormation';
 import { FilterContext } from './FilterContext';
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+
 
 export default function FilterMenu() {
 
@@ -35,6 +37,7 @@ export default function FilterMenu() {
   const handleClickOpenFilter = (name) => {
     setOpen(true)
     setFiltre(name)
+    
     handleClose()
   };
 
@@ -99,7 +102,7 @@ export default function FilterMenu() {
       >
         <MenuItem onClick={()=> handleClickOpenFilter('category')} sx={{width:200}}>
         <ListItemIcon>
-        <CategoryIcon fontSize="small" />
+        <FormatListNumberedIcon fontSize="small" />
         </ListItemIcon>
            Catégorie 
         </MenuItem>

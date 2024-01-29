@@ -55,7 +55,7 @@ export default function Formateur() {
    const loginPerson = ()=>{
   
     axios
-      .post("/formateurs/login", person)
+      .post("/persons/loginUser", person)
       .then((res) => {
 
        //  navigate("/");

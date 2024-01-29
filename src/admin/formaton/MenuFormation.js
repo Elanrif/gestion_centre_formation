@@ -15,8 +15,11 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import GroupsIcon from '@mui/icons-material/Groups';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link } from 'react-router-dom';
 import AddImage from './AddImage';
+import AddEntreprise from './AddEntreprise';
+import AddFormateur from './AddFormateur';
 
 
 export default function MenuFormation({data,handleSetUpdate}) {
@@ -30,9 +33,23 @@ export default function MenuFormation({data,handleSetUpdate}) {
   }
 
   const [opened, setOpenImg] = React.useState(false);
+  const [type, setType] = React.useState('');
 
   const handleOpenImg = () => {
     setOpenImg(true)
+    setType("image")
+    handleClose()
+  }
+
+   const handleOpenFormateur = () => {
+    setOpenImg(true)
+    setType("formateur")
+    handleClose()
+  }
+
+   const handleOpenEntreprise= () => {
+    setOpenImg(true)
+    setType("entreprise")
     handleClose()
   }
 
@@ -40,10 +57,23 @@ export default function MenuFormation({data,handleSetUpdate}) {
     setOpenImg(false);
   }
 
+  const addOptions = ()=>{
+
+    if(type == "image"){
+      return  <AddImage value = {{handleCloseImg,opened,data}} />
+    }
+    else if(type == "entreprise"){
+      return   <AddEntreprise value = {{handleCloseImg,opened,data}} />
+    }
+    else {
+      return <AddFormateur value = {{handleCloseImg,opened,data}} />
+    }
+  }
 
   return (
     <React.Fragment>
-      <AddImage value = {{handleCloseImg,opened,data}} />
+      {/* <AddImage value = {{handleCloseImg,opened,data}} /> */}
+      {addOptions()}
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
       
         <Tooltip title="Plus d'options">
@@ -101,17 +131,17 @@ export default function MenuFormation({data,handleSetUpdate}) {
           </ListItemIcon>
           <Link to={`/admin/formations/edit/${data.id}`}> Editer<span className='ms-12 text-start text-transparent'>space</span> </Link> 
         </MenuItem>
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={handleOpenFormateur}>
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
-          Formateur
+         Ajouter un formateur
         </MenuItem>
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={handleOpenEntreprise}>
           <ListItemIcon>
             <GroupsIcon fontSize="small" />
           </ListItemIcon>
-          Entreprise
+          Ajouter une entreprise
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleOpenImg}>
@@ -120,12 +150,28 @@ export default function MenuFormation({data,handleSetUpdate}) {
           </ListItemIcon>
           Image
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        {
+          data.utilisateurs.length > 0 &&
+          <Link to = {`admin/formations/${data.id}/participants`}>
+          <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <Settings fontSize="small" />
+            <ViewListIcon fontSize="small" />
           </ListItemIcon>
-          Settings
+          Listes des participants
+        </MenuItem> 
+        </Link>
+        }
+         {
+          data.entreprises.length > 0 &&
+         <Link to = {`/admin/formations/${data.id}/entreprises`}>
+          <MenuItem onClick={handleClose}>
+          <ListItemIcon>
+            <ViewListIcon fontSize="small" />
+          </ListItemIcon>
+          Listes des entreprises - {data.entreprises.length}
         </MenuItem>
+        </Link>
+         }
       </Menu>
     </React.Fragment>
   );

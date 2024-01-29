@@ -87,7 +87,7 @@ function createData(image,nom,prenom,username,ville,tel,naissance,individu,optio
 
 export default function User() {
   const [page, setPage] = React.useState(0);
-  const [formations, setFormations] = React.useState([]);
+  const [users, setUsers] = React.useState([]);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const [update,setUpdate] = React.useState(false);
@@ -116,14 +116,14 @@ export default function User() {
       axios.get("/persons/role",formData)
         .then((res)=>{
           
-          setFormations(res.data)
+          setUsers(res.data)
 
         }) */
   
         axios.get("/utilisateurs")
         .then((res)=>{
           
-          setFormations(res.data)
+          setUsers(res.data)
 
         })
   }
@@ -152,7 +152,7 @@ export default function User() {
 
 
   const rows =
-    formations.map((item, index) =>
+    users.map((item, index) =>
       createData(
         <img
           src={item.image}
@@ -183,7 +183,7 @@ export default function User() {
           <TableHead>
             <TableRow>
               <TableCell align="center" colSpan={2}>
-                Country
+                details
               </TableCell>
               <TableCell align="center" colSpan={3}>
                 Details

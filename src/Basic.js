@@ -1,6 +1,6 @@
-import React from 'react'
-import { Button } from '@mui/material'
-import axios from 'axios';
+import React from "react"
+import { Button } from "@mui/material"
+import axios from "axios";
 
 function Basic() {
 
@@ -27,7 +27,7 @@ function Basic() {
 
   return (
     <div>
-         <div className='flex justify-center'>
+         <div className="flex justify-center">
                      <Button onClick={loginPerson} variant="contained" sx={{mt:3 , width:150}}>Envoyer</Button>
                     </div>
     </div>
@@ -35,3 +35,4 @@ function Basic() {
 }
 
 export default Basic
+

@@ -31,6 +31,8 @@ export default function UpdateFormateur() {
     {
       nom : "",
       prenom : "",
+      description:"",
+      remarque:"",
       username : "",
       password : "",
       checkPwd:"",
@@ -63,7 +65,7 @@ export default function UpdateFormateur() {
 
     axios.get(`/persons/${formateurID}`)
     .then((res)=>{
-       
+      res.data.password = ""
       setFormateur(res.data)
 
     })
@@ -111,6 +113,7 @@ export default function UpdateFormateur() {
 
       formateur.nom === "" ||
       formateur.prenom === "" ||
+      formateur.description === "" ||
       formateur.competence === "" ||
       formateur.prenom === "" ||
       formateur.username === "" ||
@@ -168,7 +171,7 @@ export default function UpdateFormateur() {
   return (
     <div className='bg-slate-50 '>
         <div className='h-[100vh] flex items-center justify-center'>
-            <div className='text-center'>
+            <div className=''>
             <Box 
                 component="form"
                 onSubmit={handleSubmit}>
@@ -317,6 +320,53 @@ export default function UpdateFormateur() {
                             label="competence"
                           />
                     </FormControl> <br/>
+                      <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-competence"
+                    >
+                        Déscription </InputLabel>
+                          <OutlinedInput
+                            id="outlined-adornment-description"
+                            type="text"
+                            name="description"
+                            value={formateur.description}
+                            onChange={handleChange} 
+                             endAdornment={
+                              <InputAdornment position="end">
+                                <CenterFocusStrongIcon
+                            aria-label="toggle ville visibility"
+                            edge="start"
+                          >
+                          <Visibility />
+                          </CenterFocusStrongIcon>
+                              </InputAdornment>
+                            }
+                            label="description"
+                          />
+                    </FormControl>
+                     <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-remarque"
+                    >
+                        Remarque </InputLabel>
+                          <OutlinedInput
+                            id="outlined-adornment-remarque"
+                            type="text"
+                            name="remarque"
+                            value={formateur.remarque}
+                            onChange={handleChange} 
+                             endAdornment={
+                              <InputAdornment position="end">
+                                <CenterFocusStrongIcon
+                            aria-label="toggle ville visibility"
+                            edge="start"
+                          >
+                          <Visibility />
+                          </CenterFocusStrongIcon>
+                              </InputAdornment>
+                            }
+                            label="description"
+                          />
+                    </FormControl>
+                     <br/>
 
                   <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-password"

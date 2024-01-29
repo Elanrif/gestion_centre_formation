@@ -11,7 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import MailIcon from '@mui/icons-material/Mail';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context';
 import axios from 'axios';
 import LoginAs from './LoginAs';
@@ -19,6 +19,7 @@ import LoginAs from './LoginAs';
 
 export default function Admin() {
 
+  const navigate = useNavigate()
   const {auth,setAuth} = useContext(AuthContext)
   const [person, setPerson] = useState({
     username : "",
@@ -56,10 +57,10 @@ export default function Admin() {
    const loginPerson = ()=>{
   
     axios
-      .post("/loginUser", person)
+      .post("/persons/loginUser", person)
       .then((res) => {
 
-       //  navigate("/");
+       navigate("/admin/dashboard");
 
        /* stocker le pwd en claire ,ainsi ecrasé le pwd encrypté. */
         res.data.password = person.password

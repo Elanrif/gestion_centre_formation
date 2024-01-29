@@ -20,29 +20,36 @@ import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
+
 export default function UpdateFormation() {
 
-  const [formations, setFormations] = useState([])
+ 
   const {auth,setAuth} = useContext(AuthContext)
-  const {formationID} = useParams() 
+  const {formationID} = useParams()
+  const [villes, setVilles] = useState([])
+  const [categories, setCategories] = useState([])
 
   const [formation, setFormation] = useState(
     {
       nom : "",
       objectif : "",
       programme : "",
-      password : "",
-      checkPwd:"",
+      date:"",
       heure : "",
       ville : {
-        id : "",
-        nom: ""
+        id:null,
+        nom:""
+      },
+       category : {
+        id:null,
+        nom:""
       },
       cout:"",
     }
   )
 
   const navigate = useNavigate()
+
 
    const handleChange = (e) => {
   
@@ -51,30 +58,71 @@ export default function UpdateFormation() {
     const name = target.name ;
 
 
-   /*  setFormation((prev) => ({
-      ...prev,
-      [name]: value,
-    })) */
-
-      setFormation((prev) => {
-        if (name === "ville") {
+   setFormation((prev) => {
+        if (name === "ville" || name === "category") {
       
-          /* value du champ SELECT, MENUITEM,setSTATE doit être du même type */
           return {
             ...prev,
-            [name]: { id: value}
+            [name]: { id: value }
           };
         } else {
           // Sinon, metre à jour normalement
           return {
             ...prev,
             [name]: value
-          };
+          }
         }
-  });
+     })
 
   }
 
+
+ const handleSubmit = (e) => {
+    e.preventDefault();
+
+      formation.nom === "" ||
+      formation.date === "" ||
+      formation.ville.nom === "" ||
+      formation.category.nom === "" ||
+      formation.objectif === "" ||
+      formation.cout === "" ||
+      formation.objectif === "" ||
+      formation.programme === "" ||
+      formation.heure === "" ? alert("veuillez remplir tout les champs *") : saveFormation()
+  
+  
+  }
+
+  const saveFormation = ()=>{
+       
+   
+    axios
+      .post("/formations", formation)
+      .then((res) => {
+
+        navigate("/admin/formations");
+         setFormation(
+          {
+            nom : "",
+            objectif : "",
+            date:"",
+            programme : "",
+            heure : "",
+            ville : {
+              id:null,
+              nom: ""
+            },
+            cout:"",
+          }
+        )
+      })
+      .catch((error) => {
+        console.log(error.message);
+    
+      });
+  }
+
+  
  React.useEffect(() => {
     handleLoad()
   }, [])
@@ -90,49 +138,32 @@ export default function UpdateFormation() {
     })
   }
 
-    useEffect(() => {
-      
-    axios.get("/villes")
-    .then((res)=>{
-      setFormations(res.data)
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
-      
-    }, [])
 
- const handleSubmit = (e) => {
-    e.preventDefault();
-
-      formation.nom === "" ||
-      formation.objectif === "" ||
-      formation.cout === "" ||
-      formation.objectif === "" ||
-      formation.programme === "" ||
-      formation.heure === "" ? alert("veuillez remplir tout les champs *") : updateFormation()
+  useEffect(() => {
     
-  
-  }
+  handleLoadData()
+    
+  }, [])
 
-  const updateFormation = ()=>{
-       
-  // const { checkPwd, ...formater } = formation;
-    console.log(formation)
-    axios
-      .put("/formations", formation)
-      .then((res) => {
+  const handleLoadData = ()=>{
 
-         navigate("/admin/formations");
-        
+    axios.get("/categories")
+      .then((res)=>{
+        setCategories(res.data)
       })
-      .catch((error) => {
-        console.log(error.message);
-    
-      });
-  }
+      .catch((err)=>{
+        console.log(err)
+      })
 
- 
+      axios.get("/villes")
+      .then((res)=>{
+        setVilles(res.data)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+  }
+  
 
   return (
     <div className='h-[100vh] bg-slate-50 grid xl:grid-cols-1 grid-cols-1 gap-2'>
@@ -141,7 +172,7 @@ export default function UpdateFormation() {
             <Box 
                 component="form"
                 onSubmit={handleSubmit}>
-                    <p className='mb-7 text-lg  text-slate-600'> Modifier la formation </p>
+                    <p className='mb-7 text-lg  text-slate-600'> Modifier la  formation </p>
                <Box
                 sx={{
                   '& > :not(style)': { m: 1, width: '45ch' },
@@ -172,7 +203,6 @@ export default function UpdateFormation() {
                             label="nom"
                           />
                     </FormControl>
-
                      <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-heure"
                     >
@@ -195,9 +225,9 @@ export default function UpdateFormation() {
                             }
                             label="heure"
                           />
-                    </FormControl> <br/>
+                    </FormControl>
+                    <br/>
 
-                    
                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-programme"
                     >
@@ -223,7 +253,7 @@ export default function UpdateFormation() {
                           />
                     </FormControl>
 
-                   <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-objectif"
                     
                     >
@@ -247,9 +277,10 @@ export default function UpdateFormation() {
                             label="objectif"
                             multiline
                           />
-                    </FormControl> <br/>
+                    </FormControl>
+                     <br/>
 
-                  {/* value du champ SELECT, MenuItem,setState doit être du même type ici `.id` */}
+                {/* value du champ SELECT, MenuItem,setState doit être du même type ici `.id` */}
                     <FormControl sx={{ m: 1, width: '35ch' }}>
                       <InputLabel id="demo-simple-select-label">Ville</InputLabel>
                       <Select
@@ -261,13 +292,12 @@ export default function UpdateFormation() {
                         label="ville"
                         onChange={handleChange}
                       >
-                        {formations.map((item,value)=>( 
+                        {villes.map((item,value)=>( 
                              <MenuItem key={value} value={item.id}>{item.nom}</MenuItem>                    
                         ))}
                         
                       </Select>
                     </FormControl>
-
 
                 <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-cout"
@@ -293,8 +323,42 @@ export default function UpdateFormation() {
                           />
                     </FormControl> <br/>
 
+                       {/* value du champ SELECT, MenuItem,setState doit être du même type ici `.id` */}
+                    <FormControl sx={{ m: 1, width: '35ch' }}>
+                      <InputLabel id="demo-simple-select-cat">Catégorie</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-cat"
+                        id="demo-simple-select"
+                        type="text"
+                        name="category"
+                        value={formation.category?.id}
+                        label="ville"
+                        onChange={handleChange}
+                      >
+                        {categories.map((item,value)=>( 
+                             <MenuItem key={value} value={item.id}>{item.nom}</MenuItem>                    
+                        ))}
+                        
+                      </Select>
+                    </FormControl>
+
+                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-date"
+                    >
+                        Date</InputLabel>
+                          <OutlinedInput
+                            id="outlined-adornment-date"
+                            type="date"
+                            name="date"
+                            value={formation.date}
+                            onChange={handleChange}
+                            label="date"
+                          />
+                    </FormControl>
+
+
                 </Box>
-                 <div className='flex mb-3 justify-center space-x-7'>                
+                  <div className='flex mb-3 justify-center space-x-7'>                
                         <Link to= "/admin/formations"> 
                         <Button  variant="contained" color="secondary" sx={{mt:3 , width:150}}> retour  </Button> 
                         </Link>        

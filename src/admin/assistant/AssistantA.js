@@ -55,20 +55,6 @@ const columns = [
     align: 'center',
     format: (value) => value.toFixed(2),
   },
-  {
-    id: 'competence',
-    label: 'competence',
-    maxWidth: 130,
-    align: 'center',
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id: 'formateurExterne',
-    label: 'externe',
-    minWidth: 20,
-    align: 'right',
-    format: (value) => value.toFixed(2),
-  },
    {
     id: 'options',
     label: 'Option',
@@ -79,15 +65,15 @@ const columns = [
 ];
 
 
-function createData(image,nom,prenom,username,ville,tel,competence,formateurExterne,options) {
+function createData(image,nom,prenom,username,ville,tel,options) {
   //const density = population / size;
-  return {image,nom,prenom,username,ville,tel,competence,formateurExterne,options};
+  return {image,nom,prenom,username,ville,tel,options};
 }
 
 
 export default function AssistantA() {
   const [page, setPage] = React.useState(0);
-  const [formateurs, setFormateurs] = React.useState([]);
+  const [assistants, setAssistants] = React.useState([]);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const [update,setUpdate] = React.useState(false);
@@ -117,7 +103,7 @@ export default function AssistantA() {
         })
         .then((res)=>{
           
-          setFormateurs(res.data)
+          setAssistants(res.data)
 
         })
   }
@@ -146,7 +132,7 @@ export default function AssistantA() {
 
 // image,nom,prenom,username,ville,tel,competence,formateurExterne
   const rows =
-    formateurs.map((item, index) =>
+    assistants.map((item, index) =>
       createData(
         <img
           src={item.image}
@@ -158,8 +144,6 @@ export default function AssistantA() {
         item.username,
         item.ville?.nom,
         item.tel,
-        item.competence,
-        item.formateurExterne,
         btnOptions(item)
       )
     );
@@ -177,7 +161,7 @@ export default function AssistantA() {
           <TableHead>
             <TableRow>
               <TableCell align="center" colSpan={2}>
-                Country
+                Details
               </TableCell>
               <TableCell align="center" colSpan={3}>
                 Details

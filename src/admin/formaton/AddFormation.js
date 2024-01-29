@@ -27,14 +27,20 @@ export default function AddFormation() {
   const {auth,setAuth} = useContext(AuthContext)
 
   const [villes, setVilles] = useState([])
+  const [categories, setCategories] = useState([])
 
   const [formation, setFormation] = useState(
     {
       nom : "",
       objectif : "",
       programme : "",
+      date:"",
       heure : "",
       ville : {
+        id:null,
+        nom:""
+      },
+       category : {
         id:null,
         nom:""
       },
@@ -53,7 +59,7 @@ export default function AddFormation() {
 
 
    setFormation((prev) => {
-        if (name === "ville") {
+        if (name === "ville" || name === "category") {
       
           return {
             ...prev,
@@ -75,6 +81,9 @@ export default function AddFormation() {
     e.preventDefault();
 
       formation.nom === "" ||
+      formation.date === "" ||
+      formation.ville.nom === "" ||
+      formation.category.nom === "" ||
       formation.objectif === "" ||
       formation.cout === "" ||
       formation.objectif === "" ||
@@ -86,6 +95,7 @@ export default function AddFormation() {
 
   const saveFormation = ()=>{
        
+   
     axios
       .post("/formations", formation)
       .then((res) => {
@@ -95,6 +105,7 @@ export default function AddFormation() {
           {
             nom : "",
             objectif : "",
+            date:"",
             programme : "",
             heure : "",
             ville : {
@@ -113,15 +124,28 @@ export default function AddFormation() {
 
   useEffect(() => {
     
-  axios.get("/villes")
-  .then((res)=>{
-    setVilles(res.data)
-  })
-  .catch((err)=>{
-    console.log(err)
-  })
+  handleLoadData()
     
   }, [])
+
+  const handleLoadData = ()=>{
+
+    axios.get("/categories")
+      .then((res)=>{
+        setCategories(res.data)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+
+      axios.get("/villes")
+      .then((res)=>{
+        setVilles(res.data)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+  }
   
 
   return (
@@ -281,6 +305,40 @@ export default function AddFormation() {
                             label="cout"
                           />
                     </FormControl> <br/>
+
+                       {/* value du champ SELECT, MenuItem,setState doit être du même type ici `.id` */}
+                    <FormControl sx={{ m: 1, width: '35ch' }}>
+                      <InputLabel id="demo-simple-select-cat">Catégorie</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-cat"
+                        id="demo-simple-select"
+                        type="text"
+                        name="category"
+                        value={formation.category?.id}
+                        label="ville"
+                        onChange={handleChange}
+                      >
+                        {categories.map((item,value)=>( 
+                             <MenuItem key={value} value={item.id}>{item.nom}</MenuItem>                    
+                        ))}
+                        
+                      </Select>
+                    </FormControl>
+
+                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-date"
+                    >
+                        Date</InputLabel>
+                          <OutlinedInput
+                            id="outlined-adornment-date"
+                            type="date"
+                            name="date"
+                            value={formation.date}
+                            onChange={handleChange}
+                            label="date"
+                          />
+                    </FormControl>
+
 
                 </Box>
                   <div className='flex mb-3 justify-center space-x-7'>                

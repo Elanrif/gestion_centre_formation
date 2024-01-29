@@ -55,7 +55,7 @@ function Assistant() {
    const loginPerson = ()=>{
   
     axios
-      .post("/loginUser", person)
+      .post("/persons/loginUser", person)
       .then((res) => {
 
        //  navigate("/");

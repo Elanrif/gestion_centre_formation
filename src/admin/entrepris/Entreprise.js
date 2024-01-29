@@ -70,14 +70,17 @@ function createData(image,nom,email,url,tel,address,options) {
 }
 
 
-export default function Entreprise() {
+export default function Entreprise({value}) {
   const [page, setPage] = React.useState(0);
-  const [formations, setFormations] = React.useState([]);
+  const [entreprises, setEntreprises] = React.useState([]);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const [update,setUpdate] = React.useState(false);
 
- 
+  /* cas ou on appelle le composant entreprise et qu'on a pas de pros value, ça va générer 
+   * une erreur, donc on gère ce cas
+   */
+  const {formation,handleSetload} = typeof value !== 'undefined' && value  
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -89,17 +92,24 @@ export default function Entreprise() {
   };
 
   React.useEffect(() => {
-    handleLoad()
+   (typeof value === 'undefined' ) ? handleLoad() : setEntreprises(formation?.entreprises)
   }, [update])
+
 
   const handleLoad = ()=>{
 
     axios.get("/entreprises")
     .then((res)=>{
        
-      setFormations(res.data)
+      setEntreprises(res.data)
 
-    })
+    }) 
+  }
+
+  /* on ne peux pas passer directement la fonction handleSetload reçu en props, il ne sera pris comme une 
+  fonction.erreur a éviter */
+  const handleLoader = ()=>{
+     handleSetload()
   }
   
    const handleSetUpdate = ()=>{
@@ -120,12 +130,12 @@ export default function Entreprise() {
                     <PageviewIcon />
                     </IconButton>
 
-                     <DeleteEntreprise value ={{data,handleSetUpdate}}/>
+                     <DeleteEntreprise value ={{data,handleSetUpdate,formation,handleLoader}}/>
                   </div>
 ) 
 
   const rows =
-    formations.map((item, index) =>
+    entreprises?.map((item, index) =>
       createData(
         <img
           src={item.image}
@@ -134,7 +144,7 @@ export default function Entreprise() {
         />,
         item.nom,
         item.email,
-        <span>{item.url?.slice(0,10)}...</span>,
+        <a href ={`${item.url}`} className='text-blue-600' target="_blank">{item.url}</a>,
         item.tel,
         <span>{item.address?.slice(0,15)}...</span>,
         btnOptions(item)
@@ -154,7 +164,7 @@ export default function Entreprise() {
           <TableHead>
             <TableRow>
               <TableCell align="center" colSpan={2}>
-                Country
+                Details
               </TableCell>
               <TableCell align="center" colSpan={3}>
                 Details
