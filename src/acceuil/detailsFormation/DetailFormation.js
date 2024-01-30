@@ -7,7 +7,6 @@ import Tooltip from '@mui/material/Tooltip';
 import ProgrammeDetaille from './ProgrammeDetaille';
 import Head from './Head';
 
-
 export default function DetailFormation() {
 
     const {detailformID} = useParams()

@@ -34,7 +34,6 @@ export default function AddFormation() {
       nom : "",
       objectif : "",
       programme : "",
-      date:"",
       heure : "",
       ville : {
         id:null,
@@ -81,7 +80,6 @@ export default function AddFormation() {
     e.preventDefault();
 
       formation.nom === "" ||
-      formation.date === "" ||
       formation.ville.nom === "" ||
       formation.category.nom === "" ||
       formation.objectif === "" ||
@@ -105,7 +103,6 @@ export default function AddFormation() {
           {
             nom : "",
             objectif : "",
-            date:"",
             programme : "",
             heure : "",
             ville : {
@@ -151,11 +148,11 @@ export default function AddFormation() {
   return (
     <div className='h-[100vh] bg-slate-50 grid xl:grid-cols-1 grid-cols-1 gap-2'>
         <div className='flex items-center justify-center'>
-            <div className='text-center'>
+            <div className=''>
             <Box 
                 component="form"
                 onSubmit={handleSubmit}>
-                    <p className='mb-7 text-lg  text-slate-600'> Ajouter une nouvelle formation </p>
+                    <p className='mb-7 text-lg  text-slate-600 text-center'> Modifier la  formation </p>
                <Box
                 sx={{
                   '& > :not(style)': { m: 1, width: '45ch' },
@@ -210,58 +207,6 @@ export default function AddFormation() {
                           />
                     </FormControl>
                     <br/>
-
-                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-programme"
-                    >
-                        programme</InputLabel>
-                          <OutlinedInput
-                            id="outlined-adornment-programme"
-                            type="text"
-                            name="programme"
-                            value={formation.programme}
-                            onChange={handleChange}
-                            endAdornment={
-                              <InputAdornment position="end">
-                                <MailIcon
-                            aria-label="toggle programme visibility"
-                            edge="start"
-                          >
-                          <Visibility />
-                          </MailIcon>
-                              </InputAdornment>
-                            }
-                            label="programme"
-                            multiline
-                          />
-                    </FormControl>
-
-                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-objectif"
-                    
-                    >
-                        objectif</InputLabel>
-                          <OutlinedInput
-                            id="outlined-adornment-objectif"
-                            type="text"
-                            name="objectif"
-                            value={formation.objectif}
-                            onChange={handleChange}
-                            endAdornment={
-                              <InputAdornment position="end">
-                                <PersonIcon
-                            aria-label="toggle objectif visibility"
-                            edge="start"
-                          >
-                          <Visibility />
-                          </PersonIcon>
-                              </InputAdornment>
-                            }
-                            label="objectif"
-                            multiline
-                          />
-                    </FormControl>
-                     <br/>
 
                 {/* value du champ SELECT, MenuItem,setState doit être du même type ici `.id` */}
                     <FormControl sx={{ m: 1, width: '35ch' }}>
@@ -323,22 +268,60 @@ export default function AddFormation() {
                         ))}
                         
                       </Select>
-                    </FormControl>
-
+                    </FormControl> <br/>
                      <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-date"
+                    <InputLabel htmlFor="outlined-adornment-programme"
                     >
-                        Date</InputLabel>
+                        programme</InputLabel>
                           <OutlinedInput
-                            id="outlined-adornment-date"
-                            type="date"
-                            name="date"
-                            value={formation.date}
+                            id="outlined-adornment-programme"
+                            type="text"
+                            name="programme"
+                            value={formation.programme}
                             onChange={handleChange}
-                            label="date"
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <MailIcon
+                            aria-label="toggle programme visibility"
+                            edge="start"
+                          >
+                          <Visibility />
+                          </MailIcon>
+                              </InputAdornment>
+                            }
+                            label="programme"
+                            multiline
+                            maxRows={7}
                           />
                     </FormControl>
 
+                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-objectif"
+                    
+                    >
+                        objectif</InputLabel>
+                          <OutlinedInput
+                            id="outlined-adornment-objectif"
+                            type="text"
+                            name="objectif"
+                            value={formation.objectif}
+                            onChange={handleChange}
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <PersonIcon
+                            aria-label="toggle objectif visibility"
+                            edge="start"
+                          >
+                          <Visibility />
+                          </PersonIcon>
+                              </InputAdornment>
+                            }
+                            label="objectif"
+                            multiline
+                            maxRows={7}
+                          />
+                    </FormControl>
+                     
 
                 </Box>
                   <div className='flex mb-3 justify-center space-x-7'>                

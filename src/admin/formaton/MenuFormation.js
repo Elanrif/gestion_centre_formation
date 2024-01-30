@@ -20,6 +20,8 @@ import { Link } from 'react-router-dom';
 import AddImage from './AddImage';
 import AddEntreprise from './AddEntreprise';
 import AddFormateur from './AddFormateur';
+import EventNoteIcon from '@mui/icons-material/EventNote';
+import AddPlanification from './AddPlanification';
 
 
 export default function MenuFormation({data,handleSetUpdate}) {
@@ -53,21 +55,37 @@ export default function MenuFormation({data,handleSetUpdate}) {
     handleClose()
   }
 
+     const handleOpenPlanification= () => {
+    setOpenImg(true)
+    setType("planification")
+    handleClose()
+  }
+
    const handleCloseImg = () => {
     setOpenImg(false);
   }
 
   const addOptions = ()=>{
 
-    if(type == "image"){
-      return  <AddImage value = {{handleCloseImg,opened,data}} />
-    }
-    else if(type == "entreprise"){
-      return   <AddEntreprise value = {{handleCloseImg,opened,data}} />
-    }
-    else {
-      return <AddFormateur value = {{handleCloseImg,opened,data}} />
-    }
+    let componentToRender;
+    switch (type) {
+    case "image":
+      componentToRender = <AddImage value={{ handleCloseImg, opened, data }} />;
+      break;
+    case "entreprise":
+      componentToRender = <AddEntreprise value={{ handleCloseImg, opened, data }} />;
+      break;
+    case "formateur":
+      componentToRender = <AddFormateur value={{ handleCloseImg, opened, data }} />;
+      break;
+      case "planification":
+      componentToRender = <AddPlanification value={{ handleCloseImg, opened, data }} />;
+      break;
+    default:
+      componentToRender = <AddFormateur value={{ handleCloseImg, opened, data }} />;
+      }
+    return componentToRender;
+
   }
 
   return (
@@ -143,6 +161,12 @@ export default function MenuFormation({data,handleSetUpdate}) {
           </ListItemIcon>
           Ajouter une entreprise
         </MenuItem>
+            <MenuItem onClick={handleOpenPlanification}>
+          <ListItemIcon>
+            <EventNoteIcon fontSize="small" />
+          </ListItemIcon>
+          Planifier la date
+        </MenuItem>
         <Divider />
         <MenuItem onClick={handleOpenImg}>
           <ListItemIcon>
@@ -152,12 +176,12 @@ export default function MenuFormation({data,handleSetUpdate}) {
         </MenuItem>
         {
           data.utilisateurs.length > 0 &&
-          <Link to = {`admin/formations/${data.id}/participants`}>
+          <Link to = {`/admin/formations/${data.id}/participants`}>
           <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <ViewListIcon fontSize="small" />
           </ListItemIcon>
-          Listes des participants
+          Listes des participants - {data.utilisateurs.length}
         </MenuItem> 
         </Link>
         }

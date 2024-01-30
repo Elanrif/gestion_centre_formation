@@ -7,6 +7,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { Link } from 'react-router-dom';
+import { Logout } from '@mui/icons-material';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -25,9 +27,16 @@ export default function AlertDialogSlide({formation}) {
 
   return (
     <React.Fragment>
-      <Button variant="contained" color="error" sx={{ marginTop:2}} onClick={handleClickOpen}>
-       Suivre formation
-      </Button>
+        <button
+             onClick={handleClickOpen}
+            className='hover:bg-red-700  text-white duration-300 ease-in-out px-3 py-1 flex items-center space-x-2 rounded-full bg-red-600'>
+           <PlayArrowIcon
+           sx={{fontSize:30}} 
+           className='border-r-2 border-slate-300 pr-2'
+           />
+            <p>Suivre</p>
+          </button>
+    
       <Dialog
         open={open}
         TransitionComponent={Transition}

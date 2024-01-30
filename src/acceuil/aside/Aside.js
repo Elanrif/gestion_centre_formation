@@ -1,45 +1,67 @@
 import React from 'react'
-import Avatar from '@mui/material/Avatar';
-import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
 import Button from '@mui/material/Button';
-import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
-import BarChartIcon from '@mui/icons-material/BarChart';
 import { Link } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import { FormControl, FormHelperText, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import SchoolIcon from '@mui/icons-material/School';
+import PersonIcon from '@mui/icons-material/Person';
+import Visibility from '@mui/icons-material/Visibility';
 
 function Aside() {
   return (
     <div >
-        <div className=' px-7 mx-auto hover:cursor-pointer  duration-300 ease-in-out bg-orange-50'>
-       <div className='flex justify-around'>
-          <div className='flex max-w-3xl space-x-5 justify-center '>
-            <div className='w-[40rem] h-full flex  items-center '>
-              <div>
-                  <h1 className=' text-3xl font-black'> <span className='text-4xl'>B</span>ienvenu sur note site de formation 
-                </h1>
-                <p className='py-3 text-slate-700'>Bienvenue sur notre plateforme de formation dédiée à l'épanouissement professionnel et à l'acquisition de compétences transformantes. Chez nous, l'apprentissage devient une aventure passionnante, où chaque cours est une porte ouverte vers de nouvelles opportunités. Explorez des formations variées animées par des experts chevronnés, et plongez-vous dans un environnement d'apprentissage interactif conçu pour stimuler votre croissance personnelle et professionnelle. </p>
+      <div className='h-[50vh]'>
+        <img src="/image/formation210.jpg" className='float-right'/>
+        <div className='max-w-6xl mx-auto'>
+            <h1 className=' py-3 text-5xl font-black'><span className='text-red-600'>Se former</span> <span>en liberté</span>
+            </h1>
+            <p className='text-3xl py-2'>Des formations en ligne pour découvrir, apprendre, progresser et réussir</p>
+            <div>
+              <h1 className='mt-[7rem] text-xl font-black'> Chercher dans nos formations </h1>
+              <div className='flex items-center space-x-8'>
+                  <Box
+                component="form"
+                sx={{
+                    '& > :not(style)': {marginLeft:0, marginTop: 1, width: '55ch',color:"white",backgroundColor:"white" },
+                }}
+                noValidate
+                autoComplete="off"
+                >
+                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-nom"
+                    >
+                        Rechercher des formations</InputLabel>
+                          <OutlinedInput
+                            id="outlined-adornment-nom"
+                            type="text"
+                            name="nom"
+                            endAdornment={
+                              <InputAdornment position="end">
+                          <SearchIcon
+                            aria-label="toggle nom visibility"
+                            edge="start"
+                            className='hover:cursor-pointer' onClick={()=>alert("cliqué ")}
+                          >
+                          <Visibility />
+                          </SearchIcon>
+                              </InputAdornment>
+                            }
+                            label="nom"
+                          />
+                    </FormControl>
 
-                <Link to="/register/utilisateur">
-                 <Button sx={{mt:2}} variant="contained"> Démarrer mon inscription</Button>
+             </Box>
+
+                <Link to= '/register/formateur' className='hover:bg-red-700 text-white duration-300 ease-in-out px-3 py-1 flex items-center space-x-2 rounded-full bg-red-600'>
+                <SchoolIcon sx={{fontSize:30}} className='border-r-2 border-slate-300 pr-2'/>
+                  <p>Dévenir formateur</p>
                 </Link>
               </div>
             </div>
         </div>
+      </div>
 
-         <div className='flex min-h-[10rem] justify-start space-x-16 items-center'>
-            
-            <div className='h-full text-center'>
-                <img
-                className='h-full w-[45rem]'
-                alt="Formation"
-                src='/image/admin/formation.jpg'
-                />
-            </div>
-
-        </div>
-       </div>
-
-
-    </div>
     </div>
   )
 }

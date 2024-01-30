@@ -21,10 +21,12 @@ export default function DeleteUser({value}) {
     setOpen(false);
   };
 
-  const {data,handleSetUpdate} = value 
+ const {data,handleSetUpdate,handleLoader,formation} = value 
 
   const handleDelete = ()=>{
 
+    
+    !formation  ?
     axios.delete(`/utilisateurs/${data.id}`)
     .then((res)=>{
         handleSetUpdate()
@@ -32,7 +34,22 @@ export default function DeleteUser({value}) {
     .catch((err)=>{
         console.log(err)
     })
-    
+    :
+     axios.get(`/utilisateurs/unfollow`,
+     {
+      params :{
+        utilisateurId : data.id,
+        formationId : formation.id
+      }
+     })
+    .then((res)=>{
+        handleSetUpdate()
+        handleLoader()
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+
     handleClose()
   }
   return (
@@ -42,19 +59,19 @@ export default function DeleteUser({value}) {
         <DeleteIcon />
         </IconButton>
 
-      <Dialog
+       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Êtes-vous sûr de vouloir supprimer cette utilisateur/individu ?"}
+          {`Êtes-vous sûr de vouloir supprimer ${formation ? "le":"cette"} participant ${formation ? "de la formation":""}? `}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             La suppression  est irréversible, elle entrenera automatiquement la suppression
-            definitive dans la base de donnée.
+            {!formation ? " definitive dans la base de donnée.":" avec la formation"}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

@@ -2,30 +2,100 @@ import React,{useState} from 'react'
 import AccountMenu from './AccountMenu'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button } from '@mui/material';
-import { Link, Outlet } from 'react-router-dom';
+import { Link,useNavigate, Outlet } from 'react-router-dom';
+import PersonPinIcon from '@mui/icons-material/PersonPin';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { AuthContext } from '../Context';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Header() {
 
-    const [chevron, setChevron] = useState(false)
+  const {auth,setAuth} = React.useContext(AuthContext)
+  const navigate = useNavigate()
 
+    const handleLogout = ()=>{   
+      console.log("Déconnexion réussi !")
+          setAuth({
+            id : 0
+          })
+          
+          sessionStorage.removeItem("auth")
+          
+          toast.success('Vous êtes déconnecté avec succès', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          setTimeout(() => {
+            navigate("/login/utilisateur")
+          }, 2000);
+  }
 
   return (
    <div>
-     <div className='bg-gray-100 flex py-3 items-center space-x-0 justify-around'>
-        <div className='flex items-center space-x-16'>
-            <Link to="/" className='text-2xl font-black my-1 text-blue-900 hover:cursor-pointer hover:text-blue-800 duration-300 ease-in-out'> Centre-Formation</Link>
-
-            <div className='flex items-center space-x-3 hover:cursor-pointer hover:text-blue-500 duration-300 ease-in-out'
-            onClick={()=>setChevron(!chevron)}>
-                <h1 className='text-lg font-xl my-3 '> Formation</h1>
-            <ExpandMoreIcon className={`${chevron ? 'rotate-180': 'rotate-0'}`}/>
-            </div>
-            <Link to= '/register/formateur'>
-           <Button sx={{mt:0,fontSize:'12px'}} variant="contained"> Dévenir formateur</Button>
-            </Link>
+    <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      />
+    <div className='py-7 border-b-4 border-slate-100 flex items-center justify-around'>
+      <Link to="/">
+        <div className='flex items-center'>
+        <img src="/image/Elan-logo.png" className='h-16 w-16 text-blue-500'/>
+        <div> 
+          <p className='font-black'>Centre de formation</p> 
+          <p className='font-extralight'>Plate de formation
+           En ligne
+           </p> 
         </div>
-       
-        <AccountMenu/>
+      </div>
+      <p className='text-blue-600 text-center font-black'> Se former en liberté</p>
+      </Link>
+
+      <div className='flex text-white space-x-3 items-center'>
+          {
+            auth.id === 0 &&
+            <>
+            <Link to= '/register/utilisateur' className='px-5 py-2 rounded-full bg-slate-200 text-black'>Inscription</Link>
+            <Link to= '/login/utilisateur'  className='px-3 py-1 flex items-center space-x-2 rounded-full bg-red-600'>
+           <AccountCircleIcon sx={{fontSize:30}} className='border-r-2 border-slate-300 pr-2'/>
+            <p>Connexion</p>
+          </Link>
+          </>
+          }
+           {
+            auth.id !== 0 &&
+            <>
+            <button
+            onClick={handleLogout}
+            className='hover:bg-orange-700 duration-300 ease-in-out px-3 py-1 flex items-center space-x-2 rounded-full bg-orange-600'>
+           <LogoutIcon 
+           sx={{fontSize:30}} 
+           className='border-r-2 border-slate-300 pr-2'
+           />
+            <p>Déconnexion</p>
+          </button>
+           <Link to= '/admin/dashboard' className='hover:bg-red-700 duration-300 ease-in-out px-3 py-1 flex items-center space-x-2 rounded-full bg-red-600'>
+           <PersonPinIcon sx={{fontSize:30}} className='border-r-2 border-slate-300 pr-2'/>
+            <p>Mon compte</p>
+          </Link>
+          </>
+           }
+          <button className='px-5 py-2 rounded-full bg-orange-600'>Faq</button>
+      </div>
     </div>
 
     <Outlet/>

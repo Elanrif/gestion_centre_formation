@@ -107,7 +107,7 @@ export default function Entreprise({value}) {
   }
 
   /* on ne peux pas passer directement la fonction handleSetload reçu en props, il ne sera pris comme une 
-  fonction.erreur a éviter */
+  fonction. erreur a éviter */
   const handleLoader = ()=>{
      handleSetload()
   }

@@ -85,14 +85,18 @@ function createData(image,nom,prenom,username,ville,tel,naissance,individu,optio
 }
 
 
-export default function User() {
+export default function User({value}) {
   const [page, setPage] = React.useState(0);
   const [users, setUsers] = React.useState([]);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const [update,setUpdate] = React.useState(false);
 
- 
+   /* cas ou on appelle le composant User et qu'on a pas de pros value, ça va générer 
+   * une erreur, donc on gère ce cas
+   */
+  const {formation,handleSetload} = typeof value !== 'undefined' && value  
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -103,23 +107,13 @@ export default function User() {
     setPage(0);
   };
 
-  React.useEffect(() => {
-    handleLoad()
+    React.useEffect(() => {
+   (typeof value === 'undefined' ) ? handleLoad() : setUsers(formation?.utilisateurs)
   }, [update])
+
 
   const handleLoad = ()=>{
 
-     /* const formData = new FormData();
-     const role  = "ROLE_FORMATEUR"
-     formData.append("role", "ROLE_FORMATEUR");
-     
-      axios.get("/persons/role",formData)
-        .then((res)=>{
-          
-          setUsers(res.data)
-
-        }) */
-  
         axios.get("/utilisateurs")
         .then((res)=>{
           
@@ -128,6 +122,12 @@ export default function User() {
         })
   }
   
+   /* on ne peux pas passer directement la fonction handleSetload reçu en props, il ne sera pris comme une 
+  fonction. erreur a éviter */
+  const handleLoader = ()=>{
+     handleSetload()
+  }
+
    const handleSetUpdate = ()=>{
     setUpdate(!update)
     console.log(" updated !", update)
@@ -146,7 +146,7 @@ export default function User() {
                     <PageviewIcon />
                     </IconButton>
 
-                    <DeleteUser value ={{data,handleSetUpdate}}/>
+                    <DeleteUser value ={{data,handleSetUpdate,formation,handleLoader}}/>
                   </div>
 ) 
 

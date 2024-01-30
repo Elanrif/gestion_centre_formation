@@ -45,6 +45,7 @@ import InputEmail from './acceuil/detailsFormation/InputEmail';
 import 'react-toastify/dist/ReactToastify.css';
 import ListEntreprise from './admin/formaton/liste/ListEntreprise';
 import ListParticipant from './admin/formaton/liste/ListParticipant';
+import ShowFormation from './admin/formaton/ShowFormation';
 
 function App() {
 
@@ -104,6 +105,7 @@ function App() {
                 <Route  path="formations" element={<Formation />}/>
                 <Route  path="formations/add" element={<AddFormation />}/>
                 <Route  path="formations/edit/:formationID" element={<UpdateFormation />}/>
+                <Route  path="formations/show/:showID" element={<ShowFormation />}/>
                 <Route  path="formations/:idFormation/entreprises" element={<ListEntreprise />}/>
                 <Route  path="formations/:idFormation/participants" element={<ListParticipant />}/>
 

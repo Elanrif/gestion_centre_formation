@@ -126,27 +126,37 @@ export default function FormulaireIndividu() {
   const saveUser = ()=>{
     
     user.role = 'ROLE_INDIVIDU';
-   const { checkPwd, ...utilisateur } = user;
+   const { checkPwd, formations,...utilisateur } = user;
 
    console.log("user : " , utilisateur)
+   console.log("formations : " , formations[0])
    
    axios
-      .post("/utilisateurs", utilisateur)
+      .post("/utilisateurs/individu-form", utilisateur,
+      {
+        params:{
+          formationId : formations[0].id 
+        }
+      })
       .then((res) => {
 
         navigate("/")
-         setUser(
-          {
-            nom : "",
-            prenom : "",
-            username : "",
-            password : "",
-            checkPwd:"",
-            tel : "",
-            ville : {nom : ""},
-            naissance:"",
-          }
-        )
+      setUser({
+        nom : "",
+        prenom : "",
+        username : "",
+        password : "",
+        checkPwd:"",
+        formations:[{
+          
+        }],
+        tel : "",
+        ville : {
+          nom : ""
+        },
+        naissance:"",
+      })
+       
       })
       .catch((error) => {
         console.log(error.message);

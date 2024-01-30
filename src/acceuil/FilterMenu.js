@@ -18,7 +18,7 @@ import BallotIcon from '@mui/icons-material/Ballot';
 import FiltreFormation from './Filtre/FiltreFormation';
 import { FilterContext } from './FilterContext';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
-
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 export default function FilterMenu() {
 
@@ -47,7 +47,7 @@ export default function FilterMenu() {
 
   return (
     <React.Fragment>
-      <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+      <Box sx={{marginTop:2, display: 'flex', alignItems: 'center', textAlign: 'center' }}>
        
         {/* <Typography sx={{ minWidth: 100 }}>Profile</Typography> */}
 
@@ -60,7 +60,7 @@ export default function FilterMenu() {
             aria-haspopup="true"
             aria-expanded={opened ? 'true' : undefined}
           >
-            <FilterListIcon sx={{ width: 30, height: 30 }}/>
+            <FilterAltIcon sx={{ width: 30, height: 30 }}/>
           <span className='font-light ms-3'>Filtrer par</span>
           </IconButton>
         </Tooltip>

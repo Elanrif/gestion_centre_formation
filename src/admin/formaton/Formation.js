@@ -17,7 +17,7 @@ import MenuFormation from './MenuFormation';
 import { FormationContext } from './FormationContext';
 import AddCategorie from './AddCategorie';
 import DeleteFormation from './DeleteFormation';
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const columns = [
   { id: 'image', label: 'Image', minWidth: 150 },
@@ -120,9 +120,11 @@ export default function Formation() {
                     </IconButton>
                     </FormationContext.Provider>
 
+                     <Link to={`/admin/formations/show/${data.id}`}>
                      <IconButton aria-label="aperçu">
-                    <PageviewIcon />
+                    <VisibilityIcon />
                     </IconButton>
+                    </Link>
 
                      <DeleteFormation value ={{data,handleSetUpdate}}/>
                   </div>
@@ -150,7 +152,7 @@ export default function Formation() {
   return (
    <div >
      <Box sx={{display:'flex' ,marginLeft:5,marginTop:4,marginBottom:4}}>
-      <Link to="/admin/formations/add" className='me-3'> <Button variant="contained" size="small">Ajouter</Button> </Link>
+      <Link to="/admin/formations/add" className='me-3'> <Button variant="contained" size="small">Planifier une formation</Button> </Link>
       <AddCategorie/>
      </Box>
      <div className='flex justify-center'>

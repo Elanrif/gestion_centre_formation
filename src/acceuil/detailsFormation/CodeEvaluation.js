@@ -39,7 +39,7 @@ export default function CodeEvaluation({data}) {
             const code = formJson.code;
             console.log("code " , code);
 
-            if(code == 4544){
+            if(code == formation.code){
                     navigate(`/evaluation/formateur/${formation.formateur?.id}/utilisateur/${utilisateur.id}/formation/${formation.id}`)
             }else{
                 alert( "le code n'est pas valide ")

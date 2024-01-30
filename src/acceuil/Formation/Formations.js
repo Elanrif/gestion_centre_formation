@@ -59,8 +59,8 @@ function Formations() {
   return (
     <div>
     <FilterContext.Provider value={{open,setOpen,filtre,setFiltre,formations,handleLoadFormations,dispatch}}>
-        <div className='max-w-[80rem] my-4 mx-auto hover:cursor-pointer'>
-            <h1 className='text-3xl font-black text-slate-400'> Nos formations</h1>
+        <div className='max-w-6xl my-4 mx-auto hover:cursor-pointer'>
+            <h1 className='text-3xl font-black text-slate-400'> Catalogue des formations</h1>
                 <FilterMenu /> 
                 <FiltreFormation/>
         </div>
