@@ -7,11 +7,11 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import { Link } from 'react-router-dom';
-import PublicIcon from '@mui/icons-material/Public';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AddCategorieC() {
 
@@ -26,14 +26,6 @@ export default function AddCategorieC() {
   )
 
   const navigate = useNavigate()
-
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
 
    const handleChange = (e) => {
   
@@ -53,20 +45,35 @@ export default function AddCategorieC() {
  const handleSubmit = (e) => {
     e.preventDefault();
 
-      formation.nom === "" ? alert("veuillez remplir tout les champs *") : saveFormation()
+      formation.nom === "" ? alert("veuillez remplir tout les champs *") : saveC()
   
   
   }
 
-  const saveFormation = ()=>{
+   const success = ()=> toast.success('succès !', {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+
+
+  const saveC = ()=>{
        
   // const { checkPwd, ...formater } = formation;
 
     axios
       .post("/categories", formation)
       .then((res) => {
-
-        navigate("/admin/categories");
+        success()
+        setTimeout(() => {
+          navigate("/admin/categories");
+          
+        }, 3000);
          setFormation(
           {
             id:"",
@@ -82,6 +89,7 @@ export default function AddCategorieC() {
 
 
   return (
+    <>
     <div className='h-[100vh] bg-slate-50 grid xl:grid-cols-1 grid-cols-1 gap-2'>
         <div className='flex items-center justify-center'>
             <div className='text-center'>
@@ -132,6 +140,20 @@ export default function AddCategorieC() {
         </div>
 
     </div>
+       <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      />
+
+    </>
   )
 }
 

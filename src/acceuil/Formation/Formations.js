@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useEffect} from 'react'
 import Formation from './Formation';
 import PaginationRule from './PaginationRule';
 import FilterMenu from '../FilterMenu';
@@ -63,9 +63,9 @@ function Formations() {
         </div>
         {formations?.map((item,index)=>{
             return(
-                <React.Fragment key={index}>
+                <div className='mx-auto max-w-[80rem]' key={index}>
                 <Formation formation={item}/>
-                </React.Fragment>
+                </div>
             )
         })}
         <PaginationRule/>

@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import './App.css';
-import { Routes, Route, useParams } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Acceuil from './acceuil/Acceuil';
 import Admin from './acceuil/form/Admin';
 import Assistant from './acceuil/form/Assistant';
@@ -10,9 +10,7 @@ import FormateurR from './acceuil/form-register/FormateurR';
 import UtilisateurR from './acceuil/form-register/UtilisateurR';
 import { AuthContext } from './Context';
 import axios from 'axios';
-import Basic from './Basic';
 import AdminDashboard from './admin/dashboard/AdminDash';
-import View from './admin/View';
 import Formation from './admin/formaton/Formation';
 import Entreprise from './admin/entrepris/Entreprise';
 import FormateurA from './admin/formateur/Formateur';
@@ -28,9 +26,7 @@ import UpdateEntreprise from './admin/entrepris/UpdateEntreprise';
 import Ville from './admin/ville/Ville';
 import UpdateVille from './admin/ville/UpdateVille';
 import AddVille from './admin/ville/AddVille';
-import Autocomplete from './admin/formaton/AutoComplete';
 import Categorie from './admin/categorie/Categorie';
-import AddCategorie from './admin/formaton/AddCategorie';
 import UpdateCategorie from './admin/categorie/UpdateCategorie';
 import AssistantA from './admin/assistant/AssistantA';
 import AddAssistant from './admin/assistant/AddAssistant';
@@ -55,19 +51,23 @@ import FormationUser from './user/dashboard/FormationUser';
 import EvaluationFormateur from './formateur/dashboard/EvaluationFormateur';
 import EvaluationUser from './user/dashboard/EvaluationUser';
 import Evaluation from './admin/evaluation/Evaluation';
-import SimpleBackdrop from './SimpleBackDrop';
+
 
 function App() {
 
-   const authenticate = sessionStorage.getItem("auth") ? JSON.parse( sessionStorage.getItem("auth")) : null ; 
+   const authenticate = sessionStorage.getItem("auth") ? 
+                          JSON.parse( sessionStorage.getItem("auth")) : 
+                          {
+                            id : 0
+                          } 
 
   const [auth,setAuth] = useState({
     id : 0
   }) 
 
   useEffect(() => {
-  authenticate && setAuth(authenticate)
-  }, [auth.id])
+    setAuth(authenticate)
+  }, [authenticate.id])
 
    useEffect(() => {
     intecepteurs()
@@ -77,21 +77,25 @@ function App() {
   const intecepteurs = ()=>{
         axios.interceptors.request.use(function (request) {
       const principal = auth
-          const username =  "elanrif@gmail.com"
-          const password = 1234
+          const username =  auth.username
+          const password = auth.password
 
       if (principal.username) {
         request.headers.Authorization = `Basic ${btoa(`${username}:${password}`)}`;
+        console.log(" Basic auth success")
       }
       return request
     }, (error) => {
      // return Promise.reject(error);
-     console.log(error)
+     console.log("error Basic auth ")
     });
   }
+
+
   
   return (
    <>
+  
     <AuthContext.Provider value={{auth,setAuth}}>
           <Routes>
             <Route path="/" element={<Header />}>
@@ -109,7 +113,7 @@ function App() {
             <Route path="/register/utilisateur" element={<UtilisateurR />}/>
 
                {
-               ( auth.role === "ROLE_ADMIN" || auth.role == "ROLE_ASSISTANT" ) &&
+               ( auth.role === "ROLE_ADMIN" || auth.role === "ROLE_ASSISTANT" ) &&
                 <Route path="/admin" element={<AdminDashboard />}>
                 <Route index path="dashboard" element={<MainDashboard />}/>
                 
@@ -137,10 +141,6 @@ function App() {
                 <Route  path="users" element={<User />}/>
                 <Route  path="users/add" element={<AddUser />}/>
                 <Route  path="users/edit/:userID" element={<UpdateUser />}/>
-
-                <Route  path="assistants" element={<User />}/>
-                <Route  path="assistants/add" element={<AddUser />}/>
-                <Route  path="assistants/edit/:assistantID" element={<UpdateUser />}/>
 
                 <Route  path="categories" element={<Categorie />}/>
                 <Route  path="categories/add" element={<AddCategorieC />}/>
@@ -176,7 +176,8 @@ function App() {
            {/*  <Route  path="*" element={<SimpleBackdrop />}/> */}
             
           </Routes>
-    </AuthContext.Provider></>
+    </AuthContext.Provider>
+  </>
   );
 }
 

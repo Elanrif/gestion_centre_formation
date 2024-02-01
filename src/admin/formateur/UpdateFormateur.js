@@ -19,6 +19,7 @@ import { AuthContext } from '../../Context';
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function UpdateFormateur() {
 
@@ -123,6 +124,18 @@ export default function UpdateFormateur() {
   
   }
 
+   const success = ()=> toast.success('succès !', {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+
+
   const saveFormateur = ()=>{
        
      // Supprimer la clé 'checkPwd' et sa valeur du state
@@ -133,7 +146,11 @@ export default function UpdateFormateur() {
       .put("/persons", formater)
       .then((res) => {
 
-         navigate("/admin/formateurs");
+        success()
+        setTimeout(() => {
+          
+          navigate("/admin/formateurs");
+        }, 2000);
          setFormateur(
           {
             nom : "",
@@ -175,7 +192,7 @@ export default function UpdateFormateur() {
             <Box 
                 component="form"
                 onSubmit={handleSubmit}>
-                 fffff
+                  <p className='text-center my-3'> Modifier</p>
                <Box
                 sx={{
                   '& > :not(style)': { m: 1, width: '55ch' },
@@ -442,7 +459,18 @@ export default function UpdateFormateur() {
             </Box>
             </div>
         </div>
-
+           <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      />
     </div>
   )
 }

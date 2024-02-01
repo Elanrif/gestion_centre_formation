@@ -22,7 +22,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function UpdateFormation() {
 
@@ -102,19 +102,34 @@ export default function UpdateFormation() {
       formation.cout === "" ||
       formation.objectif === "" ||
       formation.programme === "" ||
-      formation.heure === "" ? alert("veuillez remplir tout les champs *") : saveFormation()
+      formation.heure === "" ? alert("veuillez remplir tout les champs *") : updateFormation()
   
   
   }
 
-  const saveFormation = ()=>{
+   const success = ()=> toast.success('succès !', {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+
+  const updateFormation = ()=>{
        
    
     axios
       .post("/formations", formation)
       .then((res) => {
 
-        navigate("/admin/formations");
+        success()
+        setTimeout(() => {
+          navigate("/admin/formations");
+          
+        }, 3000);
          setFormation(
           {
             nom : "",
@@ -196,6 +211,7 @@ export default function UpdateFormation() {
     ];
 
   return (
+     <>
      <div className='mt-5 bg-slate-50 grid xl:grid-cols-1 grid-cols-1 gap-2'>
         <div className='flex items-center justify-center'>
             <div className=''>
@@ -421,6 +437,19 @@ export default function UpdateFormation() {
         </div>
 
     </div>
+       <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      />
+      </>
   )
 }
 

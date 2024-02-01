@@ -6,14 +6,9 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import Settings from '@mui/icons-material/Settings';
-import Logout from '@mui/icons-material/Logout';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
-import GroupsIcon from '@mui/icons-material/Groups';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { Link } from 'react-router-dom';
 import AddImage from './AddImage';
@@ -101,18 +96,7 @@ export default function MenuAssistant({data,handleSetUpdate}) {
           </ListItemIcon>
           <Link to={`/admin/assistants/edit/${data.id}`}> Editer<span className='ms-12 text-start text-transparent'>space</span> </Link> 
         </MenuItem>
-          <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <PersonAdd fontSize="small" />
-          </ListItemIcon>
-          Formateur
-        </MenuItem>
-          <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <GroupsIcon fontSize="small" />
-          </ListItemIcon>
-          Entreprise
-        </MenuItem>
+       
         <Divider />
         <MenuItem onClick={handleOpenImg}>
           <ListItemIcon>
@@ -120,12 +104,7 @@ export default function MenuAssistant({data,handleSetUpdate}) {
           </ListItemIcon>
           Image
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
+        
       </Menu>
     </React.Fragment>
   );

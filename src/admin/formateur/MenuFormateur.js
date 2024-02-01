@@ -101,18 +101,7 @@ export default function MenuFormateur({data,handleSetUpdate}) {
           </ListItemIcon>
           <Link to={`/admin/formateurs/edit/${data.id}`}> Editer<span className='ms-12 text-start text-transparent'>space</span> </Link> 
         </MenuItem>
-          <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <PersonAdd fontSize="small" />
-          </ListItemIcon>
-          Formateur
-        </MenuItem>
-          <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <GroupsIcon fontSize="small" />
-          </ListItemIcon>
-          Entreprise
-        </MenuItem>
+     
         <Divider />
         <MenuItem onClick={handleOpenImg}>
           <ListItemIcon>
@@ -120,12 +109,7 @@ export default function MenuFormateur({data,handleSetUpdate}) {
           </ListItemIcon>
           Image
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
+      
       </Menu>
     </React.Fragment>
   );

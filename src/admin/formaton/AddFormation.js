@@ -21,7 +21,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AddFormation() {
 
@@ -98,10 +98,21 @@ export default function AddFormation() {
       formation.cout === "" ||
       formation.objectif === "" ||
       formation.programme === "" ||
-      //formation.heure === "" ? alert("veuillez remplir tout les champs *") : saveFormation()
+      formation.heure === "" ? alert("veuillez remplir tout les champs *") : saveFormation()
      console.log(formation)
   
   }
+
+   const success = ()=> toast.success('succès !', {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
 
   const saveFormation = ()=>{
        
@@ -110,7 +121,11 @@ export default function AddFormation() {
       .post("/formations", formation)
       .then((res) => {
 
-        navigate("/admin/formations");
+        success()
+        setTimeout(() => {
+          navigate("/admin/formations");
+          
+        }, 3000);
          setFormation(
           {
             nom : "",
@@ -174,13 +189,14 @@ export default function AddFormation() {
     ];
 
   return (
+  <>
     <div className='mt-5 bg-slate-50 grid xl:grid-cols-1 grid-cols-1 gap-2'>
         <div className='flex items-center justify-center'>
             <div className=''>
             <Box 
                 component="form"
                 onSubmit={handleSubmit}>
-                    <p className='mb-7 text-lg  text-slate-600 text-center'> Modifier la  formation </p>
+                    <p className='mb-7 text-lg  text-slate-600 text-center'> Ajouter une formation </p>
                <Box
                 sx={{
                   '& > :not(style)': { m: 1, width: '55ch' },
@@ -358,33 +374,6 @@ export default function AddFormation() {
                           />
                     </FormControl>
 
-               {/*       <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-programme"
-                    >
-                        programme
-                        </InputLabel>
-                          <OutlinedInput
-                            id="outlined-adornment-programme"
-                            type="text"
-                            name="programme"
-                            value={formation.programme}
-                            onChange={handleChange}
-                            endAdornment={
-                              <InputAdornment position="end">
-                                <MailIcon
-                            aria-label="toggle programme visibility"
-                            edge="start"
-                          >
-                          <Visibility />
-                          </MailIcon>
-                              </InputAdornment>
-                            }
-                            label="programme"
-                            multiline
-                            maxRows={7}
-                          />
-                    </FormControl> */}
-
                 
                 </Box>
                   <div className='flex mb-3 justify-center space-x-7'>                
@@ -398,6 +387,18 @@ export default function AddFormation() {
         </div>
 
     </div>
+       <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      /></>
   )
 }
 

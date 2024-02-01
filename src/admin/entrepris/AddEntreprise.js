@@ -17,6 +17,7 @@ import axios, { Axios } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context';
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AddEntreprise() {
 
@@ -84,6 +85,17 @@ export default function AddEntreprise() {
   
   }
 
+   const success = ()=> toast.success('succès !', {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+
   const saveEntreprise = ()=>{
        
    
@@ -91,7 +103,11 @@ export default function AddEntreprise() {
       .post("/entreprises", entreprise)
       .then((res) => {
 
-        navigate( "/admin/entreprises")
+        success()
+        setTimeout(() => {
+          
+          navigate( "/admin/entreprises")
+        }, 2000);
          setEntreprise(
           {
             nom: "",
@@ -115,7 +131,7 @@ export default function AddEntreprise() {
             <Box 
                 component="form"
                 onSubmit={handleSubmit}>
-                  vvvv
+                  <p className='text-center my-3'> Ajouter </p>
                <Box
                 sx={{
                   '& > :not(style)': { m: 1, width: '45ch' },
@@ -252,7 +268,18 @@ export default function AddEntreprise() {
             </Box>
             </div>
         </div>
-
+    <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      />
     </div>
   )
 }

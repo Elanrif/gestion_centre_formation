@@ -8,8 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box, Button, IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import { ToastContainer, toast } from 'react-toastify';
 import PageviewIcon from '@mui/icons-material/Pageview';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -122,6 +121,18 @@ export default function Formateur() {
         })
   }
   
+   const success = ()=> toast.success('succès !', {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+
+
    const handleSetUpdate = ()=>{
     setUpdate(!update)
     console.log('execute')
@@ -140,13 +151,13 @@ export default function Formateur() {
                     <PageviewIcon />
                     </IconButton>
 
-                    <DeleteFormateur value ={{data,handleSetUpdate}}/>
+                    <DeleteFormateur value ={{data,handleSetUpdate,success}}/>
                   </div>
 ) 
 
 // image,nom,prenom,username,ville,tel,competence,formateurExterne
   const rows =
-    formateurs.map((item, index) =>
+    formateurs.sort((a, b) => b.id - a.id).map((item, index) =>
       createData(
         <img
           src={item.image}
@@ -235,6 +246,18 @@ export default function Formateur() {
       />
     </Paper>
      </div>
+         <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      />
    </div>
   );
 }

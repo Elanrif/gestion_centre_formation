@@ -1,4 +1,4 @@
-import React,{useState,useContext,useEffect} from 'react'
+import React,{useState,useEffect} from 'react'
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
@@ -9,13 +9,15 @@ import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import MailIcon from '@mui/icons-material/Mail';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import PersonIcon from '@mui/icons-material/Person';
 import PublicIcon from '@mui/icons-material/Public';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Welcome from './Welcome';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 export default function FormulaireIndividu() {
 
@@ -60,7 +62,7 @@ export default function FormulaireIndividu() {
     const name = target.name ;
 
     setUser((prev)=>{
-        if(name == "ville"){
+        if(name === "ville"){
             return({
                 ...prev,
                 [name]:{nom: value}
@@ -79,11 +81,10 @@ export default function FormulaireIndividu() {
  const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(user)
-     if(user.password != user.checkPwd)
+     if(user.password !== user.checkPwd)
     {
      
-    alert("password error !")
+     errorPwd()
      setUser((prevState)=>({
       ...prevState,
       password : "",
@@ -97,7 +98,7 @@ export default function FormulaireIndividu() {
       user.prenom === "" ||
       user.username === "" ||
       user.password ==="" ||
-      user.tel === "" ? alert("veuillez remplir tout les champs *") : saveUser()
+      user.tel === "" ? filledChamps() : saveUser()
     }
   
   }
@@ -128,9 +129,6 @@ export default function FormulaireIndividu() {
     user.role = 'ROLE_INDIVIDU';
    const { checkPwd, formations,...utilisateur } = user;
 
-   console.log("user : " , utilisateur)
-   console.log("formations : " , formations[0])
-   
    axios
       .post("/utilisateurs/individu-form", utilisateur,
       {
@@ -140,7 +138,10 @@ export default function FormulaireIndividu() {
       })
       .then((res) => {
 
+        success()
+      setTimeout(() => {
         navigate("/")
+      }, 3000);
       setUser({
         nom : "",
         prenom : "",
@@ -159,13 +160,59 @@ export default function FormulaireIndividu() {
        
       })
       .catch((error) => {
-        console.log(error.message);
+        error500()
+        console.log(error);
     
       });
   }
 
+    const error500 = ()=> toast.error('Vous êtes déjà inscrit !', {
+      position: "top-left",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+
+   const success = ()=> toast.success('Vous êtes inscrit avec succès !', {
+      position: "top-left",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+
+       const errorPwd = ()=> toast.error('Mot de passe erroné !', {
+      position: "top-left",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+
+       const filledChamps = ()=> toast.warning('Veuillez remplir tout les champs !', {
+      position: "top-left",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+
 
   return (
+ <>
     <div className='h-[100vh] bg-slate-50 grid xl:grid-cols-2 grid-cols-1 gap-2'>
         <div className='flex items-center justify-center'>
             <div className=''>
@@ -401,6 +448,19 @@ export default function FormulaireIndividu() {
          <Welcome/>
 
     </div>
+      <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      />
+      </>
   )
 }
 

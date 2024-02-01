@@ -6,8 +6,8 @@ import Button from '@mui/material/Button';
 function SpeechPrincipal() {
   return (
  <div className='bg-cyan-50'>
-       <div className='w-[60rem] py-4 mx-auto '>
-        <div className='flex p-9 my-3 border rounded-lg shadow bg-slate-50 justify-between items-center'>
+       <div className='lg:w-[60rem] py-4 mx-auto '>
+        <div className='flex-cols space-y-3 lg:space-y-0 md:flex p-9 my-3 border rounded-lg shadow bg-slate-50 justify-between items-center'>
             <div className='max-w-[30rem]'>  
             <RecordVoiceOverIcon className='me-3'/>   
             <p className='font-light'>Bienvenue sur notre site ! Nous sommes ravis de vous accueillir dans notre communauté dédiée à l'apprentissage et au développement professionnel. Chez nous, l'éducation va au-delà des frontières, ouvrant la voie à des opportunités infinies pour l'acquisition de nouvelles compétences et la croissance personnelle.</p>
@@ -26,7 +26,7 @@ function SpeechPrincipal() {
 
          <div className='flex mb-4 border rounded-lg shadow bg-slate-50 justify-between items-center mt-6'>
             
-            <div className='text-center'>
+            <div className='hidden lg:block text-center'>
                 <img
                 alt="Formation"
                 className='w-[25rem] h-[20rem]'
@@ -34,7 +34,7 @@ function SpeechPrincipal() {
                 />
             </div>
 
-            <div className='max-w-[30rem]'>  
+            <div className='p-3 lg:p-0 max-w-[30rem]'>  
             <h1 className='text-2xl font-black'>Devenir Formateur</h1> 
             <p className='font-light'>
                 Bienvenue dans notre communauté dédiée à l'excellence éducative ! Nous vous invitons à vous joindre à nous pour partager votre expertise, inspirer des parcours d'apprentissage et contribuer à l'édification de compétences exceptionnelles.

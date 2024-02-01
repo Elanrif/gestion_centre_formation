@@ -1,9 +1,10 @@
-import React,{useEffect,useReducer} from 'react'
+import React,{useContext, useEffect,useReducer} from 'react'
 import Left from './Left'
 import Center from './Center'
 import Right from './Right'
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import axios from 'axios';
+import { AuthContext } from '../../../Context';
 
 const initialState = {
   formateurs: null,
@@ -41,6 +42,8 @@ const reducer = (state, action) => {
 export default function MainDashboard() {
 
  const [data, dispatch] = useReducer(reducer, initialState);
+
+ const {auth} = useContext(AuthContext)
 
  useEffect(() => {
    handleloadFormateurs()
@@ -135,7 +138,7 @@ export default function MainDashboard() {
   return (
      <div>
           <div className='px-7 py-3 bg-black text-white  capitalize font-black'>
-            <DashboardIcon sx={{fontSize:50,color:"white"}}/> TABLEAU DE BORD ADMINISTRATEUR</div>
+            <DashboardIcon sx={{fontSize:50,color:"white"}}/> TABLEAU DE BORD {auth.role === "ADMIN" ? "ADMINISTRATEUR" : "ASSISTANT" }</div>
 
         <div className='flex justify-center '>
         <div className='grid border py-10  h-[70vh]

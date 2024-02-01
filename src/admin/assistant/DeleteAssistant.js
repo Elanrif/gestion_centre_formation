@@ -21,13 +21,14 @@ export default function DeleteAssistant({value}) {
     setOpen(false);
   };
 
-  const {data,handleSetUpdate} = value 
+  const {data,handleSetUpdate,success} = value 
 
   const handleDelete = ()=>{
 
     axios.delete(`/persons/${data.id}`)
     .then((res)=>{
         handleSetUpdate()
+        success()
     })
     .catch((err)=>{
         console.log(err)

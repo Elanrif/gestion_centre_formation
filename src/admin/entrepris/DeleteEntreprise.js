@@ -21,7 +21,7 @@ export default function DeleteEntreprise({value}) {
     setOpen(false);
   };
 
-  const {data,handleSetUpdate,handleLoader,formation} = value 
+  const {data,handleSetUpdate,handleLoader,formation,success} = value 
 
   const handleDelete = ()=>{
 
@@ -29,6 +29,7 @@ export default function DeleteEntreprise({value}) {
     axios.delete(`/entreprises/${data.id}`)
     .then((res)=>{
         handleSetUpdate()
+        success()
     })
     .catch((err)=>{
         console.log(err)

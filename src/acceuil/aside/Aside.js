@@ -13,7 +13,7 @@ function Aside() {
     <div >
       <div className='h-[56vh] bg-indigo-800 text-white'>
         <img src="/image/formation210.jpg" className='float-right'/>
-        <div className='max-w-6xl pt-5 mx-auto'>
+        <div className='hidden lg:block max-w-6xl pt-5 mx-auto'>
             <h1 className=' py-3 text-5xl font-black'><span className='text-red-600'>Se former</span> <span>en liberté</span>
             </h1>
             <p className='text-3xl text-slate-300 py-2'>Des formations en ligne pour découvrir, apprendre, progresser et réussir</p>
@@ -53,7 +53,7 @@ function Aside() {
 
              </Box>
 
-                <Link to= '/register/formateur' className='hover:bg-red-700 text-white duration-300 ease-in-out px-3 py-1 flex items-center space-x-2 rounded-full bg-red-600'>
+                <Link to= '/register/formateur' className='hidden md:flex hover:bg-red-700 text-white duration-300 ease-in-out px-3 py-1  items-center space-x-2 rounded-full bg-red-600'>
                 <SchoolIcon sx={{fontSize:30}} className='border-r-2 border-slate-300 pr-2'/>
                   <p>Dévenir formateur</p>
                 </Link>

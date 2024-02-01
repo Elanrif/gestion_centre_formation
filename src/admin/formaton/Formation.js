@@ -8,9 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box, Button, IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import PageviewIcon from '@mui/icons-material/Pageview';
+import { ToastContainer, toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import MenuFormation from './MenuFormation';
@@ -106,6 +104,17 @@ export default function Formation() {
     })
   }
   
+  const success = ()=> toast.success('succès !', {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+
    const handleSetUpdate = ()=>{
     setUpdate(!update)
     console.log(" updated !", update)
@@ -116,7 +125,7 @@ export default function Formation() {
                  
                     <FormationContext.Provider value={handleSetUpdate}>
                       <IconButton aria-label="aperçu">
-                    <MenuFormation data={data} handleSetUpdate={handleSetUpdate}/>
+                    <MenuFormation data={data} handleSetUpdate={handleSetUpdate} />
                     </IconButton>
                     </FormationContext.Provider>
 
@@ -126,12 +135,12 @@ export default function Formation() {
                     </IconButton>
                     </Link>
 
-                     <DeleteFormation value ={{data,handleSetUpdate}}/>
+                     <DeleteFormation value ={{data,handleSetUpdate,success}}/>
                   </div>
 ) 
 
   const rows =
-    formations.map((item, index) =>
+    formations.sort((a, b) => b.id - a.id).map((item, index) =>
       createData(
         <img
           src={item.image}
@@ -220,6 +229,18 @@ export default function Formation() {
       />
     </Paper>
      </div>
+         <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      />
    </div>
   );
 }

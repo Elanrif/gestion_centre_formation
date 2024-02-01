@@ -11,6 +11,7 @@ import PublicIcon from '@mui/icons-material/Public';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function UpdateVille() {
 
@@ -27,13 +28,6 @@ export default function UpdateVille() {
 
   const navigate = useNavigate()
 
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
 
    React.useEffect(() => {
     handleLoad()
@@ -68,20 +62,34 @@ export default function UpdateVille() {
  const handleSubmit = (e) => {
     e.preventDefault();
 
-      formation.nom === "" ? alert("veuillez remplir tout les champs *") : saveFormation()
+      formation.nom === "" ? alert("veuillez remplir tout les champs *") : update()
   
   
   }
 
-  const saveFormation = ()=>{
-       
-  // const { checkPwd, ...formater } = formation;
+   const success = ()=> toast.success('succès !', {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
 
+  const update = ()=>{
+  
     axios
       .post("/villes", formation)
       .then((res) => {
+        
+        success()
+        setTimeout(() => {
+          
+          navigate("/admin/villes");
+        }, 2000);
 
-       //  navigate("/");
          setFormation(
           {
             id:"",
@@ -97,6 +105,7 @@ export default function UpdateVille() {
 
 
   return (
+    <>
     <div className='h-[100vh] bg-slate-50 grid xl:grid-cols-1 grid-cols-1 gap-2'>
         <div className='flex items-center justify-center'>
             <div className='text-center'>
@@ -147,6 +156,19 @@ export default function UpdateVille() {
         </div>
 
     </div>
+       <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      />
+    </>
   )
 }
 

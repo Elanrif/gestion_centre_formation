@@ -19,6 +19,7 @@ import { AuthContext } from '../../Context';
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function UpdateAssistant() {
 
@@ -119,6 +120,17 @@ export default function UpdateAssistant() {
   
   }
 
+   const success = ()=> toast.success('succès !', {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+
   const saveAssistant = ()=>{
        
      // Supprimer la clé 'checkPwd' et sa valeur du state
@@ -129,7 +141,11 @@ export default function UpdateAssistant() {
       .put("/persons", formater)
       .then((res) => {
 
-         navigate("/admin/assistants");
+        success()
+        setTimeout(() => {
+          
+          navigate("/admin/assistants");
+        }, 2000);
          setAssistant(
           {
             nom : "",
@@ -367,7 +383,18 @@ export default function UpdateAssistant() {
             </Box>
             </div>
         </div>
-
+         <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      />
     </div>
   )
 }

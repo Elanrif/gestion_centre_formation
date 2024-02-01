@@ -10,7 +10,7 @@ export default function PaginationRule() {
   };
 
   return (
-    <div className='text-center my-7'>
+    <div className='text-center hidden my-7'>
     <Stack spacing={2} sx={{textAlign: 'center', alignItems: 'center' }}>
     {/* <Typography>Page: {page}</Typography> */}
     <Pagination count={10} page={page} onChange={handleChange} color="primary"/>

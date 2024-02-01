@@ -21,13 +21,14 @@ export default function DeleteVille({value}) {
     setOpen(false);
   };
 
-  const {data,handleSetUpdate} = value 
+  const {data,handleSetUpdate,success} = value 
 
   const handleDelete = ()=>{
 
     axios.delete(`/villes/${data.id}`)
     .then((res)=>{
         handleSetUpdate()
+        success()
     })
     .catch((err)=>{
         console.log(err)

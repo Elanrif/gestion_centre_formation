@@ -5,12 +5,6 @@ import { Button } from '@mui/material';
 import { Link,useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import CodeEvaluation from './CodeEvaluation';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { AuthContext } from '../../Context';
 import { ToastContainer, toast } from 'react-toastify';
 
 

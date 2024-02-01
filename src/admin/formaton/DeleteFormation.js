@@ -21,13 +21,14 @@ export default function DeleteFormation({value}) {
     setOpen(false);
   };
 
-  const {data,handleSetUpdate} = value 
+  const {data,handleSetUpdate,success} = value 
 
   const handleDelete = ()=>{
 
     axios.delete(`/formations/${data.id}`)
     .then((res)=>{
         handleSetUpdate()
+        success()
     })
     .catch((err)=>{
         console.log(err)

@@ -64,7 +64,7 @@ function Header() {
       theme="colored"
       />
     <div className='py-7 border-b-4 border-slate-100 flex items-center justify-around'>
-      <Link to="/">
+      <Link to="/" className='hidden md:block'>
         <div className='flex items-center'>
         <img src="/image/Elan-logo.png" className='h-16 w-16 text-blue-500'/>
         <div> 

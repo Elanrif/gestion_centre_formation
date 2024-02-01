@@ -5,11 +5,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Link } from 'react-router-dom';
-import { Logout } from '@mui/icons-material';
+import LockIcon from '@mui/icons-material/Lock';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
-export default function AlertDialogSlide({formation}) {
+export default function AlertEntreprise({formation}) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -24,12 +23,12 @@ export default function AlertDialogSlide({formation}) {
     <React.Fragment>
         <button
              onClick={handleClickOpen}
-            className='hover:bg-red-700  text-white duration-300 ease-in-out px-3 py-1 flex items-center space-x-2 rounded-full bg-red-600'>
-           <PlayArrowIcon
+            className='hover:bg-black  text-white duration-300 ease-in-out px-3 py-1 flex items-center space-x-2 rounded-full bg-slate-900'>
+           <LockIcon
            sx={{fontSize:30}} 
            className='border-r-2 border-slate-300 pr-2'
            />
-            <p>S'inscrire</p>
+            <p>Réservé</p>
           </button>
     
       <Dialog
@@ -37,20 +36,15 @@ export default function AlertDialogSlide({formation}) {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{"Veuillez cliqué sur un bouton ci-dessous ?"}</DialogTitle>
+        <DialogTitle>{"La formation est réservé aux entreprises !"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Pour suivre une formation , vous devez soit créer un compte ou remplir un formulaire de la formation.
+            Vous ne pouvez pas vous s'inscrire a cette formation, il est reservé aux entreprises.
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Link to={`/formation/${formation.id}/formulaire`}>
-          <Button variant='contained' color="primary" onClick={handleClose}>Formulaire</Button>
-          </Link>
-           <Link to="/register/utilisateur">
-         <Button variant='contained' color="success"  onClick={handleClose}>Créer un compte</Button>
-          </Link>
-          
+        <DialogActions sx={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <Button variant='contained' sx={{marginBottom:2}} color="error" onClick={handleClose}>Fermer</Button>
+       
         </DialogActions>
       </Dialog>
     </React.Fragment>

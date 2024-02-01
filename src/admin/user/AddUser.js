@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context'; 
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AddUser() {
 
@@ -103,16 +104,31 @@ export default function AddUser() {
   
   }
 
+   const success = ()=> toast.success('succès !', {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+
   const saveUser = ()=>{
        
      // Supprimer la clé 'checkPwd' et sa valeur du state
    const { checkPwd, ...utilisateur } = user;
 
     axios
-      .post("/utilisateurs/admin", utilisateur)
+      .post("/utilisateurs", utilisateur)
       .then((res) => {
 
+        success()
+        setTimeout(() => {
+          
           navigate("/admin/users");
+        }, 2000);
          setUser(
           {
             nom : "",
@@ -154,7 +170,7 @@ export default function AddUser() {
             <Box 
                 component="form"
                 onSubmit={handleSubmit}>
-                  <p> Ajoute un utilisateur </p>
+                  <p className='my-3 text-center'> Ajoute un utilisateur </p>
 
                <Box
                 sx={{
@@ -366,6 +382,18 @@ export default function AddUser() {
             </Box>
             </div>
         </div>
+           <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      />
     </div>
   )
 }

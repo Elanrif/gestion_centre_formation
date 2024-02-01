@@ -56,18 +56,13 @@ export default function SidebarFormateur() {
             }`}
           >
             <Avatar
-              sx={{ bgcolor: deepOrange[500], width: 80, height: 80 }}
+              sx={{ width: 80, height: 80 }}
               className="mx-auto"
-              src={
-                auth.image
-                  ? `data:image;base64,${auth.image}`
-                  : "/image/main/person.jpeg"
-              }
+              src={auth.image}
             >
-              {auth.image === null &&
-                auth?.firstName?.slice(0, 1)}
+             
             </Avatar>
-            <p className="mt-3  font-light uppercase">
+            <p className="mt-3  font-normal">
               {auth.nom}
             </p>
           </div>

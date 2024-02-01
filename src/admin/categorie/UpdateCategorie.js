@@ -12,6 +12,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 export default function UpdateCategorie() {
 
@@ -28,13 +30,6 @@ export default function UpdateCategorie() {
 
   const navigate = useNavigate()
 
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
 
    React.useEffect(() => {
     handleLoad()
@@ -69,20 +64,34 @@ export default function UpdateCategorie() {
  const handleSubmit = (e) => {
     e.preventDefault();
 
-      formation.nom === "" ? alert("veuillez remplir tout les champs *") : saveFormation()
+      formation.nom === "" ? alert("veuillez remplir tout les champs *") : update()
   
   
   }
 
-  const saveFormation = ()=>{
+ const success = ()=> toast.success('succès !', {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+
+  const update = ()=>{
        
   // const { checkPwd, ...formater } = formation;
 
     axios
       .put("/categories", formation)
       .then((res) => {
-
-      navigate("/admin/categories");
+        success()
+      setTimeout(() => {
+        navigate("/admin/categories");
+        
+      }, 2000);
          setFormation(
           {
             id:"",
@@ -98,6 +107,7 @@ export default function UpdateCategorie() {
 
 
   return (
+    <>
     <div className='h-[100vh] bg-slate-50 grid xl:grid-cols-1 grid-cols-1 gap-2'>
         <div className='flex items-center justify-center'>
             <div className='text-center'>
@@ -148,6 +158,19 @@ export default function UpdateCategorie() {
         </div>
 
     </div>
+       <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      />
+    </>
   )
 }
 

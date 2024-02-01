@@ -10,6 +10,7 @@ import { AuthContext } from '../../Context';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
+import AlertEntreprise from './AlertEntreprise';
 
 
 export default function Head({formation}) {
@@ -130,7 +131,7 @@ const unfollowFormation = ()=>{
                       <img
                       className='h-[12rem] w-[20rem]'
                       alt="Remy Sharp"
-                      src={formation.image}
+                     src={formation.image  ? formation.image : `/image/defaut.png`}
                       />
                   </div>
 
@@ -140,20 +141,20 @@ const unfollowFormation = ()=>{
                   <div className='text-md mt-3  py-2 capitalize flex items-center space-x-4'>
                     
                       <div className='flex items-center space-x-1'>
-                          <BarChartIcon className='text-slate-500'/> <p>Niveau : facile</p>
-                      </div>
-                      <div className='flex items-center space-x-1'>
                           <QueryBuilderIcon className='text-slate-500'/> <p>{formation.heure} heures</p>
                       </div>
                       <div className='flex items-center space-x-1'>
                         <PlaceIcon className='text-red-600'/> <p>{formation.ville?.nom}</p>
                       </div>
-                      <div className='flex items-center normal-case space-x-1'>
-                        <EventIcon sx={{fontSize:20}} className='text-slate-700 '/> <p> début -{formation.date}</p>
+                      {formation.startDate && <div className='flex items-center normal-case space-x-1'>
+                        <EventIcon sx={{fontSize:20}} className='text-slate-700 '/> <p> début - {formation.startDate}</p>
                       </div>
-                      <div className='flex items-center normal-case space-x-1'>
-                        <EventIcon sx={{fontSize:20}} className='text-red-600 '/> <p> fin - {formation.date}</p>
+                      }
+                      {
+                        formation.finishDate && <div className='flex items-center normal-case space-x-1'>
+                        <EventIcon sx={{fontSize:20}} className='text-red-600 '/> <p> fin - {formation.finishDate}</p>
                       </div>
+                      }
                   </div>
                       
                   <p className='font-extralight max-w-2xl'>
@@ -174,6 +175,12 @@ const unfollowFormation = ()=>{
                 }
                  
                 {
+                  formation.dedie === "ENTREPRISE" ? 
+                  <>
+                    <AlertEntreprise formation={formation}/>
+                  </>
+                  : 
+                  ( 
                   auth.id === 0 ? 
                   <AlertDialogSlide formation={formation}/>
                   : 
@@ -194,6 +201,7 @@ const unfollowFormation = ()=>{
                 }
                   <p>{change.boolean ? "Inscrit" : "S'inscrire" }</p>
                 </button>
+                  )
                 }
 
 
