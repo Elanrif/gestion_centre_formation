@@ -23,13 +23,6 @@ const columns = [
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'programme',
-    label: 'programme',
-    minWidth: 170,
-    align: 'center',
-    format: (value) => value.toFixed(2),
-  },
-  {
     id: 'ville',
     label: 'ville',
     minWidth: 150,
@@ -46,9 +39,9 @@ const columns = [
   }
 ];
 
-function createData(image,nom,cout,programme,ville,date,options) {
+function createData(image,nom,cout,ville,date,options) {
   //const density = population / size;
-  return {image, nom,cout,programme,ville,date,options};
+  return {image, nom,cout,ville,date,options};
 }
 
 
@@ -98,9 +91,8 @@ export default function FormationFormateur() {
         />,
         item.nom,
         <div className='flex items-center space-x-2'> <span>{item.cout}</span> <span>DHS</span> </div>,
-        <span>{item.programme?.slice(0,15)}...</span>,
         item.ville?.nom,
-        item.date
+        item.startDate
       )
     );
 

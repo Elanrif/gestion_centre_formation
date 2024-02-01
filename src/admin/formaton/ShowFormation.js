@@ -56,7 +56,7 @@ export default function ShowFormation() {
                 <img
                 className='h-[20rem] w-[20rem]'
                 alt="Remy Sharp"
-                src={formation.image}
+                src={formation.image? formation.image : `/image/defaut.png`}
                 />
             </div>
 
@@ -76,14 +76,18 @@ export default function ShowFormation() {
                 <PlaceIcon className='text-red-600'/> 
                 <p>{formation.ville?.nom}</p>
                 </div>
+                {formation.startDate &&
                 <div className='flex items-center normal-case space-x-1'>
                 <EventIcon sx={{fontSize:20}} className='text-slate-700 '/> 
                 <p> début : {formation.startDate}</p>
-                </div>
-                <div className='flex items-center normal-case space-x-1'>
+                </div>}
+                {
+                    formation.finishDate &&
+                    <div className='flex items-center normal-case space-x-1'>
                 <EventIcon sx={{fontSize:20}} className='text-red-600 '/> 
                 <p> fin : {formation.finishDate}</p>
                 </div>
+                }
             </div>
                 
             <p className='font-extralight max-w-2xl'>
@@ -108,10 +112,10 @@ export default function ShowFormation() {
                 </span>
                 
                 </div>
-
+                {(formation.dedie === "ENTREPRISE" && formation.utilisateurs?.length > 0)
+                 && 
                 <CodeEvalMoal data={{formation,succes}}/>
-
-
+                }
             </div>
         }
             
@@ -119,7 +123,7 @@ export default function ShowFormation() {
 
         <Link to={`/admin/formations/${formation.id}/entreprises`} className='flex mt-4 items-center space-x-3'>
             {
-            formation.entreprises &&
+            formation.dedie === "ENTREPRISE" &&
             <>
                 <BusinessIcon/>
                 <p className='font-extralight'>
@@ -138,7 +142,7 @@ export default function ShowFormation() {
 
         <Link to= {`/admin/formations/${formation.id}/participants`} className='flex mt-4 items-center space-x-3'>
             {
-            formation.utilisateurs &&
+            formation.dedie === "INDIVIDU" &&
             <>
                 <Diversity3Icon/>
                 <p className='font-extralight'>
@@ -159,9 +163,9 @@ export default function ShowFormation() {
             <p className='px-4 py-2 bg-red-500 text-white rounded-xl'> Retour </p>
          </Link> 
         </div>
-     </div>
+        </div>
+        </div>
     </div>
-</div>
 
         <ToastContainer
         position="top-right"

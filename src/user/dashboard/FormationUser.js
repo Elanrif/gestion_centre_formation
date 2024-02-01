@@ -22,13 +22,7 @@ const columns = [
     align: 'center', /* left,center,right */
     format: (value) => value.toLocaleString('en-US'),
   },
-  {
-    id: 'programme',
-    label: 'programme',
-    minWidth: 170,
-    align: 'center',
-    format: (value) => value.toFixed(2),
-  },
+  
   {
     id: 'ville',
     label: 'ville',
@@ -54,9 +48,9 @@ const columns = [
   }
 ];
 
-function createData(image,nom,cout,programme,ville,date,formateur) {
+function createData(image,nom,cout,ville,date,formateur) {
   //const density = population / size;
-  return {image, nom,cout,programme,ville,date,formateur};
+  return {image, nom,cout,ville,date,formateur};
 }
 
 
@@ -105,9 +99,8 @@ export default function FormationUser() {
         />,
         item.nom,
         <div className='flex items-center space-x-2'> <span>{item.cout}</span> <span>DHS</span> </div>,
-        <span>{item.programme?.slice(0,15)}...</span>,
         item.ville?.nom,/* item.ville si la ville est null , retourne null. donc -- null.nom génerera une erreur -- solution ajouter item.ville?.nom */
-        item.date,
+        item.startDate,
         <div className='text-slate-400'>{item.formateur?.nom ? (<span className='text-blue-400'>{item.formateur?.nom} {item.formateur?.prenom}</span>) : "Pas de formateur"}</div>
       )
     );

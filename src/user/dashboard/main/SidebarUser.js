@@ -18,7 +18,7 @@ export default function SidebarUser() {
   const menus = [
     { name: "Acceuil", link: "/", icon: AiOutlineHome },
     { name: "Tableau de bord", 
-      link: "/formateur/dashboard",
+      link: "/user/dashboard",
      icon: MdOutlineDashboard },
        {
       name: "Mon compte",

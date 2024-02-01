@@ -80,7 +80,7 @@ function App() {
           const username =  auth.username
           const password = auth.password
 
-      if (principal.username) {
+      if (principal.role === "ROLE_ADMIN" || principal.role === "ROLE_ASSISTANT") {
         request.headers.Authorization = `Basic ${btoa(`${username}:${password}`)}`;
         console.log(" Basic auth success")
       }

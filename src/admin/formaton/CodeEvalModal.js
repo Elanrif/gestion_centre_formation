@@ -54,7 +54,7 @@ export default function CodeEvalMoal({data}) {
   return (
     <React.Fragment>
          <div onClick={handleClickOpen} className='hover:cursor-pointer duration-300 px-4 text-white py-1 flex items-center space-x-2 rounded-full bg-red-600'>
-            <MarkEmailUnreadIcon sx={{fontSize:30}} className='border-r-2 border-slate-300     pr-2'/>
+            <MarkEmailUnreadIcon sx={{fontSize:30}} className='border-r-2 border-slate-300  pr-2'/>
             <p>email</p>
         </div>
       <Dialog
