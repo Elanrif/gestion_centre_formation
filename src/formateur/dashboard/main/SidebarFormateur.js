@@ -1,72 +1,39 @@
 import React, { useState,useContext } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlineDashboard } from "react-icons/md";
-import { deepOrange, deepPurple } from "@mui/material/colors";
+import { deepOrange } from "@mui/material/colors";
 import Avatar from "@mui/material/Avatar";
-import { AiOutlineUser, AiOutlineHome, AiOutlineHeart } from "react-icons/ai";
-import { FiMessageSquare, FiFolder, FiShoppingCart } from "react-icons/fi";
-import { SiLoopback } from "react-icons/si";
-import { Link, NavLink } from "react-router-dom";
+import {  AiOutlineHome } from "react-icons/ai";
+import {  NavLink } from "react-router-dom";
 import { HiOutlineLogout } from "react-icons/hi";
-import { AuthContext } from "../../Context";
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import { AuthContext } from "../../../Context";
 import SchoolIcon from '@mui/icons-material/School';
-import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
-import BusinessIcon from '@mui/icons-material/Business';
-import Diversity3Icon from '@mui/icons-material/Diversity3';
-import Groups3Icon from '@mui/icons-material/Groups3';
-import PublicIcon from '@mui/icons-material/Public';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import PersonPinIcon from '@mui/icons-material/PersonPin';
 
-const SidebarAdmin = () => {
+export default function SidebarFormateur() {
 
      const { auth, setAuth } = useContext(AuthContext);
 
   const menus = [
     { name: "Acceuil", link: "/", icon: AiOutlineHome },
     { name: "Tableau de bord", 
-      link: "/admin/dashboard",
+      link: "/formateur/dashboard",
      icon: MdOutlineDashboard },
+       {
+      name: "Mon compte",
+      link: "compte",
+      icon: PersonPinIcon,
+    },
     {
       name: "Formations",
       link: "formations",
       icon: SchoolIcon,
     },
-    { name: "Formateurs", 
-    link: "formateurs", 
-    icon: Groups3Icon 
-    },
-     {
-      name: "Entreprise",
-      link: "entreprises",
-      icon: BusinessIcon,
-    },
         {
       name: "Evaluations",
       link: "evaluations",
       icon: EditNoteIcon,
-    },
-
-    { name: "Assistants", 
-      link: "assistants", 
-      icon: Diversity3Icon,
-      margin: true, },
-    {
-      name: "Utilisateurs",
-      link: "users",
-      icon: PeopleAltIcon,
-     
-    },
-   
-    {
-      name: "Catégorie",
-      link: "categories",
-      icon: FormatListNumberedIcon,
-    },
-     {
-      name: "Villes",
-      link: "villes",
-      icon: PublicIcon
     },
           
     { name: "Déconnexion", link: "/logout", icon: HiOutlineLogout },
@@ -111,7 +78,7 @@ const SidebarAdmin = () => {
           />
         </div>
         <hr className={`duration-300 ${open === false && "hidden"}`} />
-        <div className="mt-2  flex flex-col gap-2 relative">
+        <div className="mt-4  flex flex-col gap-4 relative">
           {menus?.map((menu, i) => (
             <React.Fragment key={i}>
               {menu?.link !== null ? (
@@ -193,5 +160,3 @@ const SidebarAdmin = () => {
     </section>
   );
 }
-
-export default  SidebarAdmin

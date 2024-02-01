@@ -118,9 +118,9 @@ const findOneByEmail = ()=>{
 
   return (
     <React.Fragment>
-      <div className='bg-slate-50 flex  h-[100vh] lengend  items-center justify-center mx-auto'>
-        <div className='max-w-6xl bg-slate-200 border shadow-lg p-52'>
-            <h1 className='mb-16 font-black text-center'>Saisir votre email </h1>
+      <div className='flex h-[100vh] items-center justify-center mx-auto'>
+        <div className='max-w-6xl p-10  border-2'>
+            <h1 className='mb-16 font-black text-2xl text-center'>Saisir votre email </h1>
             <Box
             component="form"
             onSubmit={handleSubmit}

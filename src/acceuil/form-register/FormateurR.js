@@ -30,11 +30,14 @@ export default function FormateurR() {
     {
       nom : "",
       prenom : "",
-      email : "",
+      username : "",
       password : "",
       checkPwd:"",
       tel : "",
-      ville : "",
+      ville : {
+        id : 0,
+        nom : ""
+      },
       competence:"",
     }
   )
@@ -56,10 +59,20 @@ export default function FormateurR() {
     const name = target.name ;
 
 
-    setFormateur((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    setFormateur((prev)=>{
+
+      if(name === "ville"){
+        return{
+          ...prev,
+          [name] :{ nom : value}
+        }
+      }else{
+        return{
+          ...prev,
+          [name] : value 
+        }
+      }
+    })
 
   }
 
@@ -83,7 +96,7 @@ export default function FormateurR() {
       formateur.prenom === "" ||
       formateur.competence === "" ||
       formateur.prenom === "" ||
-      formateur.email === "" ||
+      formateur.username === "" ||
       formateur.password ==="" ||
       formateur.tel === "" ? alert("veuillez remplir tout les champs *") : saveFormateur()
     }
@@ -95,23 +108,28 @@ export default function FormateurR() {
      // Supprimer la clé 'checkPwd' et sa valeur du state
    const { checkPwd, ...formater } = formateur;
 
+   formater.exterieur = true 
+   formater.role = "ROLE_FORMATEUR"
+
     axios
-      .post("/formateurs", formater)
+      .post("/persons", formater)
       .then((res) => {
 
-       //  navigate("/");
-         setAuth(res.data)
-         alert("créer avec succès !")
-         sessionStorage.setItem("auth", JSON.stringify(res.data));
+        setAuth(res.data)
+        sessionStorage.setItem("auth", JSON.stringify(res.data));
+        navigate("/formateur/dashboard");
          setFormateur(
           {
             nom : "",
             prenom : "",
-            email : "",
+            username : "",
             password : "",
             checkPwd:"",
             tel : "",
-            ville : "",
+             ville : {
+              id : 0,
+              nom : ""
+            },
             competence:"",
           }
         )
@@ -186,19 +204,19 @@ export default function FormateurR() {
                     </FormControl> <br/>
 
                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-email"
+                    <InputLabel htmlFor="outlined-adornment-username"
                     >
                         Email</InputLabel>
                           <OutlinedInput
-                            id="outlined-adornment-email"
+                            id="outlined-adornment-username"
                             type="text"
-                            name="email"
-                            value={formateur.email}
+                            name="username"
+                            value={formateur.username}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
                                 <MailIcon
-                            aria-label="toggle email visibility"
+                            aria-label="toggle username visibility"
                             edge="start"
                           >
                           <Visibility />
@@ -241,7 +259,7 @@ export default function FormateurR() {
                             id="outlined-adornment-ville"
                             type="text"
                             name="ville"
-                            value={formateur.ville}
+                            value={formateur.ville?.nom}
                             onChange={handleChange} 
                             endAdornment={
                               <InputAdornment position="end">

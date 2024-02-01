@@ -1,24 +1,27 @@
 import React,{useState,useContext,useEffect} from 'react'
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import MailIcon from '@mui/icons-material/Mail';
 import { Link, useParams } from 'react-router-dom';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import PersonIcon from '@mui/icons-material/Person';
-import PublicIcon from '@mui/icons-material/Public';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context';
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 
 export default function UpdateFormation() {
@@ -34,6 +37,7 @@ export default function UpdateFormation() {
       nom : "",
       objectif : "",
       programme : "",
+      dedie : "",
       heure : "",
       ville : {
         id:null,
@@ -75,12 +79,24 @@ export default function UpdateFormation() {
 
   }
 
+   /* il connait seulement e mais pas e.? quelque chose comme e.target etc... */
+  const handleChangeProgramme = (e)=>{
+
+     setFormation((prev)=>({
+      ...prev,
+      programme : e
+     }))
+  }
+
+
 
  const handleSubmit = (e) => {
     e.preventDefault();
 
+    console.log( "dedie : ",formation)  
       formation.nom === "" ||
       formation.ville.nom === "" ||
+      formation.dedie === "" ||
       formation.category.nom === "" ||
       formation.objectif === "" ||
       formation.cout === "" ||
@@ -104,6 +120,7 @@ export default function UpdateFormation() {
             nom : "",
             objectif : "",
             programme : "",
+            dedie : "",
             heure : "",
             ville : {
               id:null,
@@ -162,8 +179,24 @@ export default function UpdateFormation() {
   }
   
 
+   const Toolbar = [
+        ["bold", "italic", "underline", "strike"], // toggled buttons
+        ["blockquote", "code-block"],
+        [{ header: 1 }, { header: 2 }], // custom button values
+        [{ list: "ordered" }, { list: "bullet" }],
+        [{ script: "sub" }, { script: "super" }], // superscript/subscript
+        [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+        [{ direction: "rtl" }], // text direction
+        [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+        [{ font: [] }],
+        [{ align: [] }],
+        ["clean"] // remove formatting button
+    ];
+
   return (
-    <div className='h-[100vh] bg-slate-50 grid xl:grid-cols-1 grid-cols-1 gap-2'>
+     <div className='mt-5 bg-slate-50 grid xl:grid-cols-1 grid-cols-1 gap-2'>
         <div className='flex items-center justify-center'>
             <div className=''>
             <Box 
@@ -172,7 +205,7 @@ export default function UpdateFormation() {
                     <p className='mb-7 text-lg  text-slate-600 text-center'> Modifier la  formation </p>
                <Box
                 sx={{
-                  '& > :not(style)': { m: 1, width: '45ch' },
+                  '& > :not(style)': { m: 1, width: '55ch' },
                 }}
                 noValidate
                 autoComplete="off"
@@ -266,7 +299,10 @@ export default function UpdateFormation() {
                             }
                             label="cout"
                           />
-                    </FormControl> <br/>
+                    </FormControl> 
+                    
+                    
+                  <br/>
 
                        {/* value du champ SELECT, MenuItem,setState doit être du même type ici `.id` */}
                     <FormControl sx={{ m: 1, width: '35ch' }}>
@@ -285,34 +321,40 @@ export default function UpdateFormation() {
                         ))}
                         
                       </Select>
-                    </FormControl> <br/>
-                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-programme"
+                    </FormControl> 
+                    
+                    <FormControl>
+                    <FormLabel id="demo-row-radio-buttons-group-label">Dedié aux </FormLabel>
+                    <RadioGroup
+                      row
+                      aria-labelledby="demo-row-radio-buttons-group-label"
+                      name="dedie"
+                      value={formation.dedie}
+                      onChange={handleChange}
                     >
-                        programme</InputLabel>
-                          <OutlinedInput
-                            id="outlined-adornment-programme"
-                            type="text"
-                            name="programme"
-                            value={formation.programme}
-                            onChange={handleChange}
-                            endAdornment={
-                              <InputAdornment position="end">
-                                <MailIcon
-                            aria-label="toggle programme visibility"
-                            edge="start"
-                          >
-                          <Visibility />
-                          </MailIcon>
-                              </InputAdornment>
-                            }
-                            label="programme"
-                            multiline
-                            maxRows={7}
-                          />
-                    </FormControl>
+                      <FormControlLabel value="ENTREPRISE" control={<Radio />} label="Entreprises" />
+                      <FormControlLabel value="INDIVIDU" control={<Radio />} label="Individus" />
+                      <FormControlLabel
+                        value="disabled"
+                        disabled
+                        control={<Radio />}
+                        label="Autre"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                  
+                  <br/>
 
-                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                 <div className=' mb-5 border-3'>
+                        <ReactQuill 
+                      theme="snow" 
+                      value={formation.programme} 
+                      onChange={handleChangeProgramme}
+                      modules={{ toolbar: Toolbar }} 
+                      className="w-[112ch]"/>
+                 </div>
+
+                   <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-objectif"
                     
                     >
@@ -338,8 +380,35 @@ export default function UpdateFormation() {
                             maxRows={7}
                           />
                     </FormControl>
-                     
 
+               {/*       <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-programme"
+                    >
+                        programme
+                        </InputLabel>
+                          <OutlinedInput
+                            id="outlined-adornment-programme"
+                            type="text"
+                            name="programme"
+                            value={formation.programme}
+                            onChange={handleChange}
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <MailIcon
+                            aria-label="toggle programme visibility"
+                            edge="start"
+                          >
+                          <Visibility />
+                          </MailIcon>
+                              </InputAdornment>
+                            }
+                            label="programme"
+                            multiline
+                            maxRows={7}
+                          />
+                    </FormControl> */}
+
+                
                 </Box>
                   <div className='flex mb-3 justify-center space-x-7'>                
                         <Link to= "/admin/formations"> 

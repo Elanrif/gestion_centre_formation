@@ -11,14 +11,15 @@ import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import MailIcon from '@mui/icons-material/Mail';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LoginAs from './LoginAs';
 import axios from 'axios';
 import { AuthContext } from '../../Context';
 
 export default function Utilisateur() {
 
-    const {auth,setAuth} = useContext(AuthContext)
+  const navigate = useNavigate()
+  const {auth,setAuth} = useContext(AuthContext)
   const [person, setPerson] = useState({
     username : "",
     password : ""
@@ -57,15 +58,13 @@ export default function Utilisateur() {
     axios
       .post("/utilisateurs/login", person)
       .then((res) => {
-        
-       //  navigate("/");
-
+      
        /* stocker le pwd en claire ,ainsi ecrasé le pwd encrypté. */
          res.data.password = person.password
          console.log(person)
          setAuth(res.data)
          sessionStorage.setItem("auth", JSON.stringify(res.data));
-         console.log(res.data)
+         navigate("/user/dashboard");
          setPerson(
           {
             username : "",

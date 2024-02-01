@@ -11,12 +11,12 @@ import Visibility from '@mui/icons-material/Visibility';
 function Aside() {
   return (
     <div >
-      <div className='h-[50vh]'>
+      <div className='h-[56vh] bg-indigo-800 text-white'>
         <img src="/image/formation210.jpg" className='float-right'/>
-        <div className='max-w-6xl mx-auto'>
+        <div className='max-w-6xl pt-5 mx-auto'>
             <h1 className=' py-3 text-5xl font-black'><span className='text-red-600'>Se former</span> <span>en liberté</span>
             </h1>
-            <p className='text-3xl py-2'>Des formations en ligne pour découvrir, apprendre, progresser et réussir</p>
+            <p className='text-3xl text-slate-300 py-2'>Des formations en ligne pour découvrir, apprendre, progresser et réussir</p>
             <div>
               <h1 className='mt-[7rem] text-xl font-black'> Chercher dans nos formations </h1>
               <div className='flex items-center space-x-8'>

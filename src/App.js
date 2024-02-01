@@ -46,6 +46,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import ListEntreprise from './admin/formaton/liste/ListEntreprise';
 import ListParticipant from './admin/formaton/liste/ListParticipant';
 import ShowFormation from './admin/formaton/ShowFormation';
+import FormateurDashboard from './formateur/dashboard/main/FormateurDash';
+import UserDashboard from './user/dashboard/main/UserDash';
+import MainDashboardFormateur from './formateur/dashboard/main/MainDashboardFormateur';
+import MainDashboardUser from './user/dashboard/main/MainDashboardUser';
+import FormationFormateur from './formateur/dashboard/FormationFormateur';
+import FormationUser from './user/dashboard/FormationUser';
+import EvaluationFormateur from './formateur/dashboard/EvaluationFormateur';
+import EvaluationUser from './user/dashboard/EvaluationUser';
+import Evaluation from './admin/evaluation/Evaluation';
+import SimpleBackdrop from './SimpleBackDrop';
 
 function App() {
 
@@ -57,7 +67,6 @@ function App() {
 
   useEffect(() => {
   authenticate && setAuth(authenticate)
-  console.log(auth)
   }, [auth.id])
 
    useEffect(() => {
@@ -99,6 +108,8 @@ function App() {
             <Route path="/register/formateur" element={<FormateurR />}/>
             <Route path="/register/utilisateur" element={<UtilisateurR />}/>
 
+               {
+               ( auth.role === "ROLE_ADMIN" || auth.role == "ROLE_ASSISTANT" ) &&
                 <Route path="/admin" element={<AdminDashboard />}>
                 <Route index path="dashboard" element={<MainDashboard />}/>
                 
@@ -117,6 +128,7 @@ function App() {
                 <Route  path="formateurs/add" element={<AddFormateurA />}/>
                 <Route  path="formateurs/edit/:formateurID" element={<UpdateFormateurA />}/>
 
+                <Route  path="evaluations" element={<Evaluation />}/>
                 
                 <Route  path="assistants" element={<AssistantA />}/>
                 <Route  path="assistants/add" element={<AddAssistant />}/>
@@ -139,8 +151,29 @@ function App() {
                 <Route  path="villes/edit/:villeID" element={<UpdateVille />}/>
 
                 </Route>
+                }
+                
+                {
+                 ( auth.role === "ROLE_FORMATEUR")
+                 &&
+                 <Route path="/formateur" element={<FormateurDashboard />}>
+                <Route index path="dashboard" element={<MainDashboardFormateur />}/>
+                <Route index path="formations" element={<FormationFormateur />}/>
+                <Route index path="evaluations" element={<EvaluationFormateur />}/>
+                </Route>
+                }
 
-            <Route  path="/auto" element={<Autocomplete />}/>
+                {
+                  auth.role === "ROLE_USER" &&
+                   <Route path="/user" element={<UserDashboard />}>
+                <Route index path="dashboard" element={<MainDashboardUser />}/>
+                <Route index path="formations" element={<FormationUser />}/>
+                <Route index path="evaluations" element={<EvaluationUser />}/>
+                </Route>
+               
+                }
+
+           {/*  <Route  path="*" element={<SimpleBackdrop />}/> */}
             
           </Routes>
     </AuthContext.Provider></>

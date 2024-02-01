@@ -11,13 +11,14 @@ import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import MailIcon from '@mui/icons-material/Mail';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import LoginAs from './LoginAs';
 import axios from 'axios';
 import { AuthContext } from '../../Context';
 
 export default function Formateur() {
 
+  const navigate = useNavigate()
   const {auth,setAuth} = useContext(AuthContext)
   const [person, setPerson] = useState({
     email : "",
@@ -58,14 +59,14 @@ export default function Formateur() {
       .post("/persons/loginUser", person)
       .then((res) => {
 
-       //  navigate("/");
-
+      
        /* stocker le pwd en claire ,ainsi ecrasé le pwd encrypté. */
         res.data.password = person.password
 
          setAuth(res.data)
          sessionStorage.setItem("auth", JSON.stringify(res.data));
-         console.log( res.data)
+         
+         navigate("/formateur/dashboard");
          setPerson(
           {
             email : "",

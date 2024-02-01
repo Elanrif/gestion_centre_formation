@@ -39,9 +39,12 @@ function Formation({formation}) {
                 <div className='flex items-center space-x-1'>
                   <PlaceIcon className='text-red-600'/> <p>{formation.ville?.nom}</p>
                 </div>
-                 <div className='flex items-center normal-case space-x-1'>
-                  <EventIcon className='text-blue-600 '/> <p>à partir de {formation.date}</p>
-                </div>
+                 {
+                  formation.startDate  && <>
+                  <div className='flex items-center  normal-case space-x-1'>
+                  <EventIcon className='text-blue-600 '/> <p>du {formation.startDate} au {formation.finishDate}</p>
+                </div></>
+                 }
             </div>
                  
             <p className='font-extralight max-w-2xl'>
@@ -50,8 +53,8 @@ function Formation({formation}) {
 
            {
             formation.formateur &&
-             <p className='font-extralight my-[0.7rem] text-blue-700'>
-             <span className=' font-light text-slate-700'>Formateur : </span>  {formation.formateur?.nom}
+             <p className='font-normal my-[0.7rem] text-blue-700'>
+             <span className=' font-normal text-slate-700'>Formateur : </span>  {formation.formateur?.nom} {formation.formateur?.prenom}
             </p>
            }
             
@@ -59,7 +62,7 @@ function Formation({formation}) {
 
         </div>
         <div>
-            <h1 className=' text-2xl font-light'> {formation.cout} <span className='uppercase'>DHS</span> </h1>
+            <h1 className=' text-2xl font-semibold text-slate-500'> {formation.cout} <span className='uppercase'>{formation.cout? "DHS" : "Gratuite" }</span> </h1>
         </div>
        </div>
 

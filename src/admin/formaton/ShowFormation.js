@@ -66,9 +66,7 @@ export default function ShowFormation() {
             <h1 className='text-xl mt-3 font-black'><span className='text-gray-600'>Prix</span> : {formation.cout} Dhs</h1> 
             <div className='text-md mt-3  py-2 capitalize flex items-center space-x-4'>
             
-                <div className='flex items-center space-x-1'>
-                    <BarChartIcon className='text-slate-500'/> <p>Niveau : facile</p>
-                </div>
+             
                 <div className='flex items-center space-x-1'>
                     <QueryBuilderIcon className='text-slate-500'/>
                      <span className='text-gray-600'>Heure : </span> 
@@ -138,7 +136,7 @@ export default function ShowFormation() {
             
         </Link> 
 
-        <div className='flex mt-4 items-center space-x-3'>
+        <Link to= {`/admin/formations/${formation.id}/participants`} className='flex mt-4 items-center space-x-3'>
             {
             formation.utilisateurs &&
             <>
@@ -155,7 +153,7 @@ export default function ShowFormation() {
             </>
         }
             
-        </div> 
+        </Link> 
 
          <Link to={`/admin/formations`} className='flex mt-4 items-center space-x-3'>
             <p className='px-4 py-2 bg-red-500 text-white rounded-xl'> Retour </p>

@@ -8,16 +8,9 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box, Button, IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import PageviewIcon from '@mui/icons-material/Pageview';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import MenuFormation from './MenuFormation';
-import { FormationContext } from './FormationContext';
-import AddCategorie from './AddCategorie';
-import DeleteFormation from './DeleteFormation';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import { AuthContext } from '../../Context';
 
 const columns = [
   { id: 'image', label: 'Image', minWidth: 150 },
@@ -51,30 +44,18 @@ const columns = [
     align: 'center',
     format: (value) => value.toFixed(2),
   }
-  ,
-  {
-    id: 'formateur',
-    label: 'formateur',
-    minWidth: 170,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-   {
-    id: 'options',
-    label: 'Option',
-    minWidth: 170,
-    align: 'center',
-    format: (value) => value.toFixed(2),
-  },
 ];
 
-function createData(image,nom,cout,programme,ville,date,formateur,options) {
+function createData(image,nom,cout,programme,ville,date,options) {
   //const density = population / size;
-  return {image, nom,cout,programme,ville,date,formateur,options};
+  return {image, nom,cout,programme,ville,date,options};
 }
 
 
-export default function Formation() {
+export default function FormationFormateur() {
+
+   const {auth} = React.useContext(AuthContext)
+
   const [page, setPage] = React.useState(0);
   const [formations, setFormations] = React.useState([]);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -98,37 +79,14 @@ export default function Formation() {
 
   const handleLoad = ()=>{
 
-    axios.get("/formations")
+    axios.get(`/formations/formateur/${auth.id}`)
     .then((res)=>{
        
       setFormations(res.data)
 
     })
   }
-  
-   const handleSetUpdate = ()=>{
-    setUpdate(!update)
-    console.log(" updated !", update)
-  }
 
- const btnOptions = (data)=> (
-    <div className='flex justify-center items-center space-x-[-5px]'>
-                 
-                    <FormationContext.Provider value={handleSetUpdate}>
-                      <IconButton aria-label="aperçu">
-                    <MenuFormation data={data} handleSetUpdate={handleSetUpdate}/>
-                    </IconButton>
-                    </FormationContext.Provider>
-
-                     <Link to={`/admin/formations/show/${data.id}`}>
-                     <IconButton aria-label="aperçu">
-                    <VisibilityIcon />
-                    </IconButton>
-                    </Link>
-
-                     <DeleteFormation value ={{data,handleSetUpdate}}/>
-                  </div>
-) 
 
   const rows =
     formations.map((item, index) =>
@@ -141,10 +99,8 @@ export default function Formation() {
         item.nom,
         <div className='flex items-center space-x-2'> <span>{item.cout}</span> <span>DHS</span> </div>,
         <span>{item.programme?.slice(0,15)}...</span>,
-        item.ville?.nom,/* item.ville si la ville est null , retourne null. donc -- null.nom génerera une erreur -- solution ajouter item.ville?.nom */
-        item.startDate,
-        <div className='text-slate-400'>{item.formateur?.nom ? (<span className='text-blue-400'>{item.formateur?.nom} {item.formateur?.prenom}</span>) : "Pas de formateur"}</div>,
-        btnOptions(item)
+        item.ville?.nom,
+        item.date
       )
     );
 
@@ -152,8 +108,8 @@ export default function Formation() {
   return (
    <div >
      <Box sx={{display:'flex' ,marginLeft:5,marginTop:4,marginBottom:4}}>
-      <Link to="/admin/formations/add" className='me-3'> <Button variant="contained" size="small">Planifier une formation</Button> </Link>
-      <AddCategorie/>
+      <Link  className='me-3'> <Button variant="contained" size="small">Formations</Button> </Link>
+    
      </Box>
      <div className='flex justify-center'>
         <Paper sx={{ width: '95%' }}>

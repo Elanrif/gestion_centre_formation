@@ -1,21 +1,14 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import CategoryIcon from '@mui/icons-material/Category';
-import Logout from '@mui/icons-material/Logout';
 import TodayIcon from '@mui/icons-material/Today';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import BallotIcon from '@mui/icons-material/Ballot';
-import FiltreFormation from './Filtre/FiltreFormation';
 import { FilterContext } from './FilterContext';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
@@ -49,13 +42,12 @@ export default function FilterMenu() {
     <React.Fragment>
       <Box sx={{marginTop:2, display: 'flex', alignItems: 'center', textAlign: 'center' }}>
        
-        {/* <Typography sx={{ minWidth: 100 }}>Profile</Typography> */}
-
-        <Tooltip title="Filtrer">
+        
+        <Tooltip title="Filtrer" >
           <IconButton
             onClick={handleClick}
             size="small"
-            sx={{ ml: 0 }}
+            sx={{ p: 1 ,border:1}}
             aria-controls={opened ? 'account-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={opened ? 'true' : undefined}

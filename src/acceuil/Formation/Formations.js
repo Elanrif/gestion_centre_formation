@@ -1,7 +1,4 @@
 import React,{useState,useEffect} from 'react'
-import Avatar from '@mui/material/Avatar';
-import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
-import Button from '@mui/material/Button';
 import Formation from './Formation';
 import PaginationRule from './PaginationRule';
 import FilterMenu from '../FilterMenu';
@@ -14,9 +11,9 @@ const reducer = (state, action) => {
 
   switch (action.type) {
      case 'tout':
-        const { category, ville } = action.payload;
+        const { category, date,ville } = action.payload;
         console.log("Test ...", action.test)
-      return state.filter((formation) => formation.category === category && formation.ville === ville);
+      return state.filter((formation) => formation.category === category && formation.ville === ville &&  new Date(formation.startDate) >= new Date(date));
 
     case 'category':
       return state.filter((formation) => formation.category?.nom === action.payload);;
@@ -25,7 +22,7 @@ const reducer = (state, action) => {
       return state.filter((formation) => formation.ville?.nom === action.payload);
 
     case 'date':
-      return state.filter((formation) => formation.date === action.payload);
+      return state.filter((formation) => new Date(formation.startDate) >= new Date(action.payload) );
 
     case 'init' : 
     return action.payload ;
@@ -59,7 +56,7 @@ function Formations() {
   return (
     <div>
     <FilterContext.Provider value={{open,setOpen,filtre,setFiltre,formations,handleLoadFormations,dispatch}}>
-        <div className='max-w-6xl my-4 mx-auto hover:cursor-pointer'>
+        <div className='max-w-[80rem] pt-5 my-4 mx-auto hover:cursor-pointer'>
             <h1 className='text-3xl font-black text-slate-400'> Catalogue des formations</h1>
                 <FilterMenu /> 
                 <FiltreFormation/>

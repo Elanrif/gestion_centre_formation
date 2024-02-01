@@ -29,11 +29,14 @@ export default function UtilisateurR() {
     {
       nom : "",
       prenom : "",
-      email : "",
+      username : "",
       password : "",
       checkPwd:"",
       tel : "",
-      ville : "",
+      ville : {
+        id : 0,
+        nom : ""
+      },
       naissance:"",
     }
   )
@@ -55,11 +58,20 @@ export default function UtilisateurR() {
     const name = target.name ;
 
 
-    setUser((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    setUser((prev)=>{
 
+      if(name === "ville"){
+        return{
+          ...prev,
+          [name] :{ nom : value}
+        }
+      }else{
+        return{
+          ...prev,
+          [name] : value 
+        }
+      }
+    })
   }
 
 
@@ -81,7 +93,7 @@ export default function UtilisateurR() {
 
       user.nom === "" ||
       user.prenom === "" ||
-      user.email === "" ||
+      user.username === "" ||
       user.password ==="" ||
       user.tel === "" ? alert("veuillez remplir tout les champs *") : saveUser()
     }
@@ -93,23 +105,27 @@ export default function UtilisateurR() {
      // Supprimer la clé 'checkPwd' et sa valeur du state
    const { checkPwd, ...utilisateur } = user;
 
+   utilisateur.role = "ROLE_USER"
     axios
       .post("/utilisateurs", utilisateur)
       .then((res) => {
 
-        //  navigate("/");
-         setAuth(res.data)
-         alert("créer avec succès !")
-         sessionStorage.setItem("auth", JSON.stringify(res.data));
-         setUser(
+        setAuth(res.data)
+        alert("créer avec succès !")
+        sessionStorage.setItem("auth", JSON.stringify(res.data));
+        navigate("/user/dashboard");
+        setUser(
           {
             nom : "",
             prenom : "",
-            email : "",
+            username : "",
             password : "",
             checkPwd:"",
             tel : "",
-            ville : "",
+            ville : {
+              id : 0,
+              nom : ""
+            },
             naissance:"",
           }
         )
@@ -184,19 +200,19 @@ export default function UtilisateurR() {
                     </FormControl> <br/>
 
                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-email"
+                    <InputLabel htmlFor="outlined-adornment-username"
                     >
                         Email</InputLabel>
                           <OutlinedInput
-                            id="outlined-adornment-email"
+                            id="outlined-adornment-username"
                             type="text"
-                            name="email"
-                            value={user.email}
+                            name="username"
+                            value={user.username}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
                                 <MailIcon
-                            aria-label="toggle email visibility"
+                            aria-label="toggle username visibility"
                             edge="start"
                           >
                           <Visibility />
@@ -239,7 +255,7 @@ export default function UtilisateurR() {
                             id="outlined-adornment-ville"
                             type="text"
                             name="ville"
-                            value={user.ville}
+                            value={user.ville?.nom}
                             onChange={handleChange} 
                             endAdornment={
                               <InputAdornment position="end">

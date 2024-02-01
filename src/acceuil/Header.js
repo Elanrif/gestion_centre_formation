@@ -1,7 +1,4 @@
 import React,{useState} from 'react'
-import AccountMenu from './AccountMenu'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Button } from '@mui/material';
 import { Link,useNavigate, Outlet } from 'react-router-dom';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -36,6 +33,21 @@ function Header() {
             navigate("/login/utilisateur")
           }, 2000);
   }
+
+    const moncompte = (() => {
+        switch(auth.role) {
+          case "ROLE_ADMIN":
+            return '/admin/dashboard';
+          case "ROLE_ASSISTANT":
+            return '/admin/dashboard';
+          case "ROLE_FORMATEUR":
+            return '/formateur/dashboard';
+          case "ROLE_USER":
+            return '/user/dashboard';
+          default:
+            return "";
+        }
+      })();
 
   return (
    <div>
@@ -88,7 +100,7 @@ function Header() {
            />
             <p>Déconnexion</p>
           </button>
-           <Link to= '/admin/dashboard' className='hover:bg-red-700 duration-300 ease-in-out px-3 py-1 flex items-center space-x-2 rounded-full bg-red-600'>
+           <Link to= {moncompte} className='hover:bg-red-700 duration-300 ease-in-out px-3 py-1 flex items-center space-x-2 rounded-full bg-red-600'>
            <PersonPinIcon sx={{fontSize:30}} className='border-r-2 border-slate-300 pr-2'/>
             <p>Mon compte</p>
           </Link>

@@ -50,7 +50,7 @@ export default function DetailFormation() {
         </Link>
         </h1>
         <div className='max-w-4xl'>
-            <ProgrammeDetaille/>
+            <ProgrammeDetaille formation={formation}/>
         </div>
     </div>
 
