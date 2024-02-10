@@ -21,7 +21,7 @@ export default function Formateur() {
   const navigate = useNavigate()
   const {auth,setAuth} = useContext(AuthContext)
   const [person, setPerson] = useState({
-    email : "",
+    username : "",
     password : ""
   })
 
@@ -50,7 +50,7 @@ export default function Formateur() {
   const handleSubmit = (e)=>{
     e.preventDefault() 
     person.password ==="" ||
-    person.email === "" ? alert("veuillez remplir tout les champs *") : loginPerson()
+    person.username === "" ? alert("veuillez remplir tout les champs *") : loginPerson()
   }
 
    const loginPerson = ()=>{
@@ -69,7 +69,7 @@ export default function Formateur() {
          navigate("/formateur/dashboard");
          setPerson(
           {
-            email : "",
+            username : "",
             password : ""
           }
         )
@@ -95,26 +95,26 @@ export default function Formateur() {
                 autoComplete="off"
               >
                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-email"
+                    <InputLabel htmlFor="outlined-adornment-username"
                     >
                         E-mail</InputLabel>
                           <OutlinedInput
-                            id="outlined-adornment-email"
+                            id="outlined-adornment-username"
                             type="email"
-                            name="email"
-                            value={person.email}
+                            name="username"
+                            value={person.username}
                             onChange={handleChange}
                             endAdornment={
                               <InputAdornment position="end">
                                 <MailIcon
-                            aria-label="toggle email visibility"
+                            aria-label="toggle username visibility"
                             edge="start"
                           >
                           <Visibility />
                           </MailIcon>
                               </InputAdornment>
                             }
-                            label="email"
+                            label="username"
                           />
                     </FormControl> <br/>
 

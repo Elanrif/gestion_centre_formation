@@ -112,7 +112,7 @@ export default function ShowFormation() {
                 </span>
                 
                 </div>
-                {(formation.dedie === "ENTREPRISE" && formation.utilisateurs?.length > 0)
+                {(formation.dedie === "INDIVIDU" && formation.utilisateurs?.length > 0)
                  && 
                 <CodeEvalMoal data={{formation,succes}}/>
                 }

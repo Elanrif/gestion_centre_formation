@@ -117,7 +117,6 @@ export default function Formation() {
 
    const handleSetUpdate = ()=>{
     setUpdate(!update)
-    console.log(" updated !", update)
   }
 
  const btnOptions = (data)=> (

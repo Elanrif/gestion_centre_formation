@@ -155,12 +155,13 @@ export default function MenuFormation({data,handleSetUpdate}) {
           </ListItemIcon>
          Ajouter un formateur
         </MenuItem>
+        {data.dedie === "ENTREPRISE" &&
           <MenuItem onClick={handleOpenEntreprise}>
           <ListItemIcon>
             <GroupsIcon fontSize="small" />
           </ListItemIcon>
           Ajouter une entreprise
-        </MenuItem>
+        </MenuItem>}
             <MenuItem onClick={handleOpenPlanification}>
           <ListItemIcon>
             <EventNoteIcon fontSize="small" />

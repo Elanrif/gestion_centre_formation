@@ -8,7 +8,6 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 export default function ProgrammeDetaille({formation}) {
 
- const lignes = formation.programme?.split(';');
 
   return (
     <div>

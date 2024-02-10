@@ -61,7 +61,7 @@ function Formations() {
                 <FilterMenu /> 
                 <FiltreFormation/>
         </div>
-        {formations?.map((item,index)=>{
+        {formations?.sort((a, b) => b.id - a.id).map((item,index)=>{
             return(
                 <div className='mx-auto max-w-[80rem]' key={index}>
                 <Formation formation={item}/>
