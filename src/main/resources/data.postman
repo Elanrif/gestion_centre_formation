@@ -1,0 +1,11 @@
+
+-- Utilisateur --
+{
+  "nom": "Manar",
+  "prenom": "Bakhat",
+  "naissance": "1990-01-01",
+  "tel": "+212 063456789",
+  "email": "manar@google.com",
+  "password": "1234",
+  "ville" : "tétouan"
+}
