@@ -98,7 +98,7 @@ export default function FormationFormateur() {
 
   const handleLoad = ()=>{
 
-    axios.get(`/evaluations/formateur/${7}`)
+    axios.get(`/evaluations/formateur/${auth.id}`)
     .then((res)=>{
        
       setEvaluations(res.data)
