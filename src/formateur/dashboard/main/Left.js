@@ -3,9 +3,8 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { Link } from 'react-router-dom';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 
-export default function Left({data}) {
+export default function Left() {
 
-    console.log(data)
   return (
     <div className='h-full text-white'>
         <Link to="#"  className='bg-green-500 w-[23rem] flex items-center justify-center space-x-3 rounded-lg h-[25vh]'> 
@@ -13,7 +12,6 @@ export default function Left({data}) {
             <div> 
                 <h1 className='text-xl font-black'> Mon Compte</h1>
                 <div>
-                    <p className='text-sm font-light'> {data.formateurs?.length} formateurs</p>
                 </div>
             
             </div>
@@ -24,9 +22,7 @@ export default function Left({data}) {
             <div> 
                 <h1 className='text-xl font-black'>Ajouter une image</h1>
                 <div>
-                    <p className='text-sm font-light'> {data.formateurs?.length} formateurs</p>
                 </div>
-            
             </div>
          </Link>
 

@@ -10,7 +10,7 @@ export default function Right({data}) {
             <div> 
                 <h1 className='text-xl font-black'> Mes évaluations</h1>
                 <div>
-                    <p className='text-sm font-light'> {data.categories?.length } categories</p>
+                    <p className='text-sm font-light'> {data.evaluations?.length } évaluations</p>
                 </div>
             
             </div>
