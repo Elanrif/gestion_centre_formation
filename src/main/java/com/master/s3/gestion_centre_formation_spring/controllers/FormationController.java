@@ -46,6 +46,7 @@ public class FormationController{
     public List<Formation> getUtilisateur(@PathVariable("id") Long userId) {
         return formationService.getUtilisateur(userId);
     }
+
     @GetMapping("/formateur/{id}")
     public List<Formation> formateur(@PathVariable("id") Long formateurId) {
         return formationService.formateur(formateurId);
