@@ -120,9 +120,8 @@ export default function UpdateFormation() {
 
   const updateFormation = ()=>{
        
-   
     axios
-      .post(
+      .put(
         "https://gestion-centre-formation.onrender.com/formations",
         formation
       )
