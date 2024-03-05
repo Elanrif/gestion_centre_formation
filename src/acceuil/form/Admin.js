@@ -57,27 +57,26 @@ export default function Admin() {
    const loginPerson = ()=>{
   
     axios
-      .post("/persons/loginUser", person)
+      .post(
+        "https://gestion-centre-formation.onrender.com/persons/loginUser",
+        person
+      )
       .then((res) => {
+        navigate("/admin/dashboard");
 
-       navigate("/admin/dashboard");
+        /* stocker le pwd en claire ,ainsi ecrasé le pwd encrypté. */
+        res.data.password = person.password;
 
-       /* stocker le pwd en claire ,ainsi ecrasé le pwd encrypté. */
-        res.data.password = person.password
-
-         setAuth(res.data)
-         sessionStorage.setItem("auth", JSON.stringify(res.data));
-         console.log(res.data)
-         setPerson(
-          {
-            username : "",
-            password : ""
-          }
-        )
+        setAuth(res.data);
+        sessionStorage.setItem("auth", JSON.stringify(res.data));
+        console.log(res.data);
+        setPerson({
+          username: "",
+          password: "",
+        });
       })
       .catch((error) => {
         console.log(error.message);
-    
       });
   }
 
