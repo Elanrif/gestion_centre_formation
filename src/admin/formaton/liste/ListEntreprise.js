@@ -19,13 +19,14 @@ export default function ListEntreprise() {
   }
   const handleLoad = ()=>{
 
-    axios.get(`/formations/${idFormation}`)
-    .then((res)=>{
-       
-      setFormation(res.data)
-      console.log('fixed ',res.data.entreprises.length)
-
-    }) 
+    axios
+      .get(
+        `https://gestion-centre-formation.onrender.com/formations/${idFormation}`
+      )
+      .then((res) => {
+        setFormation(res.data);
+        console.log("fixed ", res.data.entreprises.length);
+      }); 
   }
 
   /* si on ne fait pas formation != null , il va essayer d'acceder a length qui est undefined : voir CYCLE DE VIE

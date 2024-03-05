@@ -155,21 +155,23 @@ export default function AddFormation() {
 
   const handleLoadData = ()=>{
 
-    axios.get("/categories")
-      .then((res)=>{
-        setCategories(res.data)
+    axios
+      .get("https://gestion-centre-formation.onrender.com/categories")
+      .then((res) => {
+        setCategories(res.data);
       })
-      .catch((err)=>{
-        console.log(err)
-      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-      axios.get("/villes")
-      .then((res)=>{
-        setVilles(res.data)
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
+      axios
+        .get("https://gestion-centre-formation.onrender.com/villes")
+        .then((res) => {
+          setVilles(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   }
   
    const Toolbar = [

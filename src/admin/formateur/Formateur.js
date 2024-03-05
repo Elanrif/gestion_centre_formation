@@ -109,16 +109,15 @@ export default function Formateur() {
 
   const handleLoad = ()=>{
 
-        axios.get("/persons/role",{
-          params: {
-        role: "ROLE_FORMATEUR"
-      }
-        })
-        .then((res)=>{
-          
-          setFormateurs(res.data)
-
-        })
+        axios
+          .get("https://gestion-centre-formation.onrender.com/persons/role", {
+            params: {
+              role: "ROLE_FORMATEUR",
+            },
+          })
+          .then((res) => {
+            setFormateurs(res.data);
+          });
   }
   
    const success = ()=> toast.success('succès !', {

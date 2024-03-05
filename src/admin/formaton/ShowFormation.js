@@ -24,13 +24,12 @@ export default function ShowFormation() {
 
   const handleLoad = ()=>{
 
-    axios.get(`/formations/${showID}`)
-    .then((res)=>{
-       
-      setFormation(res.data)
-      console.log("data :" , res.data)
-
-    })
+    axios
+      .get(`https://gestion-centre-formation.onrender.com/formations/${showID}`)
+      .then((res) => {
+        setFormation(res.data);
+        console.log("data :", res.data);
+      });
   }
 
      const succes = ()=>{

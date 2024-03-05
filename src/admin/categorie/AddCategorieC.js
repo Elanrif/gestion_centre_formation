@@ -67,23 +67,22 @@ export default function AddCategorieC() {
   // const { checkPwd, ...formater } = formation;
 
     axios
-      .post("/categories", formation)
+      .post(
+        "https://gestion-centre-formation.onrender.com/categories",
+        formation
+      )
       .then((res) => {
-        success()
+        success();
         setTimeout(() => {
           navigate("/admin/categories");
-          
         }, 3000);
-         setFormation(
-          {
-            id:"",
-            nom: ""            
-          }
-        )
+        setFormation({
+          id: "",
+          nom: "",
+        });
       })
       .catch((error) => {
         console.log(error.message);
-    
       });
   }
 

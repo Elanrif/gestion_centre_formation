@@ -18,14 +18,17 @@ export default function DetailFormation() {
     }, [detailformID])
 
     const handleLoad = ()=>{
-        axios.get(`/formations/${detailformID}`)
-        .then((res)=>{
-            setFormation(res.data)
-            console.log("res ",res.data)
-        })
-        .catch((err)=>{
-            console.error(err)
-        })
+        axios
+          .get(
+            `https://gestion-centre-formation.onrender.com/formations/${detailformID}`
+          )
+          .then((res) => {
+            setFormation(res.data);
+            console.log("res ", res.data);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
     }
 
 

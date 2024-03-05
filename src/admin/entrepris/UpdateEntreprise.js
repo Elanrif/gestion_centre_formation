@@ -53,14 +53,16 @@ export default function UpdateEntreprise() {
 
   const loadEntreprises = ()=>{
 
-    axios.get(`/entreprises/${entrepriseID}`)
-    .then((res)=>{
-
-      setEntreprise(res.data)
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
+    axios
+      .get(
+        `https://gestion-centre-formation.onrender.com/entreprises/${entrepriseID}`
+      )
+      .then((res) => {
+        setEntreprise(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   
 
@@ -118,26 +120,25 @@ export default function UpdateEntreprise() {
        
    
     axios
-      .put("/entreprises", entreprise)
+      .put(
+        "https://gestion-centre-formation.onrender.com/entreprises",
+        entreprise
+      )
       .then((res) => {
-
-        success()
+        success();
         setTimeout(() => {
-          
-          navigate( "/admin/entreprises")
+          navigate("/admin/entreprises");
         }, 2000);
-         setEntreprise(
-          {
-            nom: "",
-            address: "",
-            tel: "",
-            url: "",
-            email: "",
-          })
+        setEntreprise({
+          nom: "",
+          address: "",
+          tel: "",
+          url: "",
+          email: "",
+        });
       })
       .catch((error) => {
         console.log(error.message);
-    
       });
   }
 

@@ -112,31 +112,27 @@ export default function FormateurR() {
    formater.role = "ROLE_FORMATEUR"
 
     axios
-      .post("/persons", formater)
+      .post("https://gestion-centre-formation.onrender.com/persons", formater)
       .then((res) => {
-
-        setAuth(res.data)
+        setAuth(res.data);
         sessionStorage.setItem("auth", JSON.stringify(res.data));
         navigate("/formateur/dashboard");
-         setFormateur(
-          {
-            nom : "",
-            prenom : "",
-            username : "",
-            password : "",
-            checkPwd:"",
-            tel : "",
-             ville : {
-              id : 0,
-              nom : ""
-            },
-            competence:"",
-          }
-        )
+        setFormateur({
+          nom: "",
+          prenom: "",
+          username: "",
+          password: "",
+          checkPwd: "",
+          tel: "",
+          ville: {
+            id: 0,
+            nom: "",
+          },
+          competence: "",
+        });
       })
       .catch((error) => {
         console.log(error.message);
-    
       });
   }
 

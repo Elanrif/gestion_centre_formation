@@ -121,45 +121,44 @@ export default function AddUser() {
    const { checkPwd, ...utilisateur } = user;
 
     axios
-      .post("/utilisateurs", utilisateur)
+      .post(
+        "https://gestion-centre-formation.onrender.com/utilisateurs",
+        utilisateur
+      )
       .then((res) => {
-
-        success()
+        success();
         setTimeout(() => {
-          
           navigate("/admin/users");
         }, 2000);
-         setUser(
-          {
-            nom : "",
-            prenom : "",
-            username : "",
-            password : "",
-            checkPwd:"",
-            tel : "",
-            ville : {
-              id:null,
-              nom:""
-            },
-            naissance:"",
-          }
-        )
+        setUser({
+          nom: "",
+          prenom: "",
+          username: "",
+          password: "",
+          checkPwd: "",
+          tel: "",
+          ville: {
+            id: null,
+            nom: "",
+          },
+          naissance: "",
+        });
       })
       .catch((error) => {
         console.log(error.message);
-    
       });
   }
 
     useEffect(() => {
         
-      axios.get("/villes")
-      .then((res)=>{
-        setVilles(res.data)
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
+      axios
+        .get("https://gestion-centre-formation.onrender.com/villes")
+        .then((res) => {
+          setVilles(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
         
       }, [])
 

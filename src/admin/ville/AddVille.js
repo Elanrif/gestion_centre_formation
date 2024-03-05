@@ -67,24 +67,19 @@ export default function AddVille() {
        
 
     axios
-      .post("/villes", formation)
+      .post("https://gestion-centre-formation.onrender.com/villes", formation)
       .then((res) => {
-
-        success()
+        success();
         setTimeout(() => {
-          
           navigate("/admin/villes");
         }, 2000);
-         setFormation(
-          {
-            id:"",
-            nom: ""            
-          }
-        )
+        setFormation({
+          id: "",
+          nom: "",
+        });
       })
       .catch((error) => {
         console.log(error.message);
-    
       });
   }
 

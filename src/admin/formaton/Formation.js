@@ -96,12 +96,11 @@ export default function Formation() {
 
   const handleLoad = ()=>{
 
-    axios.get("/formations")
-    .then((res)=>{
-       
-      setFormations(res.data)
-
-    })
+    axios
+      .get("https://gestion-centre-formation.onrender.com/formations")
+      .then((res) => {
+        setFormations(res.data);
+      });
   }
   
   const success = ()=> toast.success('succès !', {

@@ -122,46 +122,41 @@ export default function AddAssistant() {
    const { checkPwd, ...formater } = assistant;
 
     axios
-      .post("/persons", formater)
+      .post("https://gestion-centre-formation.onrender.com/persons", formater)
       .then((res) => {
-
-        success()
+        success();
         setTimeout(() => {
-          
           navigate("/admin/assistants");
         }, 2000);
 
-         setAssistant(
-          {
-            nom : "",
-            prenom : "",
-            username : "",
-            password : "",
-            checkPwd:"",
-            tel : "",
-            ville : {
-              id:null,
-              nom:""
-            },
-            
-          }
-        )
+        setAssistant({
+          nom: "",
+          prenom: "",
+          username: "",
+          password: "",
+          checkPwd: "",
+          tel: "",
+          ville: {
+            id: null,
+            nom: "",
+          },
+        });
       })
       .catch((error) => {
         console.log(error.message);
-    
       });
   }
 
     useEffect(() => {
         
-      axios.get("/villes")
-      .then((res)=>{
-        setVilles(res.data)
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
+      axios
+        .get("https://gestion-centre-formation.onrender.com/villes")
+        .then((res) => {
+          setVilles(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
         
       }, [])
 

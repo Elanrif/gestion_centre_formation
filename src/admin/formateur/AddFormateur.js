@@ -126,47 +126,43 @@ export default function AddFormateur() {
    const { checkPwd, ...formater } = formateur;
 
     axios
-      .post("/persons", formater)
+      .post("https://gestion-centre-formation.onrender.com/persons", formater)
       .then((res) => {
-
-        success()
+        success();
         setTimeout(() => {
-          
           navigate("/admin/formateurs");
         }, 2000);
-         setFormateur(
-          {
-            nom : "",
-            prenom : "",
-            username : "",
-            description : "",
-            remarque:"",
-            password : "",
-            checkPwd:"",
-            tel : "",
-            ville : {
-              id:null,
-              nom:""
-            },
-            competence:"",
-          }
-        )
+        setFormateur({
+          nom: "",
+          prenom: "",
+          username: "",
+          description: "",
+          remarque: "",
+          password: "",
+          checkPwd: "",
+          tel: "",
+          ville: {
+            id: null,
+            nom: "",
+          },
+          competence: "",
+        });
       })
       .catch((error) => {
         console.log(error.message);
-    
       });
   }
 
     useEffect(() => {
         
-      axios.get("/villes")
-      .then((res)=>{
-        setVilles(res.data)
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
+      axios
+        .get("https://gestion-centre-formation.onrender.com/villes")
+        .then((res) => {
+          setVilles(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
         
       }, [])
 

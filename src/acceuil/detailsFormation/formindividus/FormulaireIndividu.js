@@ -106,19 +106,15 @@ export default function FormulaireIndividu() {
    const handleLoadFormation = ()=>{
    
     axios
-      .get(`/formations/${IDform}`)
+      .get(`https://gestion-centre-formation.onrender.com/formations/${IDform}`)
       .then((res) => {
-        
-        setUser((prev)=>({
-            ...prev,
-            formations :[
-              res.data
-            ]
-          }))
+        setUser((prev) => ({
+          ...prev,
+          formations: [res.data],
+        }));
       })
       .catch((error) => {
         console.log(error);
-    
       });
       
    }
@@ -130,40 +126,38 @@ export default function FormulaireIndividu() {
    const { checkPwd, formations,...utilisateur } = user;
 
    axios
-      .post("/utilisateurs/individu-form", utilisateur,
-      {
-        params:{
-          formationId : formations[0].id 
-        }
-      })
-      .then((res) => {
-
-        success()
-      setTimeout(() => {
-        navigate("/")
-      }, 3000);
-      setUser({
-        nom : "",
-        prenom : "",
-        username : "",
-        password : "",
-        checkPwd:"",
-        formations:[{
-          
-        }],
-        tel : "",
-        ville : {
-          nom : ""
-        },
-        naissance:"",
-      })
-       
-      })
-      .catch((error) => {
-        error500()
-        console.log(error);
-    
-      });
+     .post(
+       "https://gestion-centre-formation.onrender.com/utilisateurs/individu-form",
+       utilisateur,
+       {
+         params: {
+           formationId: formations[0].id,
+         },
+       }
+     )
+     .then((res) => {
+       success();
+       setTimeout(() => {
+         navigate("/");
+       }, 3000);
+       setUser({
+         nom: "",
+         prenom: "",
+         username: "",
+         password: "",
+         checkPwd: "",
+         formations: [{}],
+         tel: "",
+         ville: {
+           nom: "",
+         },
+         naissance: "",
+       });
+     })
+     .catch((error) => {
+       error500();
+       console.log(error);
+     });
   }
 
     const error500 = ()=> toast.error('Vous êtes déjà inscrit !', {

@@ -113,12 +113,11 @@ export default function User({value}) {
 
   const handleLoad = ()=>{
 
-        axios.get("/utilisateurs")
-        .then((res)=>{
-          
-          setUsers(res.data)
-
-        })
+        axios
+          .get("https://gestion-centre-formation.onrender.com/utilisateurs")
+          .then((res) => {
+            setUsers(res.data);
+          });
   }
   
    /* on ne peux pas passer directement la fonction handleSetload reçu en props, il ne sera pris comme une 

@@ -65,12 +65,11 @@ export default function Ville() {
   const handleLoad = ()=>{
 
     
-        axios.get("/villes")
-        .then((res)=>{
-          
-          setFormations(res.data)
-
-        })
+        axios
+          .get("https://gestion-centre-formation.onrender.com/villes")
+          .then((res) => {
+            setFormations(res.data);
+          });
   }
 
    const success = ()=> toast.success('succès !', {

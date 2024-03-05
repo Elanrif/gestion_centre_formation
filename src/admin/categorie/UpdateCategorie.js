@@ -37,13 +37,14 @@ export default function UpdateCategorie() {
 
   const handleLoad = ()=>{
 
-    axios.get(`/categories/${categorieID}`)
-    .then((res)=>{
-       
-      setFormation(res.data)
-      console.log("data :" , res.data)
-
-    })
+    axios
+      .get(
+        `https://gestion-centre-formation.onrender.com/categories/${categorieID}`
+      )
+      .then((res) => {
+        setFormation(res.data);
+        console.log("data :", res.data);
+      });
   }
 
    const handleChange = (e) => {
@@ -85,23 +86,22 @@ export default function UpdateCategorie() {
   // const { checkPwd, ...formater } = formation;
 
     axios
-      .put("/categories", formation)
+      .put(
+        "https://gestion-centre-formation.onrender.com/categories",
+        formation
+      )
       .then((res) => {
-        success()
-      setTimeout(() => {
-        navigate("/admin/categories");
-        
-      }, 2000);
-         setFormation(
-          {
-            id:"",
-            nom: ""            
-          }
-        )
+        success();
+        setTimeout(() => {
+          navigate("/admin/categories");
+        }, 2000);
+        setFormation({
+          id: "",
+          nom: "",
+        });
       })
       .catch((error) => {
         console.log(error.message);
-    
       });
   }
 

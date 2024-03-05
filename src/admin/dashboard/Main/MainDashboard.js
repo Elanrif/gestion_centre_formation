@@ -57,81 +57,88 @@ export default function MainDashboard() {
  }, [])
 
  const handleloadFormateurs = ()=>{
-    axios.get("/persons/role",{
-        params:{
-            role:"ROLE_FORMATEUR"
-        }
-    })
-    .then((res)=>{
-        dispatch({type:"formateurs", payload:res.data})
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
+    axios
+      .get("https://gestion-centre-formation.onrender.com/persons/role", {
+        params: {
+          role: "ROLE_FORMATEUR",
+        },
+      })
+      .then((res) => {
+        dispatch({ type: "formateurs", payload: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
  }
 
  const handleloadAssistants = ()=>{
-    axios.get("/persons/role",{
-        params:{
-            role:"ROLE_ASSISTANT"
-        }
-    })
-    .then((res)=>{
-        dispatch({type:"assistants", payload:res.data})
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
+    axios
+      .get("https://gestion-centre-formation.onrender.com/persons/role", {
+        params: {
+          role: "ROLE_ASSISTANT",
+        },
+      })
+      .then((res) => {
+        dispatch({ type: "assistants", payload: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
  }
 
  const handleloadUtilisateurs = ()=>{
-    axios.get("/utilisateurs")
-    .then((res)=>{
-        dispatch({type:"utilisateurs", payload:res.data})
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
+    axios
+      .get("https://gestion-centre-formation.onrender.com/utilisateurs")
+      .then((res) => {
+        dispatch({ type: "utilisateurs", payload: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
  }
 
  const handleloadFormations = ()=>{
-    axios.get("/formations")
-    .then((res)=>{
-        dispatch({type:"formations", payload:res.data})
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
+    axios
+      .get("https://gestion-centre-formation.onrender.com/formations")
+      .then((res) => {
+        dispatch({ type: "formations", payload: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
  }
 
  const handleloadVilles = ()=>{
-    axios.get("/villes")
-    .then((res)=>{
-        dispatch({type:"villes", payload:res.data})
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
+    axios
+      .get("https://gestion-centre-formation.onrender.com/villes")
+      .then((res) => {
+        dispatch({ type: "villes", payload: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
  }
 
  const handleloadCategories = ()=>{
-    axios.get("/categories")
-    .then((res)=>{
-        dispatch({type:"categories", payload:res.data})
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
+    axios
+      .get("https://gestion-centre-formation.onrender.com/categories")
+      .then((res) => {
+        dispatch({ type: "categories", payload: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
  }
  
  const handleloadEntreprises = ()=>{
-    axios.get("/entreprises")
-    .then((res)=>{
-        dispatch({type:"entreprises", payload:res.data})
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
+    axios
+      .get("https://gestion-centre-formation.onrender.com/entreprises")
+      .then((res) => {
+        dispatch({ type: "entreprises", payload: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
  }
 
 

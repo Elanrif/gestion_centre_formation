@@ -59,12 +59,14 @@ export default function UpdateUser() {
 
   const handleLoad = ()=>{
 
-    axios.get(`/utilisateurs/${userID}`)
-    .then((res)=>{
-      res.data.password = ""
-      setUser(res.data)
-
-    })
+    axios
+      .get(
+        `https://gestion-centre-formation.onrender.com/utilisateurs/${userID}`
+      )
+      .then((res) => {
+        res.data.password = "";
+        setUser(res.data);
+      });
   }
 
    const handleChange = (e) => {
@@ -136,45 +138,44 @@ export default function UpdateUser() {
    const { checkPwd, ...utilisateur } = user;
 
     axios
-      .put("/utilisateurs", utilisateur)
+      .put(
+        "https://gestion-centre-formation.onrender.com/utilisateurs",
+        utilisateur
+      )
       .then((res) => {
-
-        success()
+        success();
         setTimeout(() => {
-          
           navigate("/admin/users");
         }, 2000);
-         setUser(
-          {
-            nom : "",
-            prenom : "",
-            username : "",
-            password : "",
-            checkPwd:"",
-            tel : "",
-            ville : {
-              id:null,
-              nom:""
-            },
-            naissance:"",
-          }
-        )
+        setUser({
+          nom: "",
+          prenom: "",
+          username: "",
+          password: "",
+          checkPwd: "",
+          tel: "",
+          ville: {
+            id: null,
+            nom: "",
+          },
+          naissance: "",
+        });
       })
       .catch((error) => {
         console.log(error.message);
-    
       });
   }
 
     useEffect(() => {
         
-      axios.get("/villes")
-      .then((res)=>{
-        setVilles(res.data)
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
+      axios
+        .get("https://gestion-centre-formation.onrender.com/villes")
+        .then((res) => {
+          setVilles(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
         
       }, [])
 

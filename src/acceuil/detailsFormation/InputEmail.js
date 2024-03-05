@@ -34,13 +34,16 @@ export default function InputEmail() {
 
 
    const handleLoadFormation = ()=>{
-    axios.get(`/formations/${formaID}`)
-    .then((res)=>{
-        setFormation(res.data)
-    })
-    .catch((err)=>{
-        console.error(err)
-    })
+    axios
+      .get(
+        `https://gestion-centre-formation.onrender.com/formations/${formaID}`
+      )
+      .then((res) => {
+        setFormation(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   const handleChange = (e)=>{
@@ -82,32 +85,36 @@ const handleSubmit = (e)=>{
 
 const findOneByEmail = ()=>{
  
-    axios.get(`/utilisateurs/findbyemail`,{
-        params:{
-            username:username
+    axios
+      .get(
+        `https://gestion-centre-formation.onrender.com/utilisateurs/findbyemail`,
+        {
+          params: {
+            username: username,
+          },
         }
-    })
-    .then((res)=>{
-
-        handleSendingEmail()
-        res.data ? setUtilisateur(res.data) : error()  
-       
-    })
-    .catch((err)=>{
-        console.error(err)
-    })
+      )
+      .then((res) => {
+        handleSendingEmail();
+        res.data ? setUtilisateur(res.data) : error();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
 }
 
   const handleSendingEmail = ()=>{
     clickOpen()
-    axios.get(`/evaluations/email-code/${utilisateur.id}`)
-    .then((res)=>{
-        console.log("receive mail : ",res.data)
-       
-    })
-    .catch((err)=>{
-        console.error(err)
-    })
+    axios
+      .get(
+        `https://gestion-centre-formation.onrender.com/evaluations/email-code/${utilisateur.id}`
+      )
+      .then((res) => {
+        console.log("receive mail : ", res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   return (

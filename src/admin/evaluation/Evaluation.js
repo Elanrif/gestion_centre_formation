@@ -111,12 +111,11 @@ export default function Evaluation() {
 
   const handleLoad = ()=>{
 
-    axios.get("/evaluations")
-    .then((res)=>{
-       
-      setEvaluations(res.data)
-
-    })
+    axios
+      .get("https://gestion-centre-formation.onrender.com/evaluations")
+      .then((res) => {
+        setEvaluations(res.data);
+      });
   }
   
 

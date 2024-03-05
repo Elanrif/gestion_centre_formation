@@ -86,15 +86,15 @@ export default function Formevaluation() {
    console.log(evaluation)
 
     axios
-      .post("/evaluations", evaluation)
+      .post(
+        "https://gestion-centre-formation.onrender.com/evaluations",
+        evaluation
+      )
       .then((res) => {
-
         navigate(`/formation/${formationID}`);
-
       })
       .catch((error) => {
         console.log(error.message);
-    
       });
   }
 
@@ -106,13 +106,16 @@ export default function Formevaluation() {
 
   const handleLoadData = ()=>{
 
-    axios.get(`/persons/${formateurIdeval}`)
-      .then((res)=>{
-        setFormateur(res.data)
+    axios
+      .get(
+        `https://gestion-centre-formation.onrender.com/persons/${formateurIdeval}`
+      )
+      .then((res) => {
+        setFormateur(res.data);
       })
-      .catch((err)=>{
-        console.log(err)
-      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   
 

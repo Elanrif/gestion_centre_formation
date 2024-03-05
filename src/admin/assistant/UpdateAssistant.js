@@ -61,13 +61,14 @@ export default function UpdateAssistant() {
 
   const handleLoad = ()=>{
 
-    axios.get(`/persons/${assistantID}`)
-    .then((res)=>{
-    
-      res.data.password = ""
-      setAssistant(res.data)
-
-    })
+    axios
+      .get(
+        `https://gestion-centre-formation.onrender.com/persons/${assistantID}`
+      )
+      .then((res) => {
+        res.data.password = "";
+        setAssistant(res.data);
+      });
   }
 
    const handleChange = (e) => {
@@ -138,44 +139,40 @@ export default function UpdateAssistant() {
    const {authorities, checkPwd, ...formater } = assistant;
 
     axios
-      .put("/persons", formater)
+      .put("https://gestion-centre-formation.onrender.com/persons", formater)
       .then((res) => {
-
-        success()
+        success();
         setTimeout(() => {
-          
           navigate("/admin/assistants");
         }, 2000);
-         setAssistant(
-          {
-            nom : "",
-            prenom : "",
-            username : "",
-            password : "",
-            checkPwd:"",
-            tel : "",
-            ville : {
-                id:null,
-                nom:""
-              }
-          }
-        )
+        setAssistant({
+          nom: "",
+          prenom: "",
+          username: "",
+          password: "",
+          checkPwd: "",
+          tel: "",
+          ville: {
+            id: null,
+            nom: "",
+          },
+        });
       })
       .catch((error) => {
         console.log(error.message);
-    
       });
   }
 
     useEffect(() => {
         
-      axios.get("/villes")
-      .then((res)=>{
-        setVilles(res.data)
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
+      axios
+        .get("https://gestion-centre-formation.onrender.com/villes")
+        .then((res) => {
+          setVilles(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
         
       }, [])
 

@@ -95,16 +95,15 @@ export default function AssistantA() {
 
   const handleLoad = ()=>{
 
-        axios.get("/persons/role",{
-          params: {
-        role: "ROLE_ASSISTANT"
-      }
-        })
-        .then((res)=>{
-          
-          setAssistants(res.data)
-
-        })
+        axios
+          .get("https://gestion-centre-formation.onrender.com/persons/role", {
+            params: {
+              role: "ROLE_ASSISTANT",
+            },
+          })
+          .then((res) => {
+            setAssistants(res.data);
+          });
   }
   
    const success = ()=> toast.success('succès !', {

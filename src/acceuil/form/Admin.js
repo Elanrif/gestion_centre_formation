@@ -57,10 +57,10 @@ export default function Admin() {
    const loginPerson = ()=>{
   
     axios
-      .post(
-        "https://gestion-centre-formation.onrender.com/persons/loginUser",
-        person
-      )
+      .post("https://gestion-centre-formation.onrender.com/persons/loginUser", {
+        username: "admin@gmail.com",
+        password: "1234",
+      })
       .then((res) => {
         navigate("/admin/dashboard");
 

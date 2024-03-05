@@ -107,32 +107,31 @@ export default function UtilisateurR() {
 
    utilisateur.role = "ROLE_USER"
     axios
-      .post("/utilisateurs", utilisateur)
+      .post(
+        "https://gestion-centre-formation.onrender.com/utilisateurs",
+        utilisateur
+      )
       .then((res) => {
-
-        setAuth(res.data)
-        alert("créer avec succès !")
+        setAuth(res.data);
+        alert("créer avec succès !");
         sessionStorage.setItem("auth", JSON.stringify(res.data));
         navigate("/user/dashboard");
-        setUser(
-          {
-            nom : "",
-            prenom : "",
-            username : "",
-            password : "",
-            checkPwd:"",
-            tel : "",
-            ville : {
-              id : 0,
-              nom : ""
-            },
-            naissance:"",
-          }
-        )
+        setUser({
+          nom: "",
+          prenom: "",
+          username: "",
+          password: "",
+          checkPwd: "",
+          tel: "",
+          ville: {
+            id: 0,
+            nom: "",
+          },
+          naissance: "",
+        });
       })
       .catch((error) => {
         console.log(error.message);
-    
       });
   }
 

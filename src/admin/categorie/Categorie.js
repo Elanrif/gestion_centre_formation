@@ -64,12 +64,11 @@ export default function Categorie() {
 
   const handleLoad = ()=>{
 
-        axios.get("/categories")
-        .then((res)=>{
-          
-          setFormations(res.data)
-
-        })
+        axios
+          .get("https://gestion-centre-formation.onrender.com/categories")
+          .then((res) => {
+            setFormations(res.data);
+          });
   }
   
    const success = ()=> toast.success('succès !', {

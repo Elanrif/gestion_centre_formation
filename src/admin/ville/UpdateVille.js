@@ -35,13 +35,12 @@ export default function UpdateVille() {
 
   const handleLoad = ()=>{
 
-    axios.get(`/villes/${villeID}`)
-    .then((res)=>{
-       
-      setFormation(res.data)
-      console.log("data :" , res.data)
-
-    })
+    axios
+      .get(`https://gestion-centre-formation.onrender.com/villes/${villeID}`)
+      .then((res) => {
+        setFormation(res.data);
+        console.log("data :", res.data);
+      });
   }
 
    const handleChange = (e) => {
@@ -81,25 +80,20 @@ export default function UpdateVille() {
   const update = ()=>{
   
     axios
-      .post("/villes", formation)
+      .post("https://gestion-centre-formation.onrender.com/villes", formation)
       .then((res) => {
-        
-        success()
+        success();
         setTimeout(() => {
-          
           navigate("/admin/villes");
         }, 2000);
 
-         setFormation(
-          {
-            id:"",
-            nom: ""            
-          }
-        )
+        setFormation({
+          id: "",
+          nom: "",
+        });
       })
       .catch((error) => {
         console.log(error.message);
-    
       });
   }
 

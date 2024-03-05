@@ -97,12 +97,11 @@ export default function Entreprise({value}) {
 
   const handleLoad = ()=>{
 
-    axios.get("/entreprises")
-    .then((res)=>{
-       
-      setEntreprises(res.data)
-
-    }) 
+    axios
+      .get("https://gestion-centre-formation.onrender.com/entreprises")
+      .then((res) => {
+        setEntreprises(res.data);
+      }); 
   }
 
   /* on ne peux pas passer directement la fonction handleSetload reçu en props, il ne sera pris comme une 

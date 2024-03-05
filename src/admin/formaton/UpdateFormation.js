@@ -158,13 +158,14 @@ export default function UpdateFormation() {
 
   const handleLoad = ()=>{
 
-    axios.get(`/formations/${formationID}`)
-    .then((res)=>{
-       
-      setFormation(res.data)
-      console.log("data :" , res.data)
-
-    })
+    axios
+      .get(
+        `https://gestion-centre-formation.onrender.com/formations/${formationID}`
+      )
+      .then((res) => {
+        setFormation(res.data);
+        console.log("data :", res.data);
+      });
   }
 
 
@@ -176,21 +177,23 @@ export default function UpdateFormation() {
 
   const handleLoadData = ()=>{
 
-    axios.get("/categories")
-      .then((res)=>{
-        setCategories(res.data)
+    axios
+      .get("https://gestion-centre-formation.onrender.com/categories")
+      .then((res) => {
+        setCategories(res.data);
       })
-      .catch((err)=>{
-        console.log(err)
-      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-      axios.get("/villes")
-      .then((res)=>{
-        setVilles(res.data)
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
+      axios
+        .get("https://gestion-centre-formation.onrender.com/villes")
+        .then((res) => {
+          setVilles(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   }
   
 

@@ -56,26 +56,24 @@ export default function Utilisateur() {
    const loginPerson = ()=>{
   
     axios
-      .post("/utilisateurs/login", person)
+      .post(
+        "https://gestion-centre-formation.onrender.com/utilisateurs/login",
+        person
+      )
       .then((res) => {
-      
-       /* stocker le pwd en claire ,ainsi ecrasé le pwd encrypté. */
-         res.data.password = person.password
-         console.log(person)
-         setAuth(res.data)
-         sessionStorage.setItem("auth", JSON.stringify(res.data));
-         navigate("/user/dashboard");
-         setPerson(
-          {
-            username : "",
-            password : ""
-          }
-        )
-
+        /* stocker le pwd en claire ,ainsi ecrasé le pwd encrypté. */
+        res.data.password = person.password;
+        console.log(person);
+        setAuth(res.data);
+        sessionStorage.setItem("auth", JSON.stringify(res.data));
+        navigate("/user/dashboard");
+        setPerson({
+          username: "",
+          password: "",
+        });
       })
       .catch((error) => {
-         console.error("Erreur lors de la connexion :", error);
-    
+        console.error("Erreur lors de la connexion :", error);
       });
   }
 
