@@ -55,21 +55,24 @@ export default function AddPlanification(props) {
     console.error("La date de début doit être inférieure à la date de fin");
     } else {
     axios
-        .get("/formations/planification", {
-        params: {
-        id: id,
-        startDate: dates.startDate,
-        finishDate: dates.finishDate
+      .get(
+        "https://gestion-centre-formation.onrender.com/formations/planification",
+        {
+          params: {
+            id: id,
+            startDate: dates.startDate,
+            finishDate: dates.finishDate,
+          },
         }
-        })
-        .then((res) => {
+      )
+      .then((res) => {
         // Recharger les données formations
         handleSetUpdate();
-        console.log(res.data)
-        })
-        .catch((error) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
         console.log(error.message);
-        });
+      });
     }
     
 

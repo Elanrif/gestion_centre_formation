@@ -75,20 +75,22 @@ export default function AddEntreprise(props) {
      * les valeurs 1,3,5 au lieu de [1,3,5] .join(',')
      *  */
      axios
-      .post("/formations/add-entreprise",null, {
-        params:{
-            formationId : id,
-            entrepriseIds : entrepriseIds.join(',')
-        }
-      })
-      .then((res) => {
-         
-          handleSetUpdate()
-      })
-      .catch((error) => {
-        console.log(error.message);
-    
-      });
+       .post(
+         "https://gestion-centre-formation.onrender.com/formations/add-entreprise",
+         null,
+         {
+           params: {
+             formationId: id,
+             entrepriseIds: entrepriseIds.join(","),
+           },
+         }
+       )
+       .then((res) => {
+         handleSetUpdate();
+       })
+       .catch((error) => {
+         console.log(error.message);
+       });
 
     handleClose();
   }
@@ -102,14 +104,14 @@ export default function AddEntreprise(props) {
 
   const handleLoadData = ()=>{
 
-    axios.get("/entreprises")
-      .then((res)=>{
-        setEntreprisesLoad(res.data)
-        
+    axios
+      .get("https://gestion-centre-formation.onrender.com/entreprises")
+      .then((res) => {
+        setEntreprisesLoad(res.data);
       })
-      .catch((err)=>{
-        console.log(err)
-      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   
   return (

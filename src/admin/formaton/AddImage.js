@@ -52,17 +52,20 @@ export default function AddImage(props) {
     formDataTo.append('image', image);
     
      axios
-      .post("/formations/image", formDataTo, {
-        "Content-Type": "multipart/form-data",
-      })
-      .then((res) => {
-          /* recharger les données formations */
-          handleSetUpdate()
-      })
-      .catch((error) => {
-        console.log(error.message);
-    
-      });
+       .post(
+         "https://gestion-centre-formation.onrender.com/formations/image",
+         formDataTo,
+         {
+           "Content-Type": "multipart/form-data",
+         }
+       )
+       .then((res) => {
+         /* recharger les données formations */
+         handleSetUpdate();
+       })
+       .catch((error) => {
+         console.log(error.message);
+       });
 
     handleClose();
   }

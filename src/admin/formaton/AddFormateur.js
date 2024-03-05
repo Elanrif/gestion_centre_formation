@@ -44,20 +44,23 @@ export default function AddFormateur(props) {
     const id = props.value.data.id  ;
     /* une requête POST avec params , doit avoir 3 donne url,data,params(facultatif) */
      axios
-      .post("/formations/add-formateur",null, {
-        params:{
-            formationId : id,
-            formateurId : formateurId
-        }
-      })
-      .then((res) => {
-          /* recharger les données formations */
-          handleSetUpdate()
-      })
-      .catch((error) => {
-        console.log(error.message);
-    
-      });
+       .post(
+         "https://gestion-centre-formation.onrender.com/formations/add-formateur",
+         null,
+         {
+           params: {
+             formationId: id,
+             formateurId: formateurId,
+           },
+         }
+       )
+       .then((res) => {
+         /* recharger les données formations */
+         handleSetUpdate();
+       })
+       .catch((error) => {
+         console.log(error.message);
+       });
 
     handleClose();
   }
@@ -71,17 +74,18 @@ export default function AddFormateur(props) {
 
   const handleLoadData = ()=>{
 
-    axios.get("/persons/role",{
-       params: {
-            role :"ROLE_FORMATEUR"
-        }
-    })
-      .then((res)=>{
-        setFormateurs(res.data)
+    axios
+      .get("https://gestion-centre-formation.onrender.com/persons/role", {
+        params: {
+          role: "ROLE_FORMATEUR",
+        },
       })
-      .catch((err)=>{
-        console.log(err)
+      .then((res) => {
+        setFormateurs(res.data);
       })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   
   return (
