@@ -56,27 +56,25 @@ export default function Formateur() {
    const loginPerson = ()=>{
   
     axios
-      .post("/persons/loginUser", person)
+      .post(
+        "https://gestion-centre-formation.onrender.com/persons/loginUser",
+        person
+      )
       .then((res) => {
+        /* stocker le pwd en claire ,ainsi ecrasé le pwd encrypté. */
+        res.data.password = person.password;
 
-      
-       /* stocker le pwd en claire ,ainsi ecrasé le pwd encrypté. */
-        res.data.password = person.password
+        setAuth(res.data);
+        sessionStorage.setItem("auth", JSON.stringify(res.data));
 
-         setAuth(res.data)
-         sessionStorage.setItem("auth", JSON.stringify(res.data));
-         
-         navigate("/formateur/dashboard");
-         setPerson(
-          {
-            username : "",
-            password : ""
-          }
-        )
+        navigate("/formateur/dashboard");
+        setPerson({
+          username: "",
+          password: "",
+        });
       })
       .catch((error) => {
         console.log(error.message);
-    
       });
   }
 

@@ -73,9 +73,6 @@ function App() {
     intecepteurs()
   })
 
-fetch("https://jsonplaceholder.typicode.com/todos")
-  .then((response) => response.json())
-  .then((json) => console.log(json));
 
   const intecepteurs = ()=>{
         axios.interceptors.request.use(function (request) {
