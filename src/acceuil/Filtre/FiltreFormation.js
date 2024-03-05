@@ -198,42 +198,47 @@ const [categories,setCategories] = React.useState([])
 
  const handleLoadFormationsFromDB = ()=>{
 
-    axios.get("/formations")
-    .then((res)=>{
-
-     setFormations(res.data)
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
+    axios
+      .get("https://gestion-centre-formation.onrender.com/formations")
+      .then((res) => {
+        setFormations(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
 
   const handleLoadCategories = ()=>{
 
-    axios.get("/categories")
-    .then((res)=>{
-
-      /* .filter(Boolean) pour conserver seulement les valeurs !== null , pour éviter des erreurs dans 
+    axios
+      .get("https://gestion-centre-formation.onrender.com/categories")
+      .then((res) => {
+        /* .filter(Boolean) pour conserver seulement les valeurs !== null , pour éviter des erreurs dans 
       le Autocomplete */
-     const options = res.data.map((item, index) => item && item.nom).filter(Boolean);;
-     setCategories(options)
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
+        const options = res.data
+          .map((item, index) => item && item.nom)
+          .filter(Boolean);
+        setCategories(options);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   const handleLoadVilles = ()=>{
 
-    axios.get("/villes")
-    .then((res)=>{
-     const options = res.data.map((item, index) => item  && item.nom).filter(Boolean);
-     setVilles(options)
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
+    axios
+      .get("https://gestion-centre-formation.onrender.com/villes")
+      .then((res) => {
+        const options = res.data
+          .map((item, index) => item && item.nom)
+          .filter(Boolean);
+        setVilles(options);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
