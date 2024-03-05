@@ -118,32 +118,30 @@ export default function AddFormation() {
        
    
     axios
-      .post("/formations", formation)
+      .post(
+        "https://gestion-centre-formation.onrender.com/formations",
+        formation
+      )
       .then((res) => {
-
-        success()
+        success();
         setTimeout(() => {
           navigate("/admin/formations");
-          
         }, 3000);
-         setFormation(
-          {
-            nom : "",
-            objectif : "",
-            programme : "",
-            dedie  : "",
-            heure : "",
-            ville : {
-              id:null,
-              nom: ""
-            },
-            cout:"",
-          }
-        )
+        setFormation({
+          nom: "",
+          objectif: "",
+          programme: "",
+          dedie: "",
+          heure: "",
+          ville: {
+            id: null,
+            nom: "",
+          },
+          cout: "",
+        });
       })
       .catch((error) => {
         console.log(error.message);
-    
       });
   }
 
