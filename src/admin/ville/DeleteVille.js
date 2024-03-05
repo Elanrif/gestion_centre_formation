@@ -25,14 +25,15 @@ export default function DeleteVille({value}) {
 
   const handleDelete = ()=>{
 
-    axios.delete(`/villes/${data.id}`)
-    .then((res)=>{
-        handleSetUpdate()
-        success()
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
+    axios
+      .delete(`https://gestion-centre-formation.onrender.com/villes/${data.id}`)
+      .then((res) => {
+        handleSetUpdate();
+        success();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     
     handleClose()
   }
