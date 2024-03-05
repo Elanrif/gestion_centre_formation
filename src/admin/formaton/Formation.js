@@ -147,7 +147,7 @@ export default function Formation() {
         />,
         item.nom,
         <div className='flex items-center space-x-2'> <span>{item.cout}</span> <span>DHS</span> </div>,
-        <span className='text-slate-100'>  Plus de détails ? ...</span>,
+        <span className='text-slate-500'>  Plus de détails ? ...</span>,
         item.ville?.nom,/* item.ville si la ville est null , retourne null. donc -- null.nom génerera une erreur -- solution ajouter item.ville?.nom */
         item.startDate,
         <div className='text-slate-400'>{item.formateur?.nom ? (<span className='text-blue-400'>{item.formateur?.nom} {item.formateur?.prenom}</span>) : "Pas de formateur"}</div>,
