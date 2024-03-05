@@ -47,7 +47,7 @@ function Formations() {
   const handleLoadFormations = ()=>{
 
     axios
-      .get("/formations")
+      .get("https://gestion-centre-formation.onrender.com/formations")
       .then((res) => {
         dispatch({ type: "init", payload: res.data });
       });
