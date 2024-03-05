@@ -137,32 +137,20 @@ export default function Formation() {
                   </div>
 ) 
 
-  const rows = formations
-    .sort((a, b) => b.id - a.id)
-    .map((item, index) =>
+  const rows =
+    formations.sort((a, b) => b.id - a.id).map((item, index) =>
       createData(
-        <img src={item.image} alt="Image" className="w-20  h-16" />,
+        <img
+          src={item.image}
+          alt="Image"
+          className="w-20  h-16"
+        />,
         item.nom,
-        <div className="flex items-center space-x-2">
-          {" "}
-          <span>{item.cout}</span> <span>DHS</span>{" "}
-        </div>,
-        <span dangerouslySetInnerHTML={{ __html: item.programme?.slice(0,15) }}>
-          {" "}
-          ...
-        </span>,
-        item.ville
-          ?.nom /* item.ville si la ville est null , retourne null. donc -- null.nom génerera une erreur -- solution ajouter item.ville?.nom */,
+        <div className='flex items-center space-x-2'> <span>{item.cout}</span> <span>DHS</span> </div>,
+        <span className='text-slate-100'>  Plus de détails ? ...</span>,
+        item.ville?.nom,/* item.ville si la ville est null , retourne null. donc -- null.nom génerera une erreur -- solution ajouter item.ville?.nom */
         item.startDate,
-        <div className="text-slate-400">
-          {item.formateur?.nom ? (
-            <span className="text-blue-400">
-              {item.formateur?.nom} {item.formateur?.prenom}
-            </span>
-          ) : (
-            "Pas de formateur"
-          )}
-        </div>,
+        <div className='text-slate-400'>{item.formateur?.nom ? (<span className='text-blue-400'>{item.formateur?.nom} {item.formateur?.prenom}</span>) : "Pas de formateur"}</div>,
         btnOptions(item)
       )
     );

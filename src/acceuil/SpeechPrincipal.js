@@ -16,7 +16,7 @@ function SpeechPrincipal() {
             <div className='w-full text-center'>
                 <Avatar
                 alt="Omar sy"
-                src="/image/admin/omar-sy.jpg"
+                src="/image/admin/elanrif_picture.jpg"
                 sx={{mx: 'auto', width: 100, height: 100,mb:2 }}
                 />
                 <h1 className='text-black font-semibold'>ELANRIF SAID BACO</h1>
